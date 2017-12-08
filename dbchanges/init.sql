@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Jeu 30 Novembre 2017 à 14:21
+-- Généré le :  Ven 08 Décembre 2017 à 17:04
 -- Version du serveur :  10.1.13-MariaDB
 -- Version de PHP :  5.6.23
 
@@ -17,61 +17,116 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données :  `moijv`
+-- Base de données :  `firstranger`
 --
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `category`
+-- Structure de la table `commentaires`
 --
 
-CREATE TABLE `category` (
-  `id` int(11) NOT NULL,
-  `name` varchar(100) NOT NULL
+CREATE TABLE `commentaires` (
+  `id_commentaire` int(11) NOT NULL,
+  `id_utilisateur` int(11) NOT NULL,
+  `heure_publication_commentaire` datetime NOT NULL,
+  `nombre_likes` int(11) NOT NULL,
+  `date_commentaire` date NOT NULL,
+  `heure_commentaire` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `game`
+-- Structure de la table `departements`
 --
 
-CREATE TABLE `game` (
-  `id` int(11) NOT NULL,
-  `title` varchar(100) NOT NULL,
-  `image` varchar(255) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `category_id` int(11) NOT NULL
+CREATE TABLE `departements` (
+  `id_departement` int(11) NOT NULL,
+  `code_departement` int(2) NOT NULL,
+  `nom_departements` varchar(70) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `loaning`
+-- Structure de la table `geocode`
 --
 
-CREATE TABLE `loaning` (
-  `id` int(11) NOT NULL,
-  `date_start` date NOT NULL,
-  `date_end` date NOT NULL,
-  `game_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL
+CREATE TABLE `geocode` (
+  `id_geocode` int(11) NOT NULL,
+  `nom_geocode` varchar(20) NOT NULL,
+  `id_departement` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `user`
+-- Structure de la table `resume_departement`
 --
 
-CREATE TABLE `user` (
-  `id` int(11) NOT NULL,
-  `username` varchar(100) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `firstname` varchar(100) NOT NULL,
-  `lastname` varchar(100) NOT NULL,
-  `email` varchar(255) NOT NULL
+CREATE TABLE `resume_departement` (
+  `id_resume_departement` int(11) NOT NULL,
+  `heure_publication_carte` datetime NOT NULL,
+  `code_departement` int(2) NOT NULL,
+  `quantite_tweets_positifs_departement` int(11) NOT NULL,
+  `quantite_tweets_negatifs_departement` int(11) NOT NULL,
+  `quantite_tweets_neutres_departement` int(11) NOT NULL,
+  `id_tweet_populaire_positif` int(11) NOT NULL,
+  `id_tweet_populaire_negatif` int(11) NOT NULL,
+  `nombre_partages_twitter_departement` int(11) NOT NULL,
+  `nombre_partages_facebook_departement` int(11) NOT NULL,
+  `quantite_tweets_positifs_region` int(11) NOT NULL,
+  `quantite_tweets_negatifs_region` int(11) NOT NULL,
+  `quantite_tweets_neutres_region` int(11) NOT NULL,
+  `nombre_partages_twitter_region` int(11) NOT NULL,
+  `nombre_partages_facebook_region` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `total_tweets`
+--
+
+CREATE TABLE `total_tweets` (
+  `id_tweet` int(11) NOT NULL,
+  `id_tweet_api` int(11) NOT NULL,
+  `contenu_tweet` text NOT NULL,
+  `heure_publication` datetime NOT NULL,
+  `url_tweet` text NOT NULL,
+  `id_geocode` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `tweets_populaires`
+--
+
+CREATE TABLE `tweets_populaires` (
+  `id_tweet_populaire` int(11) NOT NULL,
+  `id_tweet` int(11) NOT NULL,
+  `url_tweet` text NOT NULL,
+  `geocode` text NOT NULL,
+  `nombre_vote` int(11) NOT NULL,
+  `nombre_retweet` int(11) NOT NULL,
+  `heure_publication` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `utilisateurs`
+--
+
+CREATE TABLE `utilisateurs` (
+  `id_utilisateur` int(11) NOT NULL,
+  `prenom` varchar(50) NOT NULL,
+  `nom` varchar(60) NOT NULL,
+  `mail` varchar(100) NOT NULL,
+  `compte_twitter` varchar(100) NOT NULL,
+  `mdp` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -79,74 +134,125 @@ CREATE TABLE `user` (
 --
 
 --
--- Index pour la table `category`
+-- Index pour la table `commentaires`
 --
-ALTER TABLE `category`
-  ADD PRIMARY KEY (`id`);
+ALTER TABLE `commentaires`
+  ADD PRIMARY KEY (`id_commentaire`),
+  ADD KEY `id_utilisateur` (`id_utilisateur`);
 
 --
--- Index pour la table `game`
+-- Index pour la table `departements`
 --
-ALTER TABLE `game`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `user_id` (`user_id`),
-  ADD KEY `category_id` (`category_id`);
+ALTER TABLE `departements`
+  ADD PRIMARY KEY (`id_departement`),
+  ADD KEY `code_departement` (`code_departement`);
 
 --
--- Index pour la table `loaning`
+-- Index pour la table `geocode`
 --
-ALTER TABLE `loaning`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `game_id` (`game_id`),
-  ADD KEY `user_id` (`user_id`);
+ALTER TABLE `geocode`
+  ADD PRIMARY KEY (`id_geocode`),
+  ADD KEY `id_departement` (`id_departement`);
 
 --
--- Index pour la table `user`
+-- Index pour la table `resume_departement`
 --
-ALTER TABLE `user`
-  ADD PRIMARY KEY (`id`);
+ALTER TABLE `resume_departement`
+  ADD PRIMARY KEY (`id_resume_departement`),
+  ADD KEY `code_departement` (`code_departement`);
+
+--
+-- Index pour la table `total_tweets`
+--
+ALTER TABLE `total_tweets`
+  ADD PRIMARY KEY (`id_tweet`),
+  ADD KEY `id_geocode` (`id_geocode`);
+
+--
+-- Index pour la table `tweets_populaires`
+--
+ALTER TABLE `tweets_populaires`
+  ADD PRIMARY KEY (`id_tweet_populaire`),
+  ADD KEY `id_tweet` (`id_tweet`);
+
+--
+-- Index pour la table `utilisateurs`
+--
+ALTER TABLE `utilisateurs`
+  ADD PRIMARY KEY (`id_utilisateur`);
 
 --
 -- AUTO_INCREMENT pour les tables exportées
 --
 
 --
--- AUTO_INCREMENT pour la table `category`
+-- AUTO_INCREMENT pour la table `commentaires`
 --
-ALTER TABLE `category`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `commentaires`
+  MODIFY `id_commentaire` int(11) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT pour la table `game`
+-- AUTO_INCREMENT pour la table `departements`
 --
-ALTER TABLE `game`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `departements`
+  MODIFY `id_departement` int(11) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT pour la table `loaning`
+-- AUTO_INCREMENT pour la table `geocode`
 --
-ALTER TABLE `loaning`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `geocode`
+  MODIFY `id_geocode` int(11) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT pour la table `user`
+-- AUTO_INCREMENT pour la table `resume_departement`
 --
-ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `resume_departement`
+  MODIFY `id_resume_departement` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT pour la table `total_tweets`
+--
+ALTER TABLE `total_tweets`
+  MODIFY `id_tweet` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT pour la table `tweets_populaires`
+--
+ALTER TABLE `tweets_populaires`
+  MODIFY `id_tweet_populaire` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT pour la table `utilisateurs`
+--
+ALTER TABLE `utilisateurs`
+  MODIFY `id_utilisateur` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- Contraintes pour les tables exportées
 --
 
 --
--- Contraintes pour la table `game`
+-- Contraintes pour la table `commentaires`
 --
-ALTER TABLE `game`
-  ADD CONSTRAINT `game_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
-  ADD CONSTRAINT `game_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`);
+ALTER TABLE `commentaires`
+  ADD CONSTRAINT `commentaires_ibfk_1` FOREIGN KEY (`id_utilisateur`) REFERENCES `utilisateurs` (`id_utilisateur`);
 
 --
--- Contraintes pour la table `loaning`
+-- Contraintes pour la table `geocode`
 --
-ALTER TABLE `loaning`
-  ADD CONSTRAINT `loaning_ibfk_1` FOREIGN KEY (`game_id`) REFERENCES `game` (`id`),
-  ADD CONSTRAINT `loaning_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
+ALTER TABLE `geocode`
+  ADD CONSTRAINT `geocode_ibfk_1` FOREIGN KEY (`id_departement`) REFERENCES `departements` (`id_departement`);
+
+--
+-- Contraintes pour la table `resume_departement`
+--
+ALTER TABLE `resume_departement`
+  ADD CONSTRAINT `resume_departement_ibfk_1` FOREIGN KEY (`code_departement`) REFERENCES `departements` (`code_departement`);
+
+--
+-- Contraintes pour la table `total_tweets`
+--
+ALTER TABLE `total_tweets`
+  ADD CONSTRAINT `total_tweets_ibfk_1` FOREIGN KEY (`id_geocode`) REFERENCES `geocode` (`id_geocode`);
+
+--
+-- Contraintes pour la table `tweets_populaires`
+--
+ALTER TABLE `tweets_populaires`
+  ADD CONSTRAINT `tweets_populaires_ibfk_1` FOREIGN KEY (`id_tweet`) REFERENCES `total_tweets` (`id_tweet`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
