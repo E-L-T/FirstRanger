@@ -80,9 +80,9 @@ $app->match('/register', function(Request $request) use ($app) {
         ->bind('register')
 ;
         
-$app->get('testuser', function(){
-    $user = new Users
-});
+//$app->get('testuser', function(){
+//    $user = new Users
+//});
 
 $app->error(function (\Exception $e, Request $request, $code) use ($app) {
     if ($app['debug']) {

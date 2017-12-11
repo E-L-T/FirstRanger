@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.1
--- http://www.phpmyadmin.net
+-- version 4.6.6deb4
+-- https://www.phpmyadmin.net/
 --
--- Client :  127.0.0.1
--- Généré le :  Ven 08 Décembre 2017 à 17:04
--- Version du serveur :  10.1.13-MariaDB
--- Version de PHP :  5.6.23
+-- Client :  localhost:3306
+-- Généré le :  Lun 11 Décembre 2017 à 15:55
+-- Version du serveur :  10.1.26-MariaDB-0+deb9u1
+-- Version de PHP :  7.0.19-1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -23,110 +23,125 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Structure de la table `commentaires`
+-- Structure de la table `comments`
 --
 
-CREATE TABLE `commentaires` (
-  `id_commentaire` int(11) NOT NULL,
-  `id_utilisateur` int(11) NOT NULL,
-  `heure_publication_commentaire` datetime NOT NULL,
-  `nombre_likes` int(11) NOT NULL,
-  `date_commentaire` date NOT NULL,
-  `heure_commentaire` datetime NOT NULL
+CREATE TABLE `comments` (
+  `id_comment` int(11) NOT NULL,
+  `id_user` int(11) NOT NULL,
+  `comment_publication_hour` datetime NOT NULL,
+  `likes_count` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `departements`
+-- Structure de la table `departments`
 --
 
-CREATE TABLE `departements` (
-  `id_departement` int(11) NOT NULL,
-  `code_departement` int(2) NOT NULL,
-  `nom_departements` varchar(70) NOT NULL
+CREATE TABLE `departments` (
+  `department_id` int(11) NOT NULL,
+  `department_code` varchar(5) NOT NULL,
+  `department_name` varchar(70) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `geocode`
+-- Structure de la table `department_summary`
 --
 
-CREATE TABLE `geocode` (
-  `id_geocode` int(11) NOT NULL,
-  `nom_geocode` varchar(20) NOT NULL,
-  `id_departement` int(11) NOT NULL
+CREATE TABLE `department_summary` (
+  `department_summary_id` int(11) NOT NULL,
+  `map_publication_hour` datetime NOT NULL,
+  `department_code` varchar(5) NOT NULL,
+  `department_positive_tweets_quantity` int(11) NOT NULL,
+  `department_negative_tweets_quantity` int(11) NOT NULL,
+  `department_neutral_tweets_quantity` int(11) NOT NULL,
+  `positive_popular_tweet_id` int(11) NOT NULL,
+  `negative_popular_tweet_id` int(11) NOT NULL,
+  `department_twitter_shares_quantity` int(11) DEFAULT NULL,
+  `department_facebook_shares_quantity` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `resume_departement`
+-- Structure de la table `district_shares`
 --
 
-CREATE TABLE `resume_departement` (
-  `id_resume_departement` int(11) NOT NULL,
-  `heure_publication_carte` datetime NOT NULL,
-  `code_departement` int(2) NOT NULL,
-  `quantite_tweets_positifs_departement` int(11) NOT NULL,
-  `quantite_tweets_negatifs_departement` int(11) NOT NULL,
-  `quantite_tweets_neutres_departement` int(11) NOT NULL,
-  `id_tweet_populaire_positif` int(11) NOT NULL,
-  `id_tweet_populaire_negatif` int(11) NOT NULL,
-  `nombre_partages_twitter_departement` int(11) NOT NULL,
-  `nombre_partages_facebook_departement` int(11) NOT NULL,
-  `quantite_tweets_positifs_region` int(11) NOT NULL,
-  `quantite_tweets_negatifs_region` int(11) NOT NULL,
-  `quantite_tweets_neutres_region` int(11) NOT NULL,
-  `nombre_partages_twitter_region` int(11) NOT NULL,
-  `nombre_partages_facebook_region` int(11) NOT NULL
+CREATE TABLE `district_shares` (
+  `district_id` int(11) NOT NULL,
+  `district_name` int(11) NOT NULL,
+  `district_twitter_shares_quantity` int(11) DEFAULT NULL,
+  `district_facebook_shares_quantity` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `total_tweets`
+-- Structure de la table `geocodes`
 --
 
-CREATE TABLE `total_tweets` (
-  `id_tweet` int(11) NOT NULL,
-  `id_tweet_api` int(11) NOT NULL,
-  `contenu_tweet` text NOT NULL,
-  `heure_publication` datetime NOT NULL,
+CREATE TABLE `geocodes` (
+  `geocode_id` int(11) NOT NULL,
+  `geocode_name` varchar(20) NOT NULL,
+  `department_id` int(11) NOT NULL,
+  `geocode` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `popular_tweets`
+--
+
+CREATE TABLE `popular_tweets` (
+  `popular_tweet_id` bigint(18) NOT NULL,
+  `tweet_id` bigint(18) NOT NULL,
   `url_tweet` text NOT NULL,
-  `id_geocode` int(11) NOT NULL
+  `geocode_id` int(11) NOT NULL,
+  `votes_quantity` int(11) NOT NULL,
+  `retweets_quantity` int(11) DEFAULT NULL,
+  `tweet_publication_hour` datetime NOT NULL,
+  `favorites_quantity` int(11) DEFAULT NULL,
+  `coordinates` text NOT NULL,
+  `location` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `tweets_populaires`
+-- Structure de la table `tweets`
 --
 
-CREATE TABLE `tweets_populaires` (
-  `id_tweet_populaire` int(11) NOT NULL,
-  `id_tweet` int(11) NOT NULL,
+CREATE TABLE `tweets` (
+  `tweet_id` bigint(18) NOT NULL,
+  `api_tweet_id` bigint(18) NOT NULL,
+  `tweet_text` text NOT NULL,
+  `tweet_publication_hour` datetime NOT NULL,
   `url_tweet` text NOT NULL,
-  `geocode` text NOT NULL,
-  `nombre_vote` int(11) NOT NULL,
-  `nombre_retweet` int(11) NOT NULL,
-  `heure_publication` datetime NOT NULL
+  `geocode_id` int(11) DEFAULT NULL,
+  `retweets_quantity` int(11) DEFAULT NULL,
+  `favorites_quantity` int(11) DEFAULT NULL,
+  `twitter_account` text NOT NULL,
+  `coordinates` text,
+  `location` text
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `utilisateurs`
+-- Structure de la table `users`
 --
 
-CREATE TABLE `utilisateurs` (
-  `id_utilisateur` int(11) NOT NULL,
-  `prenom` varchar(50) NOT NULL,
-  `nom` varchar(60) NOT NULL,
-  `mail` varchar(100) NOT NULL,
-  `compte_twitter` varchar(100) NOT NULL,
-  `mdp` varchar(255) NOT NULL
+CREATE TABLE `users` (
+  `user_id` int(11) NOT NULL,
+  `firstname` varchar(50) DEFAULT NULL,
+  `lastname` varchar(60) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `twitter_account` varchar(100) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -134,125 +149,131 @@ CREATE TABLE `utilisateurs` (
 --
 
 --
--- Index pour la table `commentaires`
+-- Index pour la table `comments`
 --
-ALTER TABLE `commentaires`
-  ADD PRIMARY KEY (`id_commentaire`),
-  ADD KEY `id_utilisateur` (`id_utilisateur`);
+ALTER TABLE `comments`
+  ADD PRIMARY KEY (`id_comment`),
+  ADD KEY `id_utilisateur` (`id_user`);
 
 --
--- Index pour la table `departements`
+-- Index pour la table `departments`
 --
-ALTER TABLE `departements`
-  ADD PRIMARY KEY (`id_departement`),
-  ADD KEY `code_departement` (`code_departement`);
+ALTER TABLE `departments`
+  ADD PRIMARY KEY (`department_id`),
+  ADD KEY `code_departement` (`department_code`);
 
 --
--- Index pour la table `geocode`
+-- Index pour la table `department_summary`
 --
-ALTER TABLE `geocode`
-  ADD PRIMARY KEY (`id_geocode`),
-  ADD KEY `id_departement` (`id_departement`);
+ALTER TABLE `department_summary`
+  ADD PRIMARY KEY (`department_summary_id`),
+  ADD KEY `code_departement` (`department_code`);
 
 --
--- Index pour la table `resume_departement`
+-- Index pour la table `district_shares`
 --
-ALTER TABLE `resume_departement`
-  ADD PRIMARY KEY (`id_resume_departement`),
-  ADD KEY `code_departement` (`code_departement`);
+ALTER TABLE `district_shares`
+  ADD PRIMARY KEY (`district_id`);
 
 --
--- Index pour la table `total_tweets`
+-- Index pour la table `geocodes`
 --
-ALTER TABLE `total_tweets`
-  ADD PRIMARY KEY (`id_tweet`),
-  ADD KEY `id_geocode` (`id_geocode`);
+ALTER TABLE `geocodes`
+  ADD PRIMARY KEY (`geocode_id`),
+  ADD KEY `id_departement` (`department_id`);
 
 --
--- Index pour la table `tweets_populaires`
+-- Index pour la table `popular_tweets`
 --
-ALTER TABLE `tweets_populaires`
-  ADD PRIMARY KEY (`id_tweet_populaire`),
-  ADD KEY `id_tweet` (`id_tweet`);
+ALTER TABLE `popular_tweets`
+  ADD PRIMARY KEY (`popular_tweet_id`),
+  ADD KEY `id_tweet` (`tweet_id`);
 
 --
--- Index pour la table `utilisateurs`
+-- Index pour la table `tweets`
 --
-ALTER TABLE `utilisateurs`
-  ADD PRIMARY KEY (`id_utilisateur`);
+ALTER TABLE `tweets`
+  ADD PRIMARY KEY (`tweet_id`),
+  ADD KEY `id_geocode` (`geocode_id`);
+
+--
+-- Index pour la table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`user_id`);
 
 --
 -- AUTO_INCREMENT pour les tables exportées
 --
 
 --
--- AUTO_INCREMENT pour la table `commentaires`
+-- AUTO_INCREMENT pour la table `comments`
 --
-ALTER TABLE `commentaires`
-  MODIFY `id_commentaire` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `comments`
+  MODIFY `id_comment` int(11) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT pour la table `departements`
+-- AUTO_INCREMENT pour la table `departments`
 --
-ALTER TABLE `departements`
-  MODIFY `id_departement` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `departments`
+  MODIFY `department_id` int(11) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT pour la table `geocode`
+-- AUTO_INCREMENT pour la table `department_summary`
 --
-ALTER TABLE `geocode`
-  MODIFY `id_geocode` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `department_summary`
+  MODIFY `department_summary_id` int(11) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT pour la table `resume_departement`
+-- AUTO_INCREMENT pour la table `district_shares`
 --
-ALTER TABLE `resume_departement`
-  MODIFY `id_resume_departement` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `district_shares`
+  MODIFY `district_id` int(11) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT pour la table `total_tweets`
+-- AUTO_INCREMENT pour la table `geocodes`
 --
-ALTER TABLE `total_tweets`
-  MODIFY `id_tweet` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `geocodes`
+  MODIFY `geocode_id` int(11) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT pour la table `tweets_populaires`
+-- AUTO_INCREMENT pour la table `popular_tweets`
 --
-ALTER TABLE `tweets_populaires`
-  MODIFY `id_tweet_populaire` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `popular_tweets`
+  MODIFY `popular_tweet_id` bigint(18) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT pour la table `utilisateurs`
+-- AUTO_INCREMENT pour la table `tweets`
 --
-ALTER TABLE `utilisateurs`
-  MODIFY `id_utilisateur` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `tweets`
+  MODIFY `tweet_id` bigint(18) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT pour la table `users`
+--
+ALTER TABLE `users`
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- Contraintes pour les tables exportées
 --
 
 --
--- Contraintes pour la table `commentaires`
+-- Contraintes pour la table `comments`
 --
-ALTER TABLE `commentaires`
-  ADD CONSTRAINT `commentaires_ibfk_1` FOREIGN KEY (`id_utilisateur`) REFERENCES `utilisateurs` (`id_utilisateur`);
+ALTER TABLE `comments`
+  ADD CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`user_id`);
 
 --
--- Contraintes pour la table `geocode`
+-- Contraintes pour la table `departments`
 --
-ALTER TABLE `geocode`
-  ADD CONSTRAINT `geocode_ibfk_1` FOREIGN KEY (`id_departement`) REFERENCES `departements` (`id_departement`);
+ALTER TABLE `departments`
+  ADD CONSTRAINT `departments_ibfk_1` FOREIGN KEY (`department_code`) REFERENCES `department_summary` (`department_code`);
 
 --
--- Contraintes pour la table `resume_departement`
+-- Contraintes pour la table `geocodes`
 --
-ALTER TABLE `resume_departement`
-  ADD CONSTRAINT `resume_departement_ibfk_1` FOREIGN KEY (`code_departement`) REFERENCES `departements` (`code_departement`);
+ALTER TABLE `geocodes`
+  ADD CONSTRAINT `geocodes_ibfk_1` FOREIGN KEY (`department_id`) REFERENCES `departments` (`department_id`);
 
 --
--- Contraintes pour la table `total_tweets`
+-- Contraintes pour la table `tweets`
 --
-ALTER TABLE `total_tweets`
-  ADD CONSTRAINT `total_tweets_ibfk_1` FOREIGN KEY (`id_geocode`) REFERENCES `geocode` (`id_geocode`);
-
---
--- Contraintes pour la table `tweets_populaires`
---
-ALTER TABLE `tweets_populaires`
-  ADD CONSTRAINT `tweets_populaires_ibfk_1` FOREIGN KEY (`id_tweet`) REFERENCES `total_tweets` (`id_tweet`);
+ALTER TABLE `tweets`
+  ADD CONSTRAINT `tweets_ibfk_1` FOREIGN KEY (`geocode_id`) REFERENCES `geocodes` (`geocode_id`),
+  ADD CONSTRAINT `tweets_ibfk_2` FOREIGN KEY (`tweet_id`) REFERENCES `popular_tweets` (`tweet_id`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
