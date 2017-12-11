@@ -21,32 +21,32 @@ $app['twig'] = $app->extend('twig', function ($twig, $app) {
     return $twig;
 });
 
-$app['users.dao'] = function($app) {
-    return new \DAO\UserDAO($app['pdo']);
-};
-
-$app['categories.dao'] = function($app) {
-    return new \DAO\CategoryDAO($app['pdo']);
-};
-
-$app['loaning.dao'] = function($app) {
-    return new \DAO\LoaningDAO($app['pdo']);
-};
-
-$app['games.dao'] = function($app) {
-    return new \DAO\GameDAO($app['pdo']);
-};
-
-$app['pdo'] = function($app) {
-    $options = $app['pdo.options'];
-    return new \PDO("{$options['dbms']}://host={$options['host']};dbname={$options['dbname']};charset={$options['charset']}",
-            $options['username'], 
-            $options['password'], 
-            array(
-                \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
-                \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION
-            ));
-};
+//$app['users.dao'] = function($app) {
+//    return new \DAO\UserDAO($app['pdo']);
+//};
+//
+//$app['categories.dao'] = function($app) {
+//    return new \DAO\CategoryDAO($app['pdo']);
+//};
+//
+//$app['loaning.dao'] = function($app) {
+//    return new \DAO\LoaningDAO($app['pdo']);
+//};
+//
+//$app['games.dao'] = function($app) {
+//    return new \DAO\GameDAO($app['pdo']);
+//};
+//
+//$app['pdo'] = function($app) {
+//    $options = $app['pdo.options'];
+//    return new \PDO("{$options['dbms']}://host={$options['host']};dbname={$options['dbname']};charset={$options['charset']}",
+//            $options['username'], 
+//            $options['password'], 
+//            array(
+//                \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
+//                \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION
+//            ));
+//};
 
 $app->register(new Silex\Provider\SessionServiceProvider());
 
@@ -63,9 +63,9 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
 //            'http' => true,
             'anonymous' => false,
             'logout' => array('logout_path' => '/admin/logoutadmin', 'invalidate_session' => true),
-            'users' => function () use ($app) {
-                return $app['admins.dao'];
-            },
+//            'users' => function () use ($app) {
+//                return $app['admins.dao'];
+//            },
             //https://symfony.com/doc/current/security/form_login.html
 //            'form_login' => array(
 //                'default_target_path' => 'admin_dashboard',
@@ -77,9 +77,9 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
             'anonymous' => true,
             'form' => array('login_path' => '/login', 'check_path' => '/login_check'),
             'logout' => array('logout_path' => '/logout', 'invalidate_session' => true),
-            'users' => function () use ($app) {
-                return $app['users.dao'];
-            }
+//            'users' => function () use ($app) {
+//                return $app['users.dao'];
+//            }
         ),
     ]
 ));
