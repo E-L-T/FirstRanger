@@ -45,7 +45,8 @@ $content = $connection->get("account/verify_credentials");
 
 //Get tweets
 $responseTwitter = $connection->get("search/tweets", [
-    "q" => "\xF0\x9F\x98\x81 OR \xF0\x9F\x98\x82 OR \xF0\x9F\x98\x83", 
+    "q" => "\xF0\x9F\x98\x81 OR \xF0\x9F\x98\x82 OR \xF0\x9F\x98\x83 -RT",      //on précise qu'on veut pas les RT.
+
     "count" => "100", 
     "result_type" => "recent", 
     "geocode" => "48.857204,2.334131,6km"
@@ -64,14 +65,13 @@ foreach ($responseTwitter->statuses as $status) {
     $tweet->setApiTweetId($status->id);
     $tweet->setTweetText($status->text);
     $tweet->setTweetPublicationHour($status->created_at);
-    //$tweet->getGeocodeId()
+    //$tweet->get
     if(isset($status->retweet_count)){
         $tweet->setRetweetsQuantity($status->retweet_count);
     }
     if(isset($status->retweeted_status->favorite_count)) {
         $tweet->setFavoritesQuantity($status->retweeted_status->favorite_count);
     }
-    
     $tweet->setTwitterAccount($status->user->screen_name);
     if(isset($status->user->coordinates)){
         $tweet->setCoordinates($status->coordinates);
@@ -82,8 +82,6 @@ foreach ($responseTwitter->statuses as $status) {
     
        $tweet->save();
 //    }
-    
-
     
    //$tweets->append($tweet);
 }
