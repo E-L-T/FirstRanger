@@ -1,4 +1,6 @@
 <?php 
+
+require_once './vendor/autoload.php';
 //keys and tokens
 $consumerKey= 'wMrUwEMjfe4kCQlPHpvUJFReG';
 $consumerSecret= '3cBvcG8ZuEbbPFUnVIuhHjwoVJaU1VdQmC8PDKz9UUNx6U4k3e';
@@ -7,7 +9,10 @@ $accessTokenSecret='uUawifFFSBK6efJk9dkrSjqPZsu6uyQZYN2LG2OM2RvuG';
 
 //include library
 require "twitteroauth/autoload.php";
+
 use Abraham\TwitterOAuth\TwitterOAuth;
+use Propel\Propel\Tweets;
+use Propel\Propel\TweetsQuery;
 
 //$argv[1];
 
@@ -25,6 +30,27 @@ $statuses = $connection->get("search/tweets", [
     "result_type" => "recent", 
     "geocode" => "48.856924,2.352684100000033,10km"
     ]);
+
+foreach ($statuses as $status) {
+    $queryTweets = TweetsQuery::create();
+    $tweet = $queryTweets->filterByApiTweetId($status['id']);
+    if(! $tweet) {
+        $tweet = new Tweets();
+    }
+    $tweet->setApiTweetId($status['id']);
+    $tweet->setTweetText($status['text']);
+    $tweet->setTweetPublicationHour($status['created_at']);
+    $tweet->setUrlTweet($status['entities']['urls'][0]['url'] );
+    $tweet->setRetweetsQuantity($v)
+    
+    
+    
+    /**
+     * ...
+     */
+    
+    $tweet->save();
+}
 
 //$statuses = $connection->get("search/tweets", ["q" => "\xF0\x9F\x98*", "count" => "100", "geocode" => "48.856924,2.352684100000033,10km"]);
 
