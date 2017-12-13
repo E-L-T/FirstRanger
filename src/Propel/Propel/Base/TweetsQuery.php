@@ -64,7 +64,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildTweets findOneByTwitterAccount(string $twitter_account) Return the first ChildTweets filtered by the twitter_account column
  * @method     ChildTweets findOneByCoordinates(string $coordinates) Return the first ChildTweets filtered by the coordinates column
  * @method     ChildTweets findOneByLocation(string $location) Return the first ChildTweets filtered by the location column
- * @method     ChildTweets findOneByQualityTweet(int $quality_tweet) Return the first ChildTweets filtered by the quality_tweet column *
+ * @method     ChildTweets findOneByQualityTweet(string $quality_tweet) Return the first ChildTweets filtered by the quality_tweet column *
 
  * @method     ChildTweets requirePk($key, ConnectionInterface $con = null) Return the ChildTweets by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildTweets requireOne(ConnectionInterface $con = null) Return the first ChildTweets matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -79,7 +79,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildTweets requireOneByTwitterAccount(string $twitter_account) Return the first ChildTweets filtered by the twitter_account column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildTweets requireOneByCoordinates(string $coordinates) Return the first ChildTweets filtered by the coordinates column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildTweets requireOneByLocation(string $location) Return the first ChildTweets filtered by the location column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildTweets requireOneByQualityTweet(int $quality_tweet) Return the first ChildTweets filtered by the quality_tweet column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildTweets requireOneByQualityTweet(string $quality_tweet) Return the first ChildTweets filtered by the quality_tweet column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildTweets[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildTweets objects based on current ModelCriteria
  * @method     ChildTweets[]|ObjectCollection findByTweetId(string $tweet_id) Return ChildTweets objects filtered by the tweet_id column
@@ -92,7 +92,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildTweets[]|ObjectCollection findByTwitterAccount(string $twitter_account) Return ChildTweets objects filtered by the twitter_account column
  * @method     ChildTweets[]|ObjectCollection findByCoordinates(string $coordinates) Return ChildTweets objects filtered by the coordinates column
  * @method     ChildTweets[]|ObjectCollection findByLocation(string $location) Return ChildTweets objects filtered by the location column
- * @method     ChildTweets[]|ObjectCollection findByQualityTweet(int $quality_tweet) Return ChildTweets objects filtered by the quality_tweet column
+ * @method     ChildTweets[]|ObjectCollection findByQualityTweet(string $quality_tweet) Return ChildTweets objects filtered by the quality_tweet column
  * @method     ChildTweets[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
@@ -632,29 +632,21 @@ abstract class TweetsQuery extends ModelCriteria
     /**
      * Filter the query on the quality_tweet column
      *
-     * @param     mixed $qualityTweet The value to use as filter
+     * Example usage:
+     * <code>
+     * $query->filterByQualityTweet('fooValue');   // WHERE quality_tweet = 'fooValue'
+     * $query->filterByQualityTweet('%fooValue%', Criteria::LIKE); // WHERE quality_tweet LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $qualityTweet The value to use as filter.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return $this|ChildTweetsQuery The current query, for fluid interface
      */
     public function filterByQualityTweet($qualityTweet = null, $comparison = null)
     {
-        $valueSet = TweetsTableMap::getValueSet(TweetsTableMap::COL_QUALITY_TWEET);
-        if (is_scalar($qualityTweet)) {
-            if (!in_array($qualityTweet, $valueSet)) {
-                throw new PropelException(sprintf('Value "%s" is not accepted in this enumerated column', $qualityTweet));
-            }
-            $qualityTweet = array_search($qualityTweet, $valueSet);
-        } elseif (is_array($qualityTweet)) {
-            $convertedValues = array();
-            foreach ($qualityTweet as $value) {
-                if (!in_array($value, $valueSet)) {
-                    throw new PropelException(sprintf('Value "%s" is not accepted in this enumerated column', $value));
-                }
-                $convertedValues []= array_search($value, $valueSet);
-            }
-            $qualityTweet = $convertedValues;
-            if (null === $comparison) {
+        if (null === $comparison) {
+            if (is_array($qualityTweet)) {
                 $comparison = Criteria::IN;
             }
         }

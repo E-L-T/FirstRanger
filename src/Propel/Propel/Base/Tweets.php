@@ -134,7 +134,7 @@ abstract class Tweets implements ActiveRecordInterface
     /**
      * The value for the quality_tweet field.
      *
-     * @var        int
+     * @var        string
      */
     protected $quality_tweet;
 
@@ -485,19 +485,10 @@ abstract class Tweets implements ActiveRecordInterface
      * Get the [quality_tweet] column value.
      *
      * @return string
-     * @throws \Propel\Runtime\Exception\PropelException
      */
     public function getQualityTweet()
     {
-        if (null === $this->quality_tweet) {
-            return null;
-        }
-        $valueSet = TweetsTableMap::getValueSet(TweetsTableMap::COL_QUALITY_TWEET);
-        if (!isset($valueSet[$this->quality_tweet])) {
-            throw new PropelException('Unknown stored enum key: ' . $this->quality_tweet);
-        }
-
-        return $valueSet[$this->quality_tweet];
+        return $this->quality_tweet;
     }
 
     /**
@@ -703,18 +694,13 @@ abstract class Tweets implements ActiveRecordInterface
     /**
      * Set the value of [quality_tweet] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\Propel\Propel\Tweets The current object (for fluent API support)
-     * @throws \Propel\Runtime\Exception\PropelException
      */
     public function setQualityTweet($v)
     {
         if ($v !== null) {
-            $valueSet = TweetsTableMap::getValueSet(TweetsTableMap::COL_QUALITY_TWEET);
-            if (!in_array($v, $valueSet)) {
-                throw new PropelException(sprintf('Value "%s" is not accepted in this enumerated column', $v));
-            }
-            $v = array_search($v, $valueSet);
+            $v = (string) $v;
         }
 
         if ($this->quality_tweet !== $v) {
@@ -795,7 +781,7 @@ abstract class Tweets implements ActiveRecordInterface
             $this->location = (null !== $col) ? (string) $col : null;
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 10 + $startcol : TweetsTableMap::translateFieldName('QualityTweet', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->quality_tweet = (null !== $col) ? (int) $col : null;
+            $this->quality_tweet = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -1080,7 +1066,7 @@ abstract class Tweets implements ActiveRecordInterface
                         $stmt->bindValue($identifier, $this->location, PDO::PARAM_STR);
                         break;
                     case 'quality_tweet':
-                        $stmt->bindValue($identifier, $this->quality_tweet, PDO::PARAM_INT);
+                        $stmt->bindValue($identifier, $this->quality_tweet, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -1291,10 +1277,6 @@ abstract class Tweets implements ActiveRecordInterface
                 $this->setLocation($value);
                 break;
             case 10:
-                $valueSet = TweetsTableMap::getValueSet(TweetsTableMap::COL_QUALITY_TWEET);
-                if (isset($valueSet[$value])) {
-                    $value = $valueSet[$value];
-                }
                 $this->setQualityTweet($value);
                 break;
         } // switch()

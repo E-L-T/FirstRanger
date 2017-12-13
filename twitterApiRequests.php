@@ -80,6 +80,7 @@ foreach ($responseTwitter->statuses as $status) {
     if(isset($status->user->location)){
         $tweet->setLocation($status->user->location);
    }
+    $tweet->setQualityTweet("positive");
 //    if(isset($status->place -> bounding_box -> coordinates)){
 //       $tweet->setLocation($status->place -> bounding_box -> coordinates);
 //    }

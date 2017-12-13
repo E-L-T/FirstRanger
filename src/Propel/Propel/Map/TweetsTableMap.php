@@ -131,11 +131,6 @@ class TweetsTableMap extends TableMap
      */
     const DEFAULT_STRING_FORMAT = 'YAML';
 
-    /** The enumerated values for the quality_tweet field */
-    const COL_QUALITY_TWEET_POSITIVE = 'positive';
-    const COL_QUALITY_TWEET_NEGATIVE = 'negative';
-    const COL_QUALITY_TWEET_NEUTRAL = 'neutral';
-
     /**
      * holds an array of fieldnames
      *
@@ -164,36 +159,6 @@ class TweetsTableMap extends TableMap
         self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
     );
 
-    /** The enumerated values for this table */
-    protected static $enumValueSets = array(
-                TweetsTableMap::COL_QUALITY_TWEET => array(
-                            self::COL_QUALITY_TWEET_POSITIVE,
-            self::COL_QUALITY_TWEET_NEGATIVE,
-            self::COL_QUALITY_TWEET_NEUTRAL,
-        ),
-    );
-
-    /**
-     * Gets the list of values for all ENUM and SET columns
-     * @return array
-     */
-    public static function getValueSets()
-    {
-      return static::$enumValueSets;
-    }
-
-    /**
-     * Gets the list of values for an ENUM or SET column
-     * @param string $colname
-     * @return array list of possible values for the column
-     */
-    public static function getValueSet($colname)
-    {
-        $valueSets = self::getValueSets();
-
-        return $valueSets[$colname];
-    }
-
     /**
      * Initialize the table attributes and columns
      * Relations are not initialized by this method since they are lazy loaded
@@ -221,12 +186,7 @@ class TweetsTableMap extends TableMap
         $this->addColumn('twitter_account', 'TwitterAccount', 'LONGVARCHAR', true, null, null);
         $this->addColumn('coordinates', 'Coordinates', 'LONGVARCHAR', false, null, null);
         $this->addColumn('location', 'Location', 'LONGVARCHAR', false, null, null);
-        $this->addColumn('quality_tweet', 'QualityTweet', 'ENUM', false, null, null);
-        $this->getColumn('quality_tweet')->setValueSet(array (
-  0 => 'positive',
-  1 => 'negative',
-  2 => 'neutral',
-));
+        $this->addColumn('quality_tweet', 'QualityTweet', 'LONGVARCHAR', false, null, null);
     } // initialize()
 
     /**

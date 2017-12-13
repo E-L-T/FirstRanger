@@ -83,7 +83,7 @@
     <column name="twitter_account" phpName="TwitterAccount" type="LONGVARCHAR" required="true"/>
     <column name="coordinates" phpName="Coordinates" type="LONGVARCHAR"/>
     <column name="location" phpName="Location" type="LONGVARCHAR"/>
-    <column name="quality_tweet" phpName="QualityTweet" type="ENUM" valueSet="positive, negative, neutral"/>
+    <column name="quality_tweet" phpName="QualityTweet" type="LONGVARCHAR" />
 
     
     <vendor type="mysql">
