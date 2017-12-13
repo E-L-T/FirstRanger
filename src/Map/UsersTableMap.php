@@ -1,9 +1,9 @@
 <?php
 
-namespace Propel\Propel\Map;
+namespace Map;
 
-use Propel\Propel\Geocodes;
-use Propel\Propel\GeocodesQuery;
+use \Users;
+use \UsersQuery;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\InstancePoolTrait;
@@ -16,7 +16,7 @@ use Propel\Runtime\Map\TableMapTrait;
 
 
 /**
- * This class defines the structure of the 'geocodes' table.
+ * This class defines the structure of the 'users' table.
  *
  *
  *
@@ -26,7 +26,7 @@ use Propel\Runtime\Map\TableMapTrait;
  * (i.e. if it's a text column type).
  *
  */
-class GeocodesTableMap extends TableMap
+class UsersTableMap extends TableMap
 {
     use InstancePoolTrait;
     use TableMapTrait;
@@ -34,7 +34,7 @@ class GeocodesTableMap extends TableMap
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'Propel.Propel.Map.GeocodesTableMap';
+    const CLASS_NAME = '.Map.UsersTableMap';
 
     /**
      * The default database name for this class
@@ -44,22 +44,22 @@ class GeocodesTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'geocodes';
+    const TABLE_NAME = 'users';
 
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\Propel\\Propel\\Geocodes';
+    const OM_CLASS = '\\Users';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'Propel.Propel.Geocodes';
+    const CLASS_DEFAULT = 'Users';
 
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 4;
+    const NUM_COLUMNS = 6;
 
     /**
      * The number of lazy-loaded columns
@@ -69,27 +69,37 @@ class GeocodesTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 4;
+    const NUM_HYDRATE_COLUMNS = 6;
 
     /**
-     * the column name for the geocode_id field
+     * the column name for the user_id field
      */
-    const COL_GEOCODE_ID = 'geocodes.geocode_id';
+    const COL_USER_ID = 'users.user_id';
 
     /**
-     * the column name for the geocode_name field
+     * the column name for the firstname field
      */
-    const COL_GEOCODE_NAME = 'geocodes.geocode_name';
+    const COL_FIRSTNAME = 'users.firstname';
 
     /**
-     * the column name for the department_id field
+     * the column name for the lastname field
      */
-    const COL_DEPARTMENT_ID = 'geocodes.department_id';
+    const COL_LASTNAME = 'users.lastname';
 
     /**
-     * the column name for the geocode field
+     * the column name for the email field
      */
-    const COL_GEOCODE = 'geocodes.geocode';
+    const COL_EMAIL = 'users.email';
+
+    /**
+     * the column name for the twitter_account field
+     */
+    const COL_TWITTER_ACCOUNT = 'users.twitter_account';
+
+    /**
+     * the column name for the password field
+     */
+    const COL_PASSWORD = 'users.password';
 
     /**
      * The default string format for model objects of the related table
@@ -103,11 +113,11 @@ class GeocodesTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('GeocodeId', 'GeocodeName', 'DepartmentId', 'Geocode', ),
-        self::TYPE_CAMELNAME     => array('geocodeId', 'geocodeName', 'departmentId', 'geocode', ),
-        self::TYPE_COLNAME       => array(GeocodesTableMap::COL_GEOCODE_ID, GeocodesTableMap::COL_GEOCODE_NAME, GeocodesTableMap::COL_DEPARTMENT_ID, GeocodesTableMap::COL_GEOCODE, ),
-        self::TYPE_FIELDNAME     => array('geocode_id', 'geocode_name', 'department_id', 'geocode', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, )
+        self::TYPE_PHPNAME       => array('UserId', 'Firstname', 'Lastname', 'Email', 'TwitterAccount', 'Password', ),
+        self::TYPE_CAMELNAME     => array('userId', 'firstname', 'lastname', 'email', 'twitterAccount', 'password', ),
+        self::TYPE_COLNAME       => array(UsersTableMap::COL_USER_ID, UsersTableMap::COL_FIRSTNAME, UsersTableMap::COL_LASTNAME, UsersTableMap::COL_EMAIL, UsersTableMap::COL_TWITTER_ACCOUNT, UsersTableMap::COL_PASSWORD, ),
+        self::TYPE_FIELDNAME     => array('user_id', 'firstname', 'lastname', 'email', 'twitter_account', 'password', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
     );
 
     /**
@@ -117,11 +127,11 @@ class GeocodesTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('GeocodeId' => 0, 'GeocodeName' => 1, 'DepartmentId' => 2, 'Geocode' => 3, ),
-        self::TYPE_CAMELNAME     => array('geocodeId' => 0, 'geocodeName' => 1, 'departmentId' => 2, 'geocode' => 3, ),
-        self::TYPE_COLNAME       => array(GeocodesTableMap::COL_GEOCODE_ID => 0, GeocodesTableMap::COL_GEOCODE_NAME => 1, GeocodesTableMap::COL_DEPARTMENT_ID => 2, GeocodesTableMap::COL_GEOCODE => 3, ),
-        self::TYPE_FIELDNAME     => array('geocode_id' => 0, 'geocode_name' => 1, 'department_id' => 2, 'geocode' => 3, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, )
+        self::TYPE_PHPNAME       => array('UserId' => 0, 'Firstname' => 1, 'Lastname' => 2, 'Email' => 3, 'TwitterAccount' => 4, 'Password' => 5, ),
+        self::TYPE_CAMELNAME     => array('userId' => 0, 'firstname' => 1, 'lastname' => 2, 'email' => 3, 'twitterAccount' => 4, 'password' => 5, ),
+        self::TYPE_COLNAME       => array(UsersTableMap::COL_USER_ID => 0, UsersTableMap::COL_FIRSTNAME => 1, UsersTableMap::COL_LASTNAME => 2, UsersTableMap::COL_EMAIL => 3, UsersTableMap::COL_TWITTER_ACCOUNT => 4, UsersTableMap::COL_PASSWORD => 5, ),
+        self::TYPE_FIELDNAME     => array('user_id' => 0, 'firstname' => 1, 'lastname' => 2, 'email' => 3, 'twitter_account' => 4, 'password' => 5, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
     );
 
     /**
@@ -134,17 +144,19 @@ class GeocodesTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('geocodes');
-        $this->setPhpName('Geocodes');
+        $this->setName('users');
+        $this->setPhpName('Users');
         $this->setIdentifierQuoting(false);
-        $this->setClassName('\\Propel\\Propel\\Geocodes');
-        $this->setPackage('Propel.Propel');
+        $this->setClassName('\\Users');
+        $this->setPackage('');
         $this->setUseIdGenerator(true);
         // columns
-        $this->addPrimaryKey('geocode_id', 'GeocodeId', 'INTEGER', true, null, null);
-        $this->addColumn('geocode_name', 'GeocodeName', 'VARCHAR', true, 20, null);
-        $this->addColumn('department_id', 'DepartmentId', 'INTEGER', true, null, null);
-        $this->addColumn('geocode', 'Geocode', 'VARCHAR', true, 100, null);
+        $this->addPrimaryKey('user_id', 'UserId', 'INTEGER', true, null, null);
+        $this->addColumn('firstname', 'Firstname', 'VARCHAR', false, 50, null);
+        $this->addColumn('lastname', 'Lastname', 'VARCHAR', false, 60, null);
+        $this->addColumn('email', 'Email', 'VARCHAR', false, 100, null);
+        $this->addColumn('twitter_account', 'TwitterAccount', 'VARCHAR', false, 100, null);
+        $this->addColumn('password', 'Password', 'VARCHAR', false, 255, null);
     } // initialize()
 
     /**
@@ -170,11 +182,11 @@ class GeocodesTableMap extends TableMap
     public static function getPrimaryKeyHashFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
         // If the PK cannot be derived from the row, return NULL.
-        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('GeocodeId', TableMap::TYPE_PHPNAME, $indexType)] === null) {
+        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('UserId', TableMap::TYPE_PHPNAME, $indexType)] === null) {
             return null;
         }
 
-        return null === $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('GeocodeId', TableMap::TYPE_PHPNAME, $indexType)] || is_scalar($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('GeocodeId', TableMap::TYPE_PHPNAME, $indexType)]) || is_callable([$row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('GeocodeId', TableMap::TYPE_PHPNAME, $indexType)], '__toString']) ? (string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('GeocodeId', TableMap::TYPE_PHPNAME, $indexType)] : $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('GeocodeId', TableMap::TYPE_PHPNAME, $indexType)];
+        return null === $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('UserId', TableMap::TYPE_PHPNAME, $indexType)] || is_scalar($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('UserId', TableMap::TYPE_PHPNAME, $indexType)]) || is_callable([$row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('UserId', TableMap::TYPE_PHPNAME, $indexType)], '__toString']) ? (string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('UserId', TableMap::TYPE_PHPNAME, $indexType)] : $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('UserId', TableMap::TYPE_PHPNAME, $indexType)];
     }
 
     /**
@@ -194,7 +206,7 @@ class GeocodesTableMap extends TableMap
         return (int) $row[
             $indexType == TableMap::TYPE_NUM
                 ? 0 + $offset
-                : self::translateFieldName('GeocodeId', TableMap::TYPE_PHPNAME, $indexType)
+                : self::translateFieldName('UserId', TableMap::TYPE_PHPNAME, $indexType)
         ];
     }
 
@@ -211,7 +223,7 @@ class GeocodesTableMap extends TableMap
      */
     public static function getOMClass($withPrefix = true)
     {
-        return $withPrefix ? GeocodesTableMap::CLASS_DEFAULT : GeocodesTableMap::OM_CLASS;
+        return $withPrefix ? UsersTableMap::CLASS_DEFAULT : UsersTableMap::OM_CLASS;
     }
 
     /**
@@ -225,22 +237,22 @@ class GeocodesTableMap extends TableMap
      *
      * @throws PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
-     * @return array           (Geocodes object, last column rank)
+     * @return array           (Users object, last column rank)
      */
     public static function populateObject($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        $key = GeocodesTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
-        if (null !== ($obj = GeocodesTableMap::getInstanceFromPool($key))) {
+        $key = UsersTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
+        if (null !== ($obj = UsersTableMap::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $offset, true); // rehydrate
-            $col = $offset + GeocodesTableMap::NUM_HYDRATE_COLUMNS;
+            $col = $offset + UsersTableMap::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = GeocodesTableMap::OM_CLASS;
-            /** @var Geocodes $obj */
+            $cls = UsersTableMap::OM_CLASS;
+            /** @var Users $obj */
             $obj = new $cls();
             $col = $obj->hydrate($row, $offset, false, $indexType);
-            GeocodesTableMap::addInstanceToPool($obj, $key);
+            UsersTableMap::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -263,18 +275,18 @@ class GeocodesTableMap extends TableMap
         $cls = static::getOMClass(false);
         // populate the object(s)
         while ($row = $dataFetcher->fetch()) {
-            $key = GeocodesTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
-            if (null !== ($obj = GeocodesTableMap::getInstanceFromPool($key))) {
+            $key = UsersTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
+            if (null !== ($obj = UsersTableMap::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
                 $results[] = $obj;
             } else {
-                /** @var Geocodes $obj */
+                /** @var Users $obj */
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                GeocodesTableMap::addInstanceToPool($obj, $key);
+                UsersTableMap::addInstanceToPool($obj, $key);
             } // if key exists
         }
 
@@ -295,15 +307,19 @@ class GeocodesTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(GeocodesTableMap::COL_GEOCODE_ID);
-            $criteria->addSelectColumn(GeocodesTableMap::COL_GEOCODE_NAME);
-            $criteria->addSelectColumn(GeocodesTableMap::COL_DEPARTMENT_ID);
-            $criteria->addSelectColumn(GeocodesTableMap::COL_GEOCODE);
+            $criteria->addSelectColumn(UsersTableMap::COL_USER_ID);
+            $criteria->addSelectColumn(UsersTableMap::COL_FIRSTNAME);
+            $criteria->addSelectColumn(UsersTableMap::COL_LASTNAME);
+            $criteria->addSelectColumn(UsersTableMap::COL_EMAIL);
+            $criteria->addSelectColumn(UsersTableMap::COL_TWITTER_ACCOUNT);
+            $criteria->addSelectColumn(UsersTableMap::COL_PASSWORD);
         } else {
-            $criteria->addSelectColumn($alias . '.geocode_id');
-            $criteria->addSelectColumn($alias . '.geocode_name');
-            $criteria->addSelectColumn($alias . '.department_id');
-            $criteria->addSelectColumn($alias . '.geocode');
+            $criteria->addSelectColumn($alias . '.user_id');
+            $criteria->addSelectColumn($alias . '.firstname');
+            $criteria->addSelectColumn($alias . '.lastname');
+            $criteria->addSelectColumn($alias . '.email');
+            $criteria->addSelectColumn($alias . '.twitter_account');
+            $criteria->addSelectColumn($alias . '.password');
         }
     }
 
@@ -316,7 +332,7 @@ class GeocodesTableMap extends TableMap
      */
     public static function getTableMap()
     {
-        return Propel::getServiceContainer()->getDatabaseMap(GeocodesTableMap::DATABASE_NAME)->getTable(GeocodesTableMap::TABLE_NAME);
+        return Propel::getServiceContainer()->getDatabaseMap(UsersTableMap::DATABASE_NAME)->getTable(UsersTableMap::TABLE_NAME);
     }
 
     /**
@@ -324,16 +340,16 @@ class GeocodesTableMap extends TableMap
      */
     public static function buildTableMap()
     {
-        $dbMap = Propel::getServiceContainer()->getDatabaseMap(GeocodesTableMap::DATABASE_NAME);
-        if (!$dbMap->hasTable(GeocodesTableMap::TABLE_NAME)) {
-            $dbMap->addTableObject(new GeocodesTableMap());
+        $dbMap = Propel::getServiceContainer()->getDatabaseMap(UsersTableMap::DATABASE_NAME);
+        if (!$dbMap->hasTable(UsersTableMap::TABLE_NAME)) {
+            $dbMap->addTableObject(new UsersTableMap());
         }
     }
 
     /**
-     * Performs a DELETE on the database, given a Geocodes or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a Users or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or Geocodes object or primary key or array of primary keys
+     * @param mixed               $values Criteria or Users object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param  ConnectionInterface $con the connection to use
      * @return int             The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -344,27 +360,27 @@ class GeocodesTableMap extends TableMap
      public static function doDelete($values, ConnectionInterface $con = null)
      {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(GeocodesTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(UsersTableMap::DATABASE_NAME);
         }
 
         if ($values instanceof Criteria) {
             // rename for clarity
             $criteria = $values;
-        } elseif ($values instanceof \Propel\Propel\Geocodes) { // it's a model object
+        } elseif ($values instanceof \Users) { // it's a model object
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(GeocodesTableMap::DATABASE_NAME);
-            $criteria->add(GeocodesTableMap::COL_GEOCODE_ID, (array) $values, Criteria::IN);
+            $criteria = new Criteria(UsersTableMap::DATABASE_NAME);
+            $criteria->add(UsersTableMap::COL_USER_ID, (array) $values, Criteria::IN);
         }
 
-        $query = GeocodesQuery::create()->mergeWith($criteria);
+        $query = UsersQuery::create()->mergeWith($criteria);
 
         if ($values instanceof Criteria) {
-            GeocodesTableMap::clearInstancePool();
+            UsersTableMap::clearInstancePool();
         } elseif (!is_object($values)) { // it's a primary key, or an array of pks
             foreach ((array) $values as $singleval) {
-                GeocodesTableMap::removeInstanceFromPool($singleval);
+                UsersTableMap::removeInstanceFromPool($singleval);
             }
         }
 
@@ -372,20 +388,20 @@ class GeocodesTableMap extends TableMap
     }
 
     /**
-     * Deletes all rows from the geocodes table.
+     * Deletes all rows from the users table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
     public static function doDeleteAll(ConnectionInterface $con = null)
     {
-        return GeocodesQuery::create()->doDeleteAll($con);
+        return UsersQuery::create()->doDeleteAll($con);
     }
 
     /**
-     * Performs an INSERT on the database, given a Geocodes or Criteria object.
+     * Performs an INSERT on the database, given a Users or Criteria object.
      *
-     * @param mixed               $criteria Criteria or Geocodes object containing data that is used to create the INSERT statement.
+     * @param mixed               $criteria Criteria or Users object containing data that is used to create the INSERT statement.
      * @param ConnectionInterface $con the ConnectionInterface connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -394,22 +410,22 @@ class GeocodesTableMap extends TableMap
     public static function doInsert($criteria, ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(GeocodesTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(UsersTableMap::DATABASE_NAME);
         }
 
         if ($criteria instanceof Criteria) {
             $criteria = clone $criteria; // rename for clarity
         } else {
-            $criteria = $criteria->buildCriteria(); // build Criteria from Geocodes object
+            $criteria = $criteria->buildCriteria(); // build Criteria from Users object
         }
 
-        if ($criteria->containsKey(GeocodesTableMap::COL_GEOCODE_ID) && $criteria->keyContainsValue(GeocodesTableMap::COL_GEOCODE_ID) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.GeocodesTableMap::COL_GEOCODE_ID.')');
+        if ($criteria->containsKey(UsersTableMap::COL_USER_ID) && $criteria->keyContainsValue(UsersTableMap::COL_USER_ID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.UsersTableMap::COL_USER_ID.')');
         }
 
 
         // Set the correct dbName
-        $query = GeocodesQuery::create()->mergeWith($criteria);
+        $query = UsersQuery::create()->mergeWith($criteria);
 
         // use transaction because $criteria could contain info
         // for more than one table (I guess, conceivably)
@@ -418,7 +434,7 @@ class GeocodesTableMap extends TableMap
         });
     }
 
-} // GeocodesTableMap
+} // UsersTableMap
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-GeocodesTableMap::buildTableMap();
+UsersTableMap::buildTableMap();

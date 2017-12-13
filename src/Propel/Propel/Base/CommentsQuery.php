@@ -10,7 +10,6 @@ use Propel\Propel\Map\CommentsTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
-use Propel\Runtime\ActiveQuery\ModelJoin;
 use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
@@ -20,13 +19,13 @@ use Propel\Runtime\Exception\PropelException;
  *
  *
  *
- * @method     ChildCommentsQuery orderByIdComment($order = Criteria::ASC) Order by the id_comment column
- * @method     ChildCommentsQuery orderByIdUser($order = Criteria::ASC) Order by the id_user column
+ * @method     ChildCommentsQuery orderByCommentId($order = Criteria::ASC) Order by the comment_id column
+ * @method     ChildCommentsQuery orderByUserId($order = Criteria::ASC) Order by the user_id column
  * @method     ChildCommentsQuery orderByCommentPublicationHour($order = Criteria::ASC) Order by the comment_publication_hour column
  * @method     ChildCommentsQuery orderByLikesCount($order = Criteria::ASC) Order by the likes_count column
  *
- * @method     ChildCommentsQuery groupByIdComment() Group by the id_comment column
- * @method     ChildCommentsQuery groupByIdUser() Group by the id_user column
+ * @method     ChildCommentsQuery groupByCommentId() Group by the comment_id column
+ * @method     ChildCommentsQuery groupByUserId() Group by the user_id column
  * @method     ChildCommentsQuery groupByCommentPublicationHour() Group by the comment_publication_hour column
  * @method     ChildCommentsQuery groupByLikesCount() Group by the likes_count column
  *
@@ -38,37 +37,25 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildCommentsQuery rightJoinWith($relation) Adds a RIGHT JOIN clause and with to the query
  * @method     ChildCommentsQuery innerJoinWith($relation) Adds a INNER JOIN clause and with to the query
  *
- * @method     ChildCommentsQuery leftJoinUsers($relationAlias = null) Adds a LEFT JOIN clause to the query using the Users relation
- * @method     ChildCommentsQuery rightJoinUsers($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Users relation
- * @method     ChildCommentsQuery innerJoinUsers($relationAlias = null) Adds a INNER JOIN clause to the query using the Users relation
- *
- * @method     ChildCommentsQuery joinWithUsers($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Users relation
- *
- * @method     ChildCommentsQuery leftJoinWithUsers() Adds a LEFT JOIN clause and with to the query using the Users relation
- * @method     ChildCommentsQuery rightJoinWithUsers() Adds a RIGHT JOIN clause and with to the query using the Users relation
- * @method     ChildCommentsQuery innerJoinWithUsers() Adds a INNER JOIN clause and with to the query using the Users relation
- *
- * @method     \Propel\Propel\UsersQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
- *
  * @method     ChildComments findOne(ConnectionInterface $con = null) Return the first ChildComments matching the query
  * @method     ChildComments findOneOrCreate(ConnectionInterface $con = null) Return the first ChildComments matching the query, or a new ChildComments object populated from the query conditions when no match is found
  *
- * @method     ChildComments findOneByIdComment(int $id_comment) Return the first ChildComments filtered by the id_comment column
- * @method     ChildComments findOneByIdUser(int $id_user) Return the first ChildComments filtered by the id_user column
+ * @method     ChildComments findOneByCommentId(int $comment_id) Return the first ChildComments filtered by the comment_id column
+ * @method     ChildComments findOneByUserId(int $user_id) Return the first ChildComments filtered by the user_id column
  * @method     ChildComments findOneByCommentPublicationHour(string $comment_publication_hour) Return the first ChildComments filtered by the comment_publication_hour column
  * @method     ChildComments findOneByLikesCount(int $likes_count) Return the first ChildComments filtered by the likes_count column *
 
  * @method     ChildComments requirePk($key, ConnectionInterface $con = null) Return the ChildComments by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildComments requireOne(ConnectionInterface $con = null) Return the first ChildComments matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
- * @method     ChildComments requireOneByIdComment(int $id_comment) Return the first ChildComments filtered by the id_comment column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildComments requireOneByIdUser(int $id_user) Return the first ChildComments filtered by the id_user column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildComments requireOneByCommentId(int $comment_id) Return the first ChildComments filtered by the comment_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildComments requireOneByUserId(int $user_id) Return the first ChildComments filtered by the user_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildComments requireOneByCommentPublicationHour(string $comment_publication_hour) Return the first ChildComments filtered by the comment_publication_hour column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildComments requireOneByLikesCount(int $likes_count) Return the first ChildComments filtered by the likes_count column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildComments[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildComments objects based on current ModelCriteria
- * @method     ChildComments[]|ObjectCollection findByIdComment(int $id_comment) Return ChildComments objects filtered by the id_comment column
- * @method     ChildComments[]|ObjectCollection findByIdUser(int $id_user) Return ChildComments objects filtered by the id_user column
+ * @method     ChildComments[]|ObjectCollection findByCommentId(int $comment_id) Return ChildComments objects filtered by the comment_id column
+ * @method     ChildComments[]|ObjectCollection findByUserId(int $user_id) Return ChildComments objects filtered by the user_id column
  * @method     ChildComments[]|ObjectCollection findByCommentPublicationHour(string $comment_publication_hour) Return ChildComments objects filtered by the comment_publication_hour column
  * @method     ChildComments[]|ObjectCollection findByLikesCount(int $likes_count) Return ChildComments objects filtered by the likes_count column
  * @method     ChildComments[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
@@ -169,7 +156,7 @@ abstract class CommentsQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id_comment, id_user, comment_publication_hour, likes_count FROM comments WHERE id_comment = :p0';
+        $sql = 'SELECT comment_id, user_id, comment_publication_hour, likes_count FROM comments WHERE comment_id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -243,7 +230,7 @@ abstract class CommentsQuery extends ModelCriteria
     public function filterByPrimaryKey($key)
     {
 
-        return $this->addUsingAlias(CommentsTableMap::COL_ID_COMMENT, $key, Criteria::EQUAL);
+        return $this->addUsingAlias(CommentsTableMap::COL_COMMENT_ID, $key, Criteria::EQUAL);
     }
 
     /**
@@ -256,20 +243,20 @@ abstract class CommentsQuery extends ModelCriteria
     public function filterByPrimaryKeys($keys)
     {
 
-        return $this->addUsingAlias(CommentsTableMap::COL_ID_COMMENT, $keys, Criteria::IN);
+        return $this->addUsingAlias(CommentsTableMap::COL_COMMENT_ID, $keys, Criteria::IN);
     }
 
     /**
-     * Filter the query on the id_comment column
+     * Filter the query on the comment_id column
      *
      * Example usage:
      * <code>
-     * $query->filterByIdComment(1234); // WHERE id_comment = 1234
-     * $query->filterByIdComment(array(12, 34)); // WHERE id_comment IN (12, 34)
-     * $query->filterByIdComment(array('min' => 12)); // WHERE id_comment > 12
+     * $query->filterByCommentId(1234); // WHERE comment_id = 1234
+     * $query->filterByCommentId(array(12, 34)); // WHERE comment_id IN (12, 34)
+     * $query->filterByCommentId(array('min' => 12)); // WHERE comment_id > 12
      * </code>
      *
-     * @param     mixed $idComment The value to use as filter.
+     * @param     mixed $commentId The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
@@ -277,16 +264,16 @@ abstract class CommentsQuery extends ModelCriteria
      *
      * @return $this|ChildCommentsQuery The current query, for fluid interface
      */
-    public function filterByIdComment($idComment = null, $comparison = null)
+    public function filterByCommentId($commentId = null, $comparison = null)
     {
-        if (is_array($idComment)) {
+        if (is_array($commentId)) {
             $useMinMax = false;
-            if (isset($idComment['min'])) {
-                $this->addUsingAlias(CommentsTableMap::COL_ID_COMMENT, $idComment['min'], Criteria::GREATER_EQUAL);
+            if (isset($commentId['min'])) {
+                $this->addUsingAlias(CommentsTableMap::COL_COMMENT_ID, $commentId['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
-            if (isset($idComment['max'])) {
-                $this->addUsingAlias(CommentsTableMap::COL_ID_COMMENT, $idComment['max'], Criteria::LESS_EQUAL);
+            if (isset($commentId['max'])) {
+                $this->addUsingAlias(CommentsTableMap::COL_COMMENT_ID, $commentId['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -297,22 +284,20 @@ abstract class CommentsQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(CommentsTableMap::COL_ID_COMMENT, $idComment, $comparison);
+        return $this->addUsingAlias(CommentsTableMap::COL_COMMENT_ID, $commentId, $comparison);
     }
 
     /**
-     * Filter the query on the id_user column
+     * Filter the query on the user_id column
      *
      * Example usage:
      * <code>
-     * $query->filterByIdUser(1234); // WHERE id_user = 1234
-     * $query->filterByIdUser(array(12, 34)); // WHERE id_user IN (12, 34)
-     * $query->filterByIdUser(array('min' => 12)); // WHERE id_user > 12
+     * $query->filterByUserId(1234); // WHERE user_id = 1234
+     * $query->filterByUserId(array(12, 34)); // WHERE user_id IN (12, 34)
+     * $query->filterByUserId(array('min' => 12)); // WHERE user_id > 12
      * </code>
      *
-     * @see       filterByUsers()
-     *
-     * @param     mixed $idUser The value to use as filter.
+     * @param     mixed $userId The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
@@ -320,16 +305,16 @@ abstract class CommentsQuery extends ModelCriteria
      *
      * @return $this|ChildCommentsQuery The current query, for fluid interface
      */
-    public function filterByIdUser($idUser = null, $comparison = null)
+    public function filterByUserId($userId = null, $comparison = null)
     {
-        if (is_array($idUser)) {
+        if (is_array($userId)) {
             $useMinMax = false;
-            if (isset($idUser['min'])) {
-                $this->addUsingAlias(CommentsTableMap::COL_ID_USER, $idUser['min'], Criteria::GREATER_EQUAL);
+            if (isset($userId['min'])) {
+                $this->addUsingAlias(CommentsTableMap::COL_USER_ID, $userId['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
-            if (isset($idUser['max'])) {
-                $this->addUsingAlias(CommentsTableMap::COL_ID_USER, $idUser['max'], Criteria::LESS_EQUAL);
+            if (isset($userId['max'])) {
+                $this->addUsingAlias(CommentsTableMap::COL_USER_ID, $userId['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -340,7 +325,7 @@ abstract class CommentsQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(CommentsTableMap::COL_ID_USER, $idUser, $comparison);
+        return $this->addUsingAlias(CommentsTableMap::COL_USER_ID, $userId, $comparison);
     }
 
     /**
@@ -428,83 +413,6 @@ abstract class CommentsQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related \Propel\Propel\Users object
-     *
-     * @param \Propel\Propel\Users|ObjectCollection $users The related object(s) to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @throws \Propel\Runtime\Exception\PropelException
-     *
-     * @return ChildCommentsQuery The current query, for fluid interface
-     */
-    public function filterByUsers($users, $comparison = null)
-    {
-        if ($users instanceof \Propel\Propel\Users) {
-            return $this
-                ->addUsingAlias(CommentsTableMap::COL_ID_USER, $users->getUserId(), $comparison);
-        } elseif ($users instanceof ObjectCollection) {
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-
-            return $this
-                ->addUsingAlias(CommentsTableMap::COL_ID_USER, $users->toKeyValue('PrimaryKey', 'UserId'), $comparison);
-        } else {
-            throw new PropelException('filterByUsers() only accepts arguments of type \Propel\Propel\Users or Collection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the Users relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return $this|ChildCommentsQuery The current query, for fluid interface
-     */
-    public function joinUsers($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Users');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'Users');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the Users relation Users object
-     *
-     * @see useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return \Propel\Propel\UsersQuery A secondary query class using the current class as primary query
-     */
-    public function useUsersQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        return $this
-            ->joinUsers($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Users', '\Propel\Propel\UsersQuery');
-    }
-
-    /**
      * Exclude object from result
      *
      * @param   ChildComments $comments Object to remove from the list of results
@@ -514,7 +422,7 @@ abstract class CommentsQuery extends ModelCriteria
     public function prune($comments = null)
     {
         if ($comments) {
-            $this->addUsingAlias(CommentsTableMap::COL_ID_COMMENT, $comments->getIdComment(), Criteria::NOT_EQUAL);
+            $this->addUsingAlias(CommentsTableMap::COL_COMMENT_ID, $comments->getCommentId(), Criteria::NOT_EQUAL);
         }
 
         return $this;

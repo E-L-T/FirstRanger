@@ -59,7 +59,7 @@ class PopularTweetsTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 10;
+    const NUM_COLUMNS = 9;
 
     /**
      * The number of lazy-loaded columns
@@ -69,7 +69,7 @@ class PopularTweetsTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 10;
+    const NUM_HYDRATE_COLUMNS = 9;
 
     /**
      * the column name for the popular_tweet_id field
@@ -80,11 +80,6 @@ class PopularTweetsTableMap extends TableMap
      * the column name for the tweet_id field
      */
     const COL_TWEET_ID = 'popular_tweets.tweet_id';
-
-    /**
-     * the column name for the url_tweet field
-     */
-    const COL_URL_TWEET = 'popular_tweets.url_tweet';
 
     /**
      * the column name for the geocode_id field
@@ -133,11 +128,11 @@ class PopularTweetsTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('PopularTweetId', 'TweetId', 'UrlTweet', 'GeocodeId', 'VotesQuantity', 'RetweetsQuantity', 'TweetPublicationHour', 'FavoritesQuantity', 'Coordinates', 'Location', ),
-        self::TYPE_CAMELNAME     => array('popularTweetId', 'tweetId', 'urlTweet', 'geocodeId', 'votesQuantity', 'retweetsQuantity', 'tweetPublicationHour', 'favoritesQuantity', 'coordinates', 'location', ),
-        self::TYPE_COLNAME       => array(PopularTweetsTableMap::COL_POPULAR_TWEET_ID, PopularTweetsTableMap::COL_TWEET_ID, PopularTweetsTableMap::COL_URL_TWEET, PopularTweetsTableMap::COL_GEOCODE_ID, PopularTweetsTableMap::COL_VOTES_QUANTITY, PopularTweetsTableMap::COL_RETWEETS_QUANTITY, PopularTweetsTableMap::COL_TWEET_PUBLICATION_HOUR, PopularTweetsTableMap::COL_FAVORITES_QUANTITY, PopularTweetsTableMap::COL_COORDINATES, PopularTweetsTableMap::COL_LOCATION, ),
-        self::TYPE_FIELDNAME     => array('popular_tweet_id', 'tweet_id', 'url_tweet', 'geocode_id', 'votes_quantity', 'retweets_quantity', 'tweet_publication_hour', 'favorites_quantity', 'coordinates', 'location', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
+        self::TYPE_PHPNAME       => array('PopularTweetId', 'TweetId', 'GeocodeId', 'VotesQuantity', 'RetweetsQuantity', 'TweetPublicationHour', 'FavoritesQuantity', 'Coordinates', 'Location', ),
+        self::TYPE_CAMELNAME     => array('popularTweetId', 'tweetId', 'geocodeId', 'votesQuantity', 'retweetsQuantity', 'tweetPublicationHour', 'favoritesQuantity', 'coordinates', 'location', ),
+        self::TYPE_COLNAME       => array(PopularTweetsTableMap::COL_POPULAR_TWEET_ID, PopularTweetsTableMap::COL_TWEET_ID, PopularTweetsTableMap::COL_GEOCODE_ID, PopularTweetsTableMap::COL_VOTES_QUANTITY, PopularTweetsTableMap::COL_RETWEETS_QUANTITY, PopularTweetsTableMap::COL_TWEET_PUBLICATION_HOUR, PopularTweetsTableMap::COL_FAVORITES_QUANTITY, PopularTweetsTableMap::COL_COORDINATES, PopularTweetsTableMap::COL_LOCATION, ),
+        self::TYPE_FIELDNAME     => array('popular_tweet_id', 'tweet_id', 'geocode_id', 'votes_quantity', 'retweets_quantity', 'tweet_publication_hour', 'favorites_quantity', 'coordinates', 'location', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
     /**
@@ -147,11 +142,11 @@ class PopularTweetsTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('PopularTweetId' => 0, 'TweetId' => 1, 'UrlTweet' => 2, 'GeocodeId' => 3, 'VotesQuantity' => 4, 'RetweetsQuantity' => 5, 'TweetPublicationHour' => 6, 'FavoritesQuantity' => 7, 'Coordinates' => 8, 'Location' => 9, ),
-        self::TYPE_CAMELNAME     => array('popularTweetId' => 0, 'tweetId' => 1, 'urlTweet' => 2, 'geocodeId' => 3, 'votesQuantity' => 4, 'retweetsQuantity' => 5, 'tweetPublicationHour' => 6, 'favoritesQuantity' => 7, 'coordinates' => 8, 'location' => 9, ),
-        self::TYPE_COLNAME       => array(PopularTweetsTableMap::COL_POPULAR_TWEET_ID => 0, PopularTweetsTableMap::COL_TWEET_ID => 1, PopularTweetsTableMap::COL_URL_TWEET => 2, PopularTweetsTableMap::COL_GEOCODE_ID => 3, PopularTweetsTableMap::COL_VOTES_QUANTITY => 4, PopularTweetsTableMap::COL_RETWEETS_QUANTITY => 5, PopularTweetsTableMap::COL_TWEET_PUBLICATION_HOUR => 6, PopularTweetsTableMap::COL_FAVORITES_QUANTITY => 7, PopularTweetsTableMap::COL_COORDINATES => 8, PopularTweetsTableMap::COL_LOCATION => 9, ),
-        self::TYPE_FIELDNAME     => array('popular_tweet_id' => 0, 'tweet_id' => 1, 'url_tweet' => 2, 'geocode_id' => 3, 'votes_quantity' => 4, 'retweets_quantity' => 5, 'tweet_publication_hour' => 6, 'favorites_quantity' => 7, 'coordinates' => 8, 'location' => 9, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
+        self::TYPE_PHPNAME       => array('PopularTweetId' => 0, 'TweetId' => 1, 'GeocodeId' => 2, 'VotesQuantity' => 3, 'RetweetsQuantity' => 4, 'TweetPublicationHour' => 5, 'FavoritesQuantity' => 6, 'Coordinates' => 7, 'Location' => 8, ),
+        self::TYPE_CAMELNAME     => array('popularTweetId' => 0, 'tweetId' => 1, 'geocodeId' => 2, 'votesQuantity' => 3, 'retweetsQuantity' => 4, 'tweetPublicationHour' => 5, 'favoritesQuantity' => 6, 'coordinates' => 7, 'location' => 8, ),
+        self::TYPE_COLNAME       => array(PopularTweetsTableMap::COL_POPULAR_TWEET_ID => 0, PopularTweetsTableMap::COL_TWEET_ID => 1, PopularTweetsTableMap::COL_GEOCODE_ID => 2, PopularTweetsTableMap::COL_VOTES_QUANTITY => 3, PopularTweetsTableMap::COL_RETWEETS_QUANTITY => 4, PopularTweetsTableMap::COL_TWEET_PUBLICATION_HOUR => 5, PopularTweetsTableMap::COL_FAVORITES_QUANTITY => 6, PopularTweetsTableMap::COL_COORDINATES => 7, PopularTweetsTableMap::COL_LOCATION => 8, ),
+        self::TYPE_FIELDNAME     => array('popular_tweet_id' => 0, 'tweet_id' => 1, 'geocode_id' => 2, 'votes_quantity' => 3, 'retweets_quantity' => 4, 'tweet_publication_hour' => 5, 'favorites_quantity' => 6, 'coordinates' => 7, 'location' => 8, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
     /**
@@ -173,7 +168,6 @@ class PopularTweetsTableMap extends TableMap
         // columns
         $this->addPrimaryKey('popular_tweet_id', 'PopularTweetId', 'BIGINT', true, 18, null);
         $this->addColumn('tweet_id', 'TweetId', 'BIGINT', true, 18, null);
-        $this->addColumn('url_tweet', 'UrlTweet', 'LONGVARCHAR', true, null, null);
         $this->addColumn('geocode_id', 'GeocodeId', 'INTEGER', true, null, null);
         $this->addColumn('votes_quantity', 'VotesQuantity', 'INTEGER', true, null, null);
         $this->addColumn('retweets_quantity', 'RetweetsQuantity', 'INTEGER', false, null, null);
@@ -333,7 +327,6 @@ class PopularTweetsTableMap extends TableMap
         if (null === $alias) {
             $criteria->addSelectColumn(PopularTweetsTableMap::COL_POPULAR_TWEET_ID);
             $criteria->addSelectColumn(PopularTweetsTableMap::COL_TWEET_ID);
-            $criteria->addSelectColumn(PopularTweetsTableMap::COL_URL_TWEET);
             $criteria->addSelectColumn(PopularTweetsTableMap::COL_GEOCODE_ID);
             $criteria->addSelectColumn(PopularTweetsTableMap::COL_VOTES_QUANTITY);
             $criteria->addSelectColumn(PopularTweetsTableMap::COL_RETWEETS_QUANTITY);
@@ -344,7 +337,6 @@ class PopularTweetsTableMap extends TableMap
         } else {
             $criteria->addSelectColumn($alias . '.popular_tweet_id');
             $criteria->addSelectColumn($alias . '.tweet_id');
-            $criteria->addSelectColumn($alias . '.url_tweet');
             $criteria->addSelectColumn($alias . '.geocode_id');
             $criteria->addSelectColumn($alias . '.votes_quantity');
             $criteria->addSelectColumn($alias . '.retweets_quantity');

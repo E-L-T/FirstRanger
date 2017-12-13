@@ -1,9 +1,9 @@
 <?php
 
-namespace Propel\Propel\Map;
+namespace Map;
 
-use Propel\Propel\Geocodes;
-use Propel\Propel\GeocodesQuery;
+use \DistrictShares;
+use \DistrictSharesQuery;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\InstancePoolTrait;
@@ -16,7 +16,7 @@ use Propel\Runtime\Map\TableMapTrait;
 
 
 /**
- * This class defines the structure of the 'geocodes' table.
+ * This class defines the structure of the 'district_shares' table.
  *
  *
  *
@@ -26,7 +26,7 @@ use Propel\Runtime\Map\TableMapTrait;
  * (i.e. if it's a text column type).
  *
  */
-class GeocodesTableMap extends TableMap
+class DistrictSharesTableMap extends TableMap
 {
     use InstancePoolTrait;
     use TableMapTrait;
@@ -34,7 +34,7 @@ class GeocodesTableMap extends TableMap
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'Propel.Propel.Map.GeocodesTableMap';
+    const CLASS_NAME = '.Map.DistrictSharesTableMap';
 
     /**
      * The default database name for this class
@@ -44,17 +44,17 @@ class GeocodesTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'geocodes';
+    const TABLE_NAME = 'district_shares';
 
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\Propel\\Propel\\Geocodes';
+    const OM_CLASS = '\\DistrictShares';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'Propel.Propel.Geocodes';
+    const CLASS_DEFAULT = 'DistrictShares';
 
     /**
      * The total number of columns
@@ -72,24 +72,24 @@ class GeocodesTableMap extends TableMap
     const NUM_HYDRATE_COLUMNS = 4;
 
     /**
-     * the column name for the geocode_id field
+     * the column name for the district_id field
      */
-    const COL_GEOCODE_ID = 'geocodes.geocode_id';
+    const COL_DISTRICT_ID = 'district_shares.district_id';
 
     /**
-     * the column name for the geocode_name field
+     * the column name for the district_name field
      */
-    const COL_GEOCODE_NAME = 'geocodes.geocode_name';
+    const COL_DISTRICT_NAME = 'district_shares.district_name';
 
     /**
-     * the column name for the department_id field
+     * the column name for the district_twitter_shares_quantity field
      */
-    const COL_DEPARTMENT_ID = 'geocodes.department_id';
+    const COL_DISTRICT_TWITTER_SHARES_QUANTITY = 'district_shares.district_twitter_shares_quantity';
 
     /**
-     * the column name for the geocode field
+     * the column name for the district_facebook_shares_quantity field
      */
-    const COL_GEOCODE = 'geocodes.geocode';
+    const COL_DISTRICT_FACEBOOK_SHARES_QUANTITY = 'district_shares.district_facebook_shares_quantity';
 
     /**
      * The default string format for model objects of the related table
@@ -103,10 +103,10 @@ class GeocodesTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('GeocodeId', 'GeocodeName', 'DepartmentId', 'Geocode', ),
-        self::TYPE_CAMELNAME     => array('geocodeId', 'geocodeName', 'departmentId', 'geocode', ),
-        self::TYPE_COLNAME       => array(GeocodesTableMap::COL_GEOCODE_ID, GeocodesTableMap::COL_GEOCODE_NAME, GeocodesTableMap::COL_DEPARTMENT_ID, GeocodesTableMap::COL_GEOCODE, ),
-        self::TYPE_FIELDNAME     => array('geocode_id', 'geocode_name', 'department_id', 'geocode', ),
+        self::TYPE_PHPNAME       => array('DistrictId', 'DistrictName', 'DistrictTwitterSharesQuantity', 'DistrictFacebookSharesQuantity', ),
+        self::TYPE_CAMELNAME     => array('districtId', 'districtName', 'districtTwitterSharesQuantity', 'districtFacebookSharesQuantity', ),
+        self::TYPE_COLNAME       => array(DistrictSharesTableMap::COL_DISTRICT_ID, DistrictSharesTableMap::COL_DISTRICT_NAME, DistrictSharesTableMap::COL_DISTRICT_TWITTER_SHARES_QUANTITY, DistrictSharesTableMap::COL_DISTRICT_FACEBOOK_SHARES_QUANTITY, ),
+        self::TYPE_FIELDNAME     => array('district_id', 'district_name', 'district_twitter_shares_quantity', 'district_facebook_shares_quantity', ),
         self::TYPE_NUM           => array(0, 1, 2, 3, )
     );
 
@@ -117,10 +117,10 @@ class GeocodesTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('GeocodeId' => 0, 'GeocodeName' => 1, 'DepartmentId' => 2, 'Geocode' => 3, ),
-        self::TYPE_CAMELNAME     => array('geocodeId' => 0, 'geocodeName' => 1, 'departmentId' => 2, 'geocode' => 3, ),
-        self::TYPE_COLNAME       => array(GeocodesTableMap::COL_GEOCODE_ID => 0, GeocodesTableMap::COL_GEOCODE_NAME => 1, GeocodesTableMap::COL_DEPARTMENT_ID => 2, GeocodesTableMap::COL_GEOCODE => 3, ),
-        self::TYPE_FIELDNAME     => array('geocode_id' => 0, 'geocode_name' => 1, 'department_id' => 2, 'geocode' => 3, ),
+        self::TYPE_PHPNAME       => array('DistrictId' => 0, 'DistrictName' => 1, 'DistrictTwitterSharesQuantity' => 2, 'DistrictFacebookSharesQuantity' => 3, ),
+        self::TYPE_CAMELNAME     => array('districtId' => 0, 'districtName' => 1, 'districtTwitterSharesQuantity' => 2, 'districtFacebookSharesQuantity' => 3, ),
+        self::TYPE_COLNAME       => array(DistrictSharesTableMap::COL_DISTRICT_ID => 0, DistrictSharesTableMap::COL_DISTRICT_NAME => 1, DistrictSharesTableMap::COL_DISTRICT_TWITTER_SHARES_QUANTITY => 2, DistrictSharesTableMap::COL_DISTRICT_FACEBOOK_SHARES_QUANTITY => 3, ),
+        self::TYPE_FIELDNAME     => array('district_id' => 0, 'district_name' => 1, 'district_twitter_shares_quantity' => 2, 'district_facebook_shares_quantity' => 3, ),
         self::TYPE_NUM           => array(0, 1, 2, 3, )
     );
 
@@ -134,17 +134,17 @@ class GeocodesTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('geocodes');
-        $this->setPhpName('Geocodes');
+        $this->setName('district_shares');
+        $this->setPhpName('DistrictShares');
         $this->setIdentifierQuoting(false);
-        $this->setClassName('\\Propel\\Propel\\Geocodes');
-        $this->setPackage('Propel.Propel');
+        $this->setClassName('\\DistrictShares');
+        $this->setPackage('');
         $this->setUseIdGenerator(true);
         // columns
-        $this->addPrimaryKey('geocode_id', 'GeocodeId', 'INTEGER', true, null, null);
-        $this->addColumn('geocode_name', 'GeocodeName', 'VARCHAR', true, 20, null);
-        $this->addColumn('department_id', 'DepartmentId', 'INTEGER', true, null, null);
-        $this->addColumn('geocode', 'Geocode', 'VARCHAR', true, 100, null);
+        $this->addPrimaryKey('district_id', 'DistrictId', 'INTEGER', true, null, null);
+        $this->addColumn('district_name', 'DistrictName', 'INTEGER', true, null, null);
+        $this->addColumn('district_twitter_shares_quantity', 'DistrictTwitterSharesQuantity', 'INTEGER', false, null, null);
+        $this->addColumn('district_facebook_shares_quantity', 'DistrictFacebookSharesQuantity', 'INTEGER', false, null, null);
     } // initialize()
 
     /**
@@ -170,11 +170,11 @@ class GeocodesTableMap extends TableMap
     public static function getPrimaryKeyHashFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
         // If the PK cannot be derived from the row, return NULL.
-        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('GeocodeId', TableMap::TYPE_PHPNAME, $indexType)] === null) {
+        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('DistrictId', TableMap::TYPE_PHPNAME, $indexType)] === null) {
             return null;
         }
 
-        return null === $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('GeocodeId', TableMap::TYPE_PHPNAME, $indexType)] || is_scalar($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('GeocodeId', TableMap::TYPE_PHPNAME, $indexType)]) || is_callable([$row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('GeocodeId', TableMap::TYPE_PHPNAME, $indexType)], '__toString']) ? (string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('GeocodeId', TableMap::TYPE_PHPNAME, $indexType)] : $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('GeocodeId', TableMap::TYPE_PHPNAME, $indexType)];
+        return null === $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('DistrictId', TableMap::TYPE_PHPNAME, $indexType)] || is_scalar($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('DistrictId', TableMap::TYPE_PHPNAME, $indexType)]) || is_callable([$row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('DistrictId', TableMap::TYPE_PHPNAME, $indexType)], '__toString']) ? (string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('DistrictId', TableMap::TYPE_PHPNAME, $indexType)] : $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('DistrictId', TableMap::TYPE_PHPNAME, $indexType)];
     }
 
     /**
@@ -194,7 +194,7 @@ class GeocodesTableMap extends TableMap
         return (int) $row[
             $indexType == TableMap::TYPE_NUM
                 ? 0 + $offset
-                : self::translateFieldName('GeocodeId', TableMap::TYPE_PHPNAME, $indexType)
+                : self::translateFieldName('DistrictId', TableMap::TYPE_PHPNAME, $indexType)
         ];
     }
 
@@ -211,7 +211,7 @@ class GeocodesTableMap extends TableMap
      */
     public static function getOMClass($withPrefix = true)
     {
-        return $withPrefix ? GeocodesTableMap::CLASS_DEFAULT : GeocodesTableMap::OM_CLASS;
+        return $withPrefix ? DistrictSharesTableMap::CLASS_DEFAULT : DistrictSharesTableMap::OM_CLASS;
     }
 
     /**
@@ -225,22 +225,22 @@ class GeocodesTableMap extends TableMap
      *
      * @throws PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
-     * @return array           (Geocodes object, last column rank)
+     * @return array           (DistrictShares object, last column rank)
      */
     public static function populateObject($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        $key = GeocodesTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
-        if (null !== ($obj = GeocodesTableMap::getInstanceFromPool($key))) {
+        $key = DistrictSharesTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
+        if (null !== ($obj = DistrictSharesTableMap::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $offset, true); // rehydrate
-            $col = $offset + GeocodesTableMap::NUM_HYDRATE_COLUMNS;
+            $col = $offset + DistrictSharesTableMap::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = GeocodesTableMap::OM_CLASS;
-            /** @var Geocodes $obj */
+            $cls = DistrictSharesTableMap::OM_CLASS;
+            /** @var DistrictShares $obj */
             $obj = new $cls();
             $col = $obj->hydrate($row, $offset, false, $indexType);
-            GeocodesTableMap::addInstanceToPool($obj, $key);
+            DistrictSharesTableMap::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -263,18 +263,18 @@ class GeocodesTableMap extends TableMap
         $cls = static::getOMClass(false);
         // populate the object(s)
         while ($row = $dataFetcher->fetch()) {
-            $key = GeocodesTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
-            if (null !== ($obj = GeocodesTableMap::getInstanceFromPool($key))) {
+            $key = DistrictSharesTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
+            if (null !== ($obj = DistrictSharesTableMap::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
                 $results[] = $obj;
             } else {
-                /** @var Geocodes $obj */
+                /** @var DistrictShares $obj */
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                GeocodesTableMap::addInstanceToPool($obj, $key);
+                DistrictSharesTableMap::addInstanceToPool($obj, $key);
             } // if key exists
         }
 
@@ -295,15 +295,15 @@ class GeocodesTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(GeocodesTableMap::COL_GEOCODE_ID);
-            $criteria->addSelectColumn(GeocodesTableMap::COL_GEOCODE_NAME);
-            $criteria->addSelectColumn(GeocodesTableMap::COL_DEPARTMENT_ID);
-            $criteria->addSelectColumn(GeocodesTableMap::COL_GEOCODE);
+            $criteria->addSelectColumn(DistrictSharesTableMap::COL_DISTRICT_ID);
+            $criteria->addSelectColumn(DistrictSharesTableMap::COL_DISTRICT_NAME);
+            $criteria->addSelectColumn(DistrictSharesTableMap::COL_DISTRICT_TWITTER_SHARES_QUANTITY);
+            $criteria->addSelectColumn(DistrictSharesTableMap::COL_DISTRICT_FACEBOOK_SHARES_QUANTITY);
         } else {
-            $criteria->addSelectColumn($alias . '.geocode_id');
-            $criteria->addSelectColumn($alias . '.geocode_name');
-            $criteria->addSelectColumn($alias . '.department_id');
-            $criteria->addSelectColumn($alias . '.geocode');
+            $criteria->addSelectColumn($alias . '.district_id');
+            $criteria->addSelectColumn($alias . '.district_name');
+            $criteria->addSelectColumn($alias . '.district_twitter_shares_quantity');
+            $criteria->addSelectColumn($alias . '.district_facebook_shares_quantity');
         }
     }
 
@@ -316,7 +316,7 @@ class GeocodesTableMap extends TableMap
      */
     public static function getTableMap()
     {
-        return Propel::getServiceContainer()->getDatabaseMap(GeocodesTableMap::DATABASE_NAME)->getTable(GeocodesTableMap::TABLE_NAME);
+        return Propel::getServiceContainer()->getDatabaseMap(DistrictSharesTableMap::DATABASE_NAME)->getTable(DistrictSharesTableMap::TABLE_NAME);
     }
 
     /**
@@ -324,16 +324,16 @@ class GeocodesTableMap extends TableMap
      */
     public static function buildTableMap()
     {
-        $dbMap = Propel::getServiceContainer()->getDatabaseMap(GeocodesTableMap::DATABASE_NAME);
-        if (!$dbMap->hasTable(GeocodesTableMap::TABLE_NAME)) {
-            $dbMap->addTableObject(new GeocodesTableMap());
+        $dbMap = Propel::getServiceContainer()->getDatabaseMap(DistrictSharesTableMap::DATABASE_NAME);
+        if (!$dbMap->hasTable(DistrictSharesTableMap::TABLE_NAME)) {
+            $dbMap->addTableObject(new DistrictSharesTableMap());
         }
     }
 
     /**
-     * Performs a DELETE on the database, given a Geocodes or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a DistrictShares or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or Geocodes object or primary key or array of primary keys
+     * @param mixed               $values Criteria or DistrictShares object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param  ConnectionInterface $con the connection to use
      * @return int             The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -344,27 +344,27 @@ class GeocodesTableMap extends TableMap
      public static function doDelete($values, ConnectionInterface $con = null)
      {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(GeocodesTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(DistrictSharesTableMap::DATABASE_NAME);
         }
 
         if ($values instanceof Criteria) {
             // rename for clarity
             $criteria = $values;
-        } elseif ($values instanceof \Propel\Propel\Geocodes) { // it's a model object
+        } elseif ($values instanceof \DistrictShares) { // it's a model object
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(GeocodesTableMap::DATABASE_NAME);
-            $criteria->add(GeocodesTableMap::COL_GEOCODE_ID, (array) $values, Criteria::IN);
+            $criteria = new Criteria(DistrictSharesTableMap::DATABASE_NAME);
+            $criteria->add(DistrictSharesTableMap::COL_DISTRICT_ID, (array) $values, Criteria::IN);
         }
 
-        $query = GeocodesQuery::create()->mergeWith($criteria);
+        $query = DistrictSharesQuery::create()->mergeWith($criteria);
 
         if ($values instanceof Criteria) {
-            GeocodesTableMap::clearInstancePool();
+            DistrictSharesTableMap::clearInstancePool();
         } elseif (!is_object($values)) { // it's a primary key, or an array of pks
             foreach ((array) $values as $singleval) {
-                GeocodesTableMap::removeInstanceFromPool($singleval);
+                DistrictSharesTableMap::removeInstanceFromPool($singleval);
             }
         }
 
@@ -372,20 +372,20 @@ class GeocodesTableMap extends TableMap
     }
 
     /**
-     * Deletes all rows from the geocodes table.
+     * Deletes all rows from the district_shares table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
     public static function doDeleteAll(ConnectionInterface $con = null)
     {
-        return GeocodesQuery::create()->doDeleteAll($con);
+        return DistrictSharesQuery::create()->doDeleteAll($con);
     }
 
     /**
-     * Performs an INSERT on the database, given a Geocodes or Criteria object.
+     * Performs an INSERT on the database, given a DistrictShares or Criteria object.
      *
-     * @param mixed               $criteria Criteria or Geocodes object containing data that is used to create the INSERT statement.
+     * @param mixed               $criteria Criteria or DistrictShares object containing data that is used to create the INSERT statement.
      * @param ConnectionInterface $con the ConnectionInterface connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -394,22 +394,22 @@ class GeocodesTableMap extends TableMap
     public static function doInsert($criteria, ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(GeocodesTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(DistrictSharesTableMap::DATABASE_NAME);
         }
 
         if ($criteria instanceof Criteria) {
             $criteria = clone $criteria; // rename for clarity
         } else {
-            $criteria = $criteria->buildCriteria(); // build Criteria from Geocodes object
+            $criteria = $criteria->buildCriteria(); // build Criteria from DistrictShares object
         }
 
-        if ($criteria->containsKey(GeocodesTableMap::COL_GEOCODE_ID) && $criteria->keyContainsValue(GeocodesTableMap::COL_GEOCODE_ID) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.GeocodesTableMap::COL_GEOCODE_ID.')');
+        if ($criteria->containsKey(DistrictSharesTableMap::COL_DISTRICT_ID) && $criteria->keyContainsValue(DistrictSharesTableMap::COL_DISTRICT_ID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.DistrictSharesTableMap::COL_DISTRICT_ID.')');
         }
 
 
         // Set the correct dbName
-        $query = GeocodesQuery::create()->mergeWith($criteria);
+        $query = DistrictSharesQuery::create()->mergeWith($criteria);
 
         // use transaction because $criteria could contain info
         // for more than one table (I guess, conceivably)
@@ -418,7 +418,7 @@ class GeocodesTableMap extends TableMap
         });
     }
 
-} // GeocodesTableMap
+} // DistrictSharesTableMap
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-GeocodesTableMap::buildTableMap();
+DistrictSharesTableMap::buildTableMap();

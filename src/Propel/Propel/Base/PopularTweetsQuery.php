@@ -21,7 +21,6 @@ use Propel\Runtime\Exception\PropelException;
  *
  * @method     ChildPopularTweetsQuery orderByPopularTweetId($order = Criteria::ASC) Order by the popular_tweet_id column
  * @method     ChildPopularTweetsQuery orderByTweetId($order = Criteria::ASC) Order by the tweet_id column
- * @method     ChildPopularTweetsQuery orderByUrlTweet($order = Criteria::ASC) Order by the url_tweet column
  * @method     ChildPopularTweetsQuery orderByGeocodeId($order = Criteria::ASC) Order by the geocode_id column
  * @method     ChildPopularTweetsQuery orderByVotesQuantity($order = Criteria::ASC) Order by the votes_quantity column
  * @method     ChildPopularTweetsQuery orderByRetweetsQuantity($order = Criteria::ASC) Order by the retweets_quantity column
@@ -32,7 +31,6 @@ use Propel\Runtime\Exception\PropelException;
  *
  * @method     ChildPopularTweetsQuery groupByPopularTweetId() Group by the popular_tweet_id column
  * @method     ChildPopularTweetsQuery groupByTweetId() Group by the tweet_id column
- * @method     ChildPopularTweetsQuery groupByUrlTweet() Group by the url_tweet column
  * @method     ChildPopularTweetsQuery groupByGeocodeId() Group by the geocode_id column
  * @method     ChildPopularTweetsQuery groupByVotesQuantity() Group by the votes_quantity column
  * @method     ChildPopularTweetsQuery groupByRetweetsQuantity() Group by the retweets_quantity column
@@ -54,7 +52,6 @@ use Propel\Runtime\Exception\PropelException;
  *
  * @method     ChildPopularTweets findOneByPopularTweetId(string $popular_tweet_id) Return the first ChildPopularTweets filtered by the popular_tweet_id column
  * @method     ChildPopularTweets findOneByTweetId(string $tweet_id) Return the first ChildPopularTweets filtered by the tweet_id column
- * @method     ChildPopularTweets findOneByUrlTweet(string $url_tweet) Return the first ChildPopularTweets filtered by the url_tweet column
  * @method     ChildPopularTweets findOneByGeocodeId(int $geocode_id) Return the first ChildPopularTweets filtered by the geocode_id column
  * @method     ChildPopularTweets findOneByVotesQuantity(int $votes_quantity) Return the first ChildPopularTweets filtered by the votes_quantity column
  * @method     ChildPopularTweets findOneByRetweetsQuantity(int $retweets_quantity) Return the first ChildPopularTweets filtered by the retweets_quantity column
@@ -68,7 +65,6 @@ use Propel\Runtime\Exception\PropelException;
  *
  * @method     ChildPopularTweets requireOneByPopularTweetId(string $popular_tweet_id) Return the first ChildPopularTweets filtered by the popular_tweet_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPopularTweets requireOneByTweetId(string $tweet_id) Return the first ChildPopularTweets filtered by the tweet_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildPopularTweets requireOneByUrlTweet(string $url_tweet) Return the first ChildPopularTweets filtered by the url_tweet column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPopularTweets requireOneByGeocodeId(int $geocode_id) Return the first ChildPopularTweets filtered by the geocode_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPopularTweets requireOneByVotesQuantity(int $votes_quantity) Return the first ChildPopularTweets filtered by the votes_quantity column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPopularTweets requireOneByRetweetsQuantity(int $retweets_quantity) Return the first ChildPopularTweets filtered by the retweets_quantity column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -80,7 +76,6 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildPopularTweets[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildPopularTweets objects based on current ModelCriteria
  * @method     ChildPopularTweets[]|ObjectCollection findByPopularTweetId(string $popular_tweet_id) Return ChildPopularTweets objects filtered by the popular_tweet_id column
  * @method     ChildPopularTweets[]|ObjectCollection findByTweetId(string $tweet_id) Return ChildPopularTweets objects filtered by the tweet_id column
- * @method     ChildPopularTweets[]|ObjectCollection findByUrlTweet(string $url_tweet) Return ChildPopularTweets objects filtered by the url_tweet column
  * @method     ChildPopularTweets[]|ObjectCollection findByGeocodeId(int $geocode_id) Return ChildPopularTweets objects filtered by the geocode_id column
  * @method     ChildPopularTweets[]|ObjectCollection findByVotesQuantity(int $votes_quantity) Return ChildPopularTweets objects filtered by the votes_quantity column
  * @method     ChildPopularTweets[]|ObjectCollection findByRetweetsQuantity(int $retweets_quantity) Return ChildPopularTweets objects filtered by the retweets_quantity column
@@ -186,7 +181,7 @@ abstract class PopularTweetsQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT popular_tweet_id, tweet_id, url_tweet, geocode_id, votes_quantity, retweets_quantity, tweet_publication_hour, favorites_quantity, coordinates, location FROM popular_tweets WHERE popular_tweet_id = :p0';
+        $sql = 'SELECT popular_tweet_id, tweet_id, geocode_id, votes_quantity, retweets_quantity, tweet_publication_hour, favorites_quantity, coordinates, location FROM popular_tweets WHERE popular_tweet_id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -356,31 +351,6 @@ abstract class PopularTweetsQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PopularTweetsTableMap::COL_TWEET_ID, $tweetId, $comparison);
-    }
-
-    /**
-     * Filter the query on the url_tweet column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByUrlTweet('fooValue');   // WHERE url_tweet = 'fooValue'
-     * $query->filterByUrlTweet('%fooValue%', Criteria::LIKE); // WHERE url_tweet LIKE '%fooValue%'
-     * </code>
-     *
-     * @param     string $urlTweet The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return $this|ChildPopularTweetsQuery The current query, for fluid interface
-     */
-    public function filterByUrlTweet($urlTweet = null, $comparison = null)
-    {
-        if (null === $comparison) {
-            if (is_array($urlTweet)) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(PopularTweetsTableMap::COL_URL_TWEET, $urlTweet, $comparison);
     }
 
     /**

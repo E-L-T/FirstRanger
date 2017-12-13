@@ -1,9 +1,9 @@
 <?php
 
-namespace Propel\Propel\Map;
+namespace Map;
 
-use Propel\Propel\Geocodes;
-use Propel\Propel\GeocodesQuery;
+use \Geocodes;
+use \GeocodesQuery;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\InstancePoolTrait;
@@ -34,7 +34,7 @@ class GeocodesTableMap extends TableMap
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'Propel.Propel.Map.GeocodesTableMap';
+    const CLASS_NAME = '.Map.GeocodesTableMap';
 
     /**
      * The default database name for this class
@@ -49,12 +49,12 @@ class GeocodesTableMap extends TableMap
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\Propel\\Propel\\Geocodes';
+    const OM_CLASS = '\\Geocodes';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'Propel.Propel.Geocodes';
+    const CLASS_DEFAULT = 'Geocodes';
 
     /**
      * The total number of columns
@@ -137,8 +137,8 @@ class GeocodesTableMap extends TableMap
         $this->setName('geocodes');
         $this->setPhpName('Geocodes');
         $this->setIdentifierQuoting(false);
-        $this->setClassName('\\Propel\\Propel\\Geocodes');
-        $this->setPackage('Propel.Propel');
+        $this->setClassName('\\Geocodes');
+        $this->setPackage('');
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('geocode_id', 'GeocodeId', 'INTEGER', true, null, null);
@@ -350,7 +350,7 @@ class GeocodesTableMap extends TableMap
         if ($values instanceof Criteria) {
             // rename for clarity
             $criteria = $values;
-        } elseif ($values instanceof \Propel\Propel\Geocodes) { // it's a model object
+        } elseif ($values instanceof \Geocodes) { // it's a model object
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<database name="default" defaultIdMethod="native" defaultPhpNamingMethod="underscore">
+  <table name="comments" idMethod="native" phpName="Comments">
+    <column name="comment_id" phpName="CommentId" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="user_id" phpName="UserId" type="INTEGER" required="true"/>
+    <column name="comment_publication_hour" phpName="CommentPublicationHour" type="TIMESTAMP" required="true"/>
+    <column name="likes_count" phpName="LikesCount" type="INTEGER"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="department_summary" idMethod="native" phpName="DepartmentSummary">
+    <column name="department_summary_id" phpName="DepartmentSummaryId" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="map_publication_hour" phpName="MapPublicationHour" type="TIMESTAMP" required="true"/>
+    <column name="department_code" phpName="DepartmentCode" type="VARCHAR" size="5" required="true"/>
+    <column name="department_positive_tweets_quantity" phpName="DepartmentPositiveTweetsQuantity" type="INTEGER" required="true"/>
+    <column name="department_negative_tweets_quantity" phpName="DepartmentNegativeTweetsQuantity" type="INTEGER" required="true"/>
+    <column name="department_neutral_tweets_quantity" phpName="DepartmentNeutralTweetsQuantity" type="INTEGER" required="true"/>
+    <column name="positive_popular_tweet_id" phpName="PositivePopularTweetId" type="INTEGER" required="true"/>
+    <column name="negative_popular_tweet_id" phpName="NegativePopularTweetId" type="INTEGER" required="true"/>
+    <column name="department_twitter_shares_quantity" phpName="DepartmentTwitterSharesQuantity" type="INTEGER"/>
+    <column name="department_facebook_shares_quantity" phpName="DepartmentFacebookSharesQuantity" type="INTEGER"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="departments" idMethod="native" phpName="Departments">
+    <column name="department_id" phpName="DepartmentId" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="department_code" phpName="DepartmentCode" type="VARCHAR" size="5" required="true"/>
+    <column name="department_name" phpName="DepartmentName" type="VARCHAR" size="70" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="district_shares" idMethod="native" phpName="DistrictShares">
+    <column name="district_id" phpName="DistrictId" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="district_name" phpName="DistrictName" type="INTEGER" required="true"/>
+    <column name="district_twitter_shares_quantity" phpName="DistrictTwitterSharesQuantity" type="INTEGER"/>
+    <column name="district_facebook_shares_quantity" phpName="DistrictFacebookSharesQuantity" type="INTEGER"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="geocodes" idMethod="native" phpName="Geocodes">
+    <column name="geocode_id" phpName="GeocodeId" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="geocode_name" phpName="GeocodeName" type="VARCHAR" size="20" required="true"/>
+    <column name="department_id" phpName="DepartmentId" type="INTEGER" required="true"/>
+    <column name="geocode" phpName="Geocode" type="VARCHAR" size="100" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="popular_tweets" idMethod="native" phpName="PopularTweets">
+    <column name="popular_tweet_id" phpName="PopularTweetId" type="BIGINT" size="18" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="tweet_id" phpName="TweetId" type="BIGINT" size="18" required="true"/>
+    <column name="geocode_id" phpName="GeocodeId" type="INTEGER" required="true"/>
+    <column name="votes_quantity" phpName="VotesQuantity" type="INTEGER" required="true"/>
+    <column name="retweets_quantity" phpName="RetweetsQuantity" type="INTEGER"/>
+    <column name="tweet_publication_hour" phpName="TweetPublicationHour" type="TIMESTAMP" required="true"/>
+    <column name="favorites_quantity" phpName="FavoritesQuantity" type="INTEGER"/>
+    <column name="coordinates" phpName="Coordinates" type="LONGVARCHAR" required="true"/>
+    <column name="location" phpName="Location" type="LONGVARCHAR" required="true"/>
+    <index name="tweet_id">
+      <index-column name="tweet_id"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="tweets" idMethod="native" phpName="Tweets">
+    <column name="tweet_id" phpName="TweetId" type="BIGINT" size="18" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="api_tweet_id" phpName="ApiTweetId" type="BIGINT" size="18" required="true"/>
+    <column name="tweet_text" phpName="TweetText" type="LONGVARCHAR" required="true"/>
+    <column name="tweet_publication_hour" phpName="TweetPublicationHour" type="TIMESTAMP" required="true"/>
+    <column name="geocode_id" phpName="GeocodeId" type="INTEGER"/>
+    <column name="retweets_quantity" phpName="RetweetsQuantity" type="INTEGER"/>
+    <column name="favorites_quantity" phpName="FavoritesQuantity" type="INTEGER"/>
+    <column name="twitter_account" phpName="TwitterAccount" type="LONGVARCHAR" required="true"/>
+    <column name="coordinates" phpName="Coordinates" type="LONGVARCHAR"/>
+    <column name="location" phpName="Location" type="LONGVARCHAR"/>
+    <column name="quality_tweet" phpName="QualityTweet" type="CHAR" sqlType="enum('positive','negative','neutral')"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="users" idMethod="native" phpName="Users">
+    <column name="user_id" phpName="UserId" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="firstname" phpName="Firstname" type="VARCHAR" size="50"/>
+    <column name="lastname" phpName="Lastname" type="VARCHAR" size="60"/>
+    <column name="email" phpName="Email" type="VARCHAR" size="100"/>
+    <column name="twitter_account" phpName="TwitterAccount" type="VARCHAR" size="100"/>
+    <column name="password" phpName="Password" type="VARCHAR" size="255"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+</database>

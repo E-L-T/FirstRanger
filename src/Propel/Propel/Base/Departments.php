@@ -4,20 +4,13 @@ namespace Propel\Propel\Base;
 
 use \Exception;
 use \PDO;
-use Propel\Propel\DepartmentSummary as ChildDepartmentSummary;
-use Propel\Propel\DepartmentSummaryQuery as ChildDepartmentSummaryQuery;
-use Propel\Propel\Departments as ChildDepartments;
 use Propel\Propel\DepartmentsQuery as ChildDepartmentsQuery;
-use Propel\Propel\Geocodes as ChildGeocodes;
-use Propel\Propel\GeocodesQuery as ChildGeocodesQuery;
 use Propel\Propel\Map\DepartmentsTableMap;
-use Propel\Propel\Map\GeocodesTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
 use Propel\Runtime\ActiveRecord\ActiveRecordInterface;
 use Propel\Runtime\Collection\Collection;
-use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\BadMethodCallException;
 use Propel\Runtime\Exception\LogicException;
@@ -88,29 +81,12 @@ abstract class Departments implements ActiveRecordInterface
     protected $department_name;
 
     /**
-     * @var        ChildDepartmentSummary
-     */
-    protected $aDepartmentSummary;
-
-    /**
-     * @var        ObjectCollection|ChildGeocodes[] Collection to store aggregation of ChildGeocodes objects.
-     */
-    protected $collGeocodess;
-    protected $collGeocodessPartial;
-
-    /**
      * Flag to prevent endless save loop, if this object is referenced
      * by another object which falls in this transaction.
      *
      * @var boolean
      */
     protected $alreadyInSave = false;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var ObjectCollection|ChildGeocodes[]
-     */
-    protected $geocodessScheduledForDeletion = null;
 
     /**
      * Initializes internal state of Propel\Propel\Base\Departments object.
@@ -404,10 +380,6 @@ abstract class Departments implements ActiveRecordInterface
             $this->modifiedColumns[DepartmentsTableMap::COL_DEPARTMENT_CODE] = true;
         }
 
-        if ($this->aDepartmentSummary !== null && $this->aDepartmentSummary->getDepartmentCode() !== $v) {
-            $this->aDepartmentSummary = null;
-        }
-
         return $this;
     } // setDepartmentCode()
 
@@ -505,9 +477,6 @@ abstract class Departments implements ActiveRecordInterface
      */
     public function ensureConsistency()
     {
-        if ($this->aDepartmentSummary !== null && $this->department_code !== $this->aDepartmentSummary->getDepartmentCode()) {
-            $this->aDepartmentSummary = null;
-        }
     } // ensureConsistency
 
     /**
@@ -546,9 +515,6 @@ abstract class Departments implements ActiveRecordInterface
         $this->hydrate($row, 0, true, $dataFetcher->getIndexType()); // rehydrate
 
         if ($deep) {  // also de-associate any related objects?
-
-            $this->aDepartmentSummary = null;
-            $this->collGeocodess = null;
 
         } // if (deep)
     }
@@ -653,18 +619,6 @@ abstract class Departments implements ActiveRecordInterface
         if (!$this->alreadyInSave) {
             $this->alreadyInSave = true;
 
-            // We call the save method on the following object(s) if they
-            // were passed to this object by their corresponding set
-            // method.  This object relates to these object(s) by a
-            // foreign key reference.
-
-            if ($this->aDepartmentSummary !== null) {
-                if ($this->aDepartmentSummary->isModified() || $this->aDepartmentSummary->isNew()) {
-                    $affectedRows += $this->aDepartmentSummary->save($con);
-                }
-                $this->setDepartmentSummary($this->aDepartmentSummary);
-            }
-
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
                 if ($this->isNew()) {
@@ -674,23 +628,6 @@ abstract class Departments implements ActiveRecordInterface
                     $affectedRows += $this->doUpdate($con);
                 }
                 $this->resetModified();
-            }
-
-            if ($this->geocodessScheduledForDeletion !== null) {
-                if (!$this->geocodessScheduledForDeletion->isEmpty()) {
-                    \Propel\Propel\GeocodesQuery::create()
-                        ->filterByPrimaryKeys($this->geocodessScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->geocodessScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collGeocodess !== null) {
-                foreach ($this->collGeocodess as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
             }
 
             $this->alreadyInSave = false;
@@ -836,11 +773,10 @@ abstract class Departments implements ActiveRecordInterface
      *                    Defaults to TableMap::TYPE_PHPNAME.
      * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
-     * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
      * @return array an associative array containing the field names (as keys) and field values
      */
-    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
+    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
     {
 
         if (isset($alreadyDumpedObjects['Departments'][$this->hashCode()])) {
@@ -858,38 +794,6 @@ abstract class Departments implements ActiveRecordInterface
             $result[$key] = $virtualColumn;
         }
 
-        if ($includeForeignObjects) {
-            if (null !== $this->aDepartmentSummary) {
-
-                switch ($keyType) {
-                    case TableMap::TYPE_CAMELNAME:
-                        $key = 'departmentSummary';
-                        break;
-                    case TableMap::TYPE_FIELDNAME:
-                        $key = 'department_summary';
-                        break;
-                    default:
-                        $key = 'DepartmentSummary';
-                }
-
-                $result[$key] = $this->aDepartmentSummary->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
-            if (null !== $this->collGeocodess) {
-
-                switch ($keyType) {
-                    case TableMap::TYPE_CAMELNAME:
-                        $key = 'geocodess';
-                        break;
-                    case TableMap::TYPE_FIELDNAME:
-                        $key = 'geocodess';
-                        break;
-                    default:
-                        $key = 'Geocodess';
-                }
-
-                $result[$key] = $this->collGeocodess->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
-        }
 
         return $result;
     }
@@ -1105,20 +1009,6 @@ abstract class Departments implements ActiveRecordInterface
     {
         $copyObj->setDepartmentCode($this->getDepartmentCode());
         $copyObj->setDepartmentName($this->getDepartmentName());
-
-        if ($deepCopy) {
-            // important: temporarily setNew(false) because this affects the behavior of
-            // the getter/setter methods for fkey referrer objects.
-            $copyObj->setNew(false);
-
-            foreach ($this->getGeocodess() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addGeocodes($relObj->copy($deepCopy));
-                }
-            }
-
-        } // if ($deepCopy)
-
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setDepartmentId(NULL); // this is a auto-increment column, so set to default value
@@ -1148,310 +1038,12 @@ abstract class Departments implements ActiveRecordInterface
     }
 
     /**
-     * Declares an association between this object and a ChildDepartmentSummary object.
-     *
-     * @param  ChildDepartmentSummary $v
-     * @return $this|\Propel\Propel\Departments The current object (for fluent API support)
-     * @throws PropelException
-     */
-    public function setDepartmentSummary(ChildDepartmentSummary $v = null)
-    {
-        if ($v === null) {
-            $this->setDepartmentCode(NULL);
-        } else {
-            $this->setDepartmentCode($v->getDepartmentCode());
-        }
-
-        $this->aDepartmentSummary = $v;
-
-        // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the ChildDepartmentSummary object, it will not be re-added.
-        if ($v !== null) {
-            $v->addDepartments($this);
-        }
-
-
-        return $this;
-    }
-
-
-    /**
-     * Get the associated ChildDepartmentSummary object
-     *
-     * @param  ConnectionInterface $con Optional Connection object.
-     * @return ChildDepartmentSummary The associated ChildDepartmentSummary object.
-     * @throws PropelException
-     */
-    public function getDepartmentSummary(ConnectionInterface $con = null)
-    {
-        if ($this->aDepartmentSummary === null && (($this->department_code !== "" && $this->department_code !== null))) {
-            $this->aDepartmentSummary = ChildDepartmentSummaryQuery::create()
-                ->filterByDepartments($this) // here
-                ->findOne($con);
-            /* The following can be used additionally to
-                guarantee the related object contains a reference
-                to this object.  This level of coupling may, however, be
-                undesirable since it could result in an only partially populated collection
-                in the referenced object.
-                $this->aDepartmentSummary->addDepartmentss($this);
-             */
-        }
-
-        return $this->aDepartmentSummary;
-    }
-
-
-    /**
-     * Initializes a collection based on the name of a relation.
-     * Avoids crafting an 'init[$relationName]s' method name
-     * that wouldn't work when StandardEnglishPluralizer is used.
-     *
-     * @param      string $relationName The name of the relation to initialize
-     * @return void
-     */
-    public function initRelation($relationName)
-    {
-        if ('Geocodes' == $relationName) {
-            $this->initGeocodess();
-            return;
-        }
-    }
-
-    /**
-     * Clears out the collGeocodess collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return void
-     * @see        addGeocodess()
-     */
-    public function clearGeocodess()
-    {
-        $this->collGeocodess = null; // important to set this to NULL since that means it is uninitialized
-    }
-
-    /**
-     * Reset is the collGeocodess collection loaded partially.
-     */
-    public function resetPartialGeocodess($v = true)
-    {
-        $this->collGeocodessPartial = $v;
-    }
-
-    /**
-     * Initializes the collGeocodess collection.
-     *
-     * By default this just sets the collGeocodess collection to an empty array (like clearcollGeocodess());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param      boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initGeocodess($overrideExisting = true)
-    {
-        if (null !== $this->collGeocodess && !$overrideExisting) {
-            return;
-        }
-
-        $collectionClassName = GeocodesTableMap::getTableMap()->getCollectionClassName();
-
-        $this->collGeocodess = new $collectionClassName;
-        $this->collGeocodess->setModel('\Propel\Propel\Geocodes');
-    }
-
-    /**
-     * Gets an array of ChildGeocodes objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this ChildDepartments is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      ConnectionInterface $con optional connection object
-     * @return ObjectCollection|ChildGeocodes[] List of ChildGeocodes objects
-     * @throws PropelException
-     */
-    public function getGeocodess(Criteria $criteria = null, ConnectionInterface $con = null)
-    {
-        $partial = $this->collGeocodessPartial && !$this->isNew();
-        if (null === $this->collGeocodess || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collGeocodess) {
-                // return empty collection
-                $this->initGeocodess();
-            } else {
-                $collGeocodess = ChildGeocodesQuery::create(null, $criteria)
-                    ->filterByDepartments($this)
-                    ->find($con);
-
-                if (null !== $criteria) {
-                    if (false !== $this->collGeocodessPartial && count($collGeocodess)) {
-                        $this->initGeocodess(false);
-
-                        foreach ($collGeocodess as $obj) {
-                            if (false == $this->collGeocodess->contains($obj)) {
-                                $this->collGeocodess->append($obj);
-                            }
-                        }
-
-                        $this->collGeocodessPartial = true;
-                    }
-
-                    return $collGeocodess;
-                }
-
-                if ($partial && $this->collGeocodess) {
-                    foreach ($this->collGeocodess as $obj) {
-                        if ($obj->isNew()) {
-                            $collGeocodess[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collGeocodess = $collGeocodess;
-                $this->collGeocodessPartial = false;
-            }
-        }
-
-        return $this->collGeocodess;
-    }
-
-    /**
-     * Sets a collection of ChildGeocodes objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param      Collection $geocodess A Propel collection.
-     * @param      ConnectionInterface $con Optional connection object
-     * @return $this|ChildDepartments The current object (for fluent API support)
-     */
-    public function setGeocodess(Collection $geocodess, ConnectionInterface $con = null)
-    {
-        /** @var ChildGeocodes[] $geocodessToDelete */
-        $geocodessToDelete = $this->getGeocodess(new Criteria(), $con)->diff($geocodess);
-
-
-        $this->geocodessScheduledForDeletion = $geocodessToDelete;
-
-        foreach ($geocodessToDelete as $geocodesRemoved) {
-            $geocodesRemoved->setDepartments(null);
-        }
-
-        $this->collGeocodess = null;
-        foreach ($geocodess as $geocodes) {
-            $this->addGeocodes($geocodes);
-        }
-
-        $this->collGeocodess = $geocodess;
-        $this->collGeocodessPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related Geocodes objects.
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct
-     * @param      ConnectionInterface $con
-     * @return int             Count of related Geocodes objects.
-     * @throws PropelException
-     */
-    public function countGeocodess(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
-    {
-        $partial = $this->collGeocodessPartial && !$this->isNew();
-        if (null === $this->collGeocodess || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collGeocodess) {
-                return 0;
-            }
-
-            if ($partial && !$criteria) {
-                return count($this->getGeocodess());
-            }
-
-            $query = ChildGeocodesQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByDepartments($this)
-                ->count($con);
-        }
-
-        return count($this->collGeocodess);
-    }
-
-    /**
-     * Method called to associate a ChildGeocodes object to this object
-     * through the ChildGeocodes foreign key attribute.
-     *
-     * @param  ChildGeocodes $l ChildGeocodes
-     * @return $this|\Propel\Propel\Departments The current object (for fluent API support)
-     */
-    public function addGeocodes(ChildGeocodes $l)
-    {
-        if ($this->collGeocodess === null) {
-            $this->initGeocodess();
-            $this->collGeocodessPartial = true;
-        }
-
-        if (!$this->collGeocodess->contains($l)) {
-            $this->doAddGeocodes($l);
-
-            if ($this->geocodessScheduledForDeletion and $this->geocodessScheduledForDeletion->contains($l)) {
-                $this->geocodessScheduledForDeletion->remove($this->geocodessScheduledForDeletion->search($l));
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param ChildGeocodes $geocodes The ChildGeocodes object to add.
-     */
-    protected function doAddGeocodes(ChildGeocodes $geocodes)
-    {
-        $this->collGeocodess[]= $geocodes;
-        $geocodes->setDepartments($this);
-    }
-
-    /**
-     * @param  ChildGeocodes $geocodes The ChildGeocodes object to remove.
-     * @return $this|ChildDepartments The current object (for fluent API support)
-     */
-    public function removeGeocodes(ChildGeocodes $geocodes)
-    {
-        if ($this->getGeocodess()->contains($geocodes)) {
-            $pos = $this->collGeocodess->search($geocodes);
-            $this->collGeocodess->remove($pos);
-            if (null === $this->geocodessScheduledForDeletion) {
-                $this->geocodessScheduledForDeletion = clone $this->collGeocodess;
-                $this->geocodessScheduledForDeletion->clear();
-            }
-            $this->geocodessScheduledForDeletion[]= clone $geocodes;
-            $geocodes->setDepartments(null);
-        }
-
-        return $this;
-    }
-
-    /**
      * Clears the current object, sets all attributes to their default values and removes
      * outgoing references as well as back-references (from other objects to this one. Results probably in a database
      * change of those foreign objects when you call `save` there).
      */
     public function clear()
     {
-        if (null !== $this->aDepartmentSummary) {
-            $this->aDepartmentSummary->removeDepartments($this);
-        }
         $this->department_id = null;
         $this->department_code = null;
         $this->department_name = null;
@@ -1473,15 +1065,8 @@ abstract class Departments implements ActiveRecordInterface
     public function clearAllReferences($deep = false)
     {
         if ($deep) {
-            if ($this->collGeocodess) {
-                foreach ($this->collGeocodess as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
         } // if ($deep)
 
-        $this->collGeocodess = null;
-        $this->aDepartmentSummary = null;
     }
 
     /**

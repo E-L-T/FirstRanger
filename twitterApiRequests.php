@@ -66,7 +66,7 @@ foreach ($responseTwitter->statuses as $status) {
     $tweet->setApiTweetId($status->id);
     $tweet->setTweetText($status->text);
     $tweet->setTweetPublicationHour($status->created_at);
-    //$tweet->get
+    $tweet->setGeocodeId(1);
     if(isset($status->retweet_count)){
         $tweet->setRetweetsQuantity($status->retweet_count);
     }

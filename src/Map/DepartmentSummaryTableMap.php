@@ -1,9 +1,9 @@
 <?php
 
-namespace Propel\Propel\Map;
+namespace Map;
 
-use Propel\Propel\DepartmentSummary;
-use Propel\Propel\DepartmentSummaryQuery;
+use \DepartmentSummary;
+use \DepartmentSummaryQuery;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\InstancePoolTrait;
@@ -34,7 +34,7 @@ class DepartmentSummaryTableMap extends TableMap
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'Propel.Propel.Map.DepartmentSummaryTableMap';
+    const CLASS_NAME = '.Map.DepartmentSummaryTableMap';
 
     /**
      * The default database name for this class
@@ -49,12 +49,12 @@ class DepartmentSummaryTableMap extends TableMap
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\Propel\\Propel\\DepartmentSummary';
+    const OM_CLASS = '\\DepartmentSummary';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'Propel.Propel.DepartmentSummary';
+    const CLASS_DEFAULT = 'DepartmentSummary';
 
     /**
      * The total number of columns
@@ -167,8 +167,8 @@ class DepartmentSummaryTableMap extends TableMap
         $this->setName('department_summary');
         $this->setPhpName('DepartmentSummary');
         $this->setIdentifierQuoting(false);
-        $this->setClassName('\\Propel\\Propel\\DepartmentSummary');
-        $this->setPackage('Propel.Propel');
+        $this->setClassName('\\DepartmentSummary');
+        $this->setPackage('');
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('department_summary_id', 'DepartmentSummaryId', 'INTEGER', true, null, null);
@@ -398,7 +398,7 @@ class DepartmentSummaryTableMap extends TableMap
         if ($values instanceof Criteria) {
             // rename for clarity
             $criteria = $values;
-        } elseif ($values instanceof \Propel\Propel\DepartmentSummary) { // it's a model object
+        } elseif ($values instanceof \DepartmentSummary) { // it's a model object
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks

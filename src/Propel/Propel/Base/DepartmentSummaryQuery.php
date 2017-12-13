@@ -10,7 +10,6 @@ use Propel\Propel\Map\DepartmentSummaryTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
-use Propel\Runtime\ActiveQuery\ModelJoin;
 use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
@@ -49,18 +48,6 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildDepartmentSummaryQuery leftJoinWith($relation) Adds a LEFT JOIN clause and with to the query
  * @method     ChildDepartmentSummaryQuery rightJoinWith($relation) Adds a RIGHT JOIN clause and with to the query
  * @method     ChildDepartmentSummaryQuery innerJoinWith($relation) Adds a INNER JOIN clause and with to the query
- *
- * @method     ChildDepartmentSummaryQuery leftJoinDepartments($relationAlias = null) Adds a LEFT JOIN clause to the query using the Departments relation
- * @method     ChildDepartmentSummaryQuery rightJoinDepartments($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Departments relation
- * @method     ChildDepartmentSummaryQuery innerJoinDepartments($relationAlias = null) Adds a INNER JOIN clause to the query using the Departments relation
- *
- * @method     ChildDepartmentSummaryQuery joinWithDepartments($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Departments relation
- *
- * @method     ChildDepartmentSummaryQuery leftJoinWithDepartments() Adds a LEFT JOIN clause and with to the query using the Departments relation
- * @method     ChildDepartmentSummaryQuery rightJoinWithDepartments() Adds a RIGHT JOIN clause and with to the query using the Departments relation
- * @method     ChildDepartmentSummaryQuery innerJoinWithDepartments() Adds a INNER JOIN clause and with to the query using the Departments relation
- *
- * @method     \Propel\Propel\DepartmentsQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
  * @method     ChildDepartmentSummary findOne(ConnectionInterface $con = null) Return the first ChildDepartmentSummary matching the query
  * @method     ChildDepartmentSummary findOneOrCreate(ConnectionInterface $con = null) Return the first ChildDepartmentSummary matching the query, or a new ChildDepartmentSummary object populated from the query conditions when no match is found
@@ -683,79 +670,6 @@ abstract class DepartmentSummaryQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(DepartmentSummaryTableMap::COL_DEPARTMENT_FACEBOOK_SHARES_QUANTITY, $departmentFacebookSharesQuantity, $comparison);
-    }
-
-    /**
-     * Filter the query by a related \Propel\Propel\Departments object
-     *
-     * @param \Propel\Propel\Departments|ObjectCollection $departments the related object to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return ChildDepartmentSummaryQuery The current query, for fluid interface
-     */
-    public function filterByDepartments($departments, $comparison = null)
-    {
-        if ($departments instanceof \Propel\Propel\Departments) {
-            return $this
-                ->addUsingAlias(DepartmentSummaryTableMap::COL_DEPARTMENT_CODE, $departments->getDepartmentCode(), $comparison);
-        } elseif ($departments instanceof ObjectCollection) {
-            return $this
-                ->useDepartmentsQuery()
-                ->filterByPrimaryKeys($departments->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByDepartments() only accepts arguments of type \Propel\Propel\Departments or Collection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the Departments relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return $this|ChildDepartmentSummaryQuery The current query, for fluid interface
-     */
-    public function joinDepartments($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Departments');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'Departments');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the Departments relation Departments object
-     *
-     * @see useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return \Propel\Propel\DepartmentsQuery A secondary query class using the current class as primary query
-     */
-    public function useDepartmentsQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        return $this
-            ->joinDepartments($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Departments', '\Propel\Propel\DepartmentsQuery');
     }
 
     /**

@@ -1,9 +1,9 @@
 <?php
 
-namespace Propel\Propel\Map;
+namespace Map;
 
-use Propel\Propel\Tweets;
-use Propel\Propel\TweetsQuery;
+use \Tweets;
+use \TweetsQuery;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\InstancePoolTrait;
@@ -34,7 +34,7 @@ class TweetsTableMap extends TableMap
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'Propel.Propel.Map.TweetsTableMap';
+    const CLASS_NAME = '.Map.TweetsTableMap';
 
     /**
      * The default database name for this class
@@ -49,12 +49,12 @@ class TweetsTableMap extends TableMap
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\Propel\\Propel\\Tweets';
+    const OM_CLASS = '\\Tweets';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'Propel.Propel.Tweets';
+    const CLASS_DEFAULT = 'Tweets';
 
     /**
      * The total number of columns
@@ -131,11 +131,6 @@ class TweetsTableMap extends TableMap
      */
     const DEFAULT_STRING_FORMAT = 'YAML';
 
-    /** The enumerated values for the quality_tweet field */
-    const COL_QUALITY_TWEET_POSITIVE = 'positive';
-    const COL_QUALITY_TWEET_NEGATIVE = 'negative';
-    const COL_QUALITY_TWEET_NEUTRAL = 'neutral';
-
     /**
      * holds an array of fieldnames
      *
@@ -164,36 +159,6 @@ class TweetsTableMap extends TableMap
         self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
     );
 
-    /** The enumerated values for this table */
-    protected static $enumValueSets = array(
-                TweetsTableMap::COL_QUALITY_TWEET => array(
-                            self::COL_QUALITY_TWEET_POSITIVE,
-            self::COL_QUALITY_TWEET_NEGATIVE,
-            self::COL_QUALITY_TWEET_NEUTRAL,
-        ),
-    );
-
-    /**
-     * Gets the list of values for all ENUM and SET columns
-     * @return array
-     */
-    public static function getValueSets()
-    {
-      return static::$enumValueSets;
-    }
-
-    /**
-     * Gets the list of values for an ENUM or SET column
-     * @param string $colname
-     * @return array list of possible values for the column
-     */
-    public static function getValueSet($colname)
-    {
-        $valueSets = self::getValueSets();
-
-        return $valueSets[$colname];
-    }
-
     /**
      * Initialize the table attributes and columns
      * Relations are not initialized by this method since they are lazy loaded
@@ -207,8 +172,8 @@ class TweetsTableMap extends TableMap
         $this->setName('tweets');
         $this->setPhpName('Tweets');
         $this->setIdentifierQuoting(false);
-        $this->setClassName('\\Propel\\Propel\\Tweets');
-        $this->setPackage('Propel.Propel');
+        $this->setClassName('\\Tweets');
+        $this->setPackage('');
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('tweet_id', 'TweetId', 'BIGINT', true, 18, null);
@@ -221,12 +186,7 @@ class TweetsTableMap extends TableMap
         $this->addColumn('twitter_account', 'TwitterAccount', 'LONGVARCHAR', true, null, null);
         $this->addColumn('coordinates', 'Coordinates', 'LONGVARCHAR', false, null, null);
         $this->addColumn('location', 'Location', 'LONGVARCHAR', false, null, null);
-        $this->addColumn('quality_tweet', 'QualityTweet', 'ENUM', false, null, null);
-        $this->getColumn('quality_tweet')->setValueSet(array (
-  0 => 'positive',
-  1 => 'negative',
-  2 => 'neutral',
-));
+        $this->addColumn('quality_tweet', 'QualityTweet', 'CHAR', false, null, null);
     } // initialize()
 
     /**
@@ -446,7 +406,7 @@ class TweetsTableMap extends TableMap
         if ($values instanceof Criteria) {
             // rename for clarity
             $criteria = $values;
-        } elseif ($values instanceof \Propel\Propel\Tweets) { // it's a model object
+        } elseif ($values instanceof \Tweets) { // it's a model object
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks

@@ -1,9 +1,9 @@
 <?php
 
-namespace Propel\Propel\Map;
+namespace Map;
 
-use Propel\Propel\Tweets;
-use Propel\Propel\TweetsQuery;
+use \PopularTweets;
+use \PopularTweetsQuery;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\InstancePoolTrait;
@@ -16,7 +16,7 @@ use Propel\Runtime\Map\TableMapTrait;
 
 
 /**
- * This class defines the structure of the 'tweets' table.
+ * This class defines the structure of the 'popular_tweets' table.
  *
  *
  *
@@ -26,7 +26,7 @@ use Propel\Runtime\Map\TableMapTrait;
  * (i.e. if it's a text column type).
  *
  */
-class TweetsTableMap extends TableMap
+class PopularTweetsTableMap extends TableMap
 {
     use InstancePoolTrait;
     use TableMapTrait;
@@ -34,7 +34,7 @@ class TweetsTableMap extends TableMap
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'Propel.Propel.Map.TweetsTableMap';
+    const CLASS_NAME = '.Map.PopularTweetsTableMap';
 
     /**
      * The default database name for this class
@@ -44,22 +44,22 @@ class TweetsTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'tweets';
+    const TABLE_NAME = 'popular_tweets';
 
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\Propel\\Propel\\Tweets';
+    const OM_CLASS = '\\PopularTweets';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'Propel.Propel.Tweets';
+    const CLASS_DEFAULT = 'PopularTweets';
 
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 11;
+    const NUM_COLUMNS = 9;
 
     /**
      * The number of lazy-loaded columns
@@ -69,72 +69,57 @@ class TweetsTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 11;
+    const NUM_HYDRATE_COLUMNS = 9;
+
+    /**
+     * the column name for the popular_tweet_id field
+     */
+    const COL_POPULAR_TWEET_ID = 'popular_tweets.popular_tweet_id';
 
     /**
      * the column name for the tweet_id field
      */
-    const COL_TWEET_ID = 'tweets.tweet_id';
-
-    /**
-     * the column name for the api_tweet_id field
-     */
-    const COL_API_TWEET_ID = 'tweets.api_tweet_id';
-
-    /**
-     * the column name for the tweet_text field
-     */
-    const COL_TWEET_TEXT = 'tweets.tweet_text';
-
-    /**
-     * the column name for the tweet_publication_hour field
-     */
-    const COL_TWEET_PUBLICATION_HOUR = 'tweets.tweet_publication_hour';
+    const COL_TWEET_ID = 'popular_tweets.tweet_id';
 
     /**
      * the column name for the geocode_id field
      */
-    const COL_GEOCODE_ID = 'tweets.geocode_id';
+    const COL_GEOCODE_ID = 'popular_tweets.geocode_id';
+
+    /**
+     * the column name for the votes_quantity field
+     */
+    const COL_VOTES_QUANTITY = 'popular_tweets.votes_quantity';
 
     /**
      * the column name for the retweets_quantity field
      */
-    const COL_RETWEETS_QUANTITY = 'tweets.retweets_quantity';
+    const COL_RETWEETS_QUANTITY = 'popular_tweets.retweets_quantity';
+
+    /**
+     * the column name for the tweet_publication_hour field
+     */
+    const COL_TWEET_PUBLICATION_HOUR = 'popular_tweets.tweet_publication_hour';
 
     /**
      * the column name for the favorites_quantity field
      */
-    const COL_FAVORITES_QUANTITY = 'tweets.favorites_quantity';
-
-    /**
-     * the column name for the twitter_account field
-     */
-    const COL_TWITTER_ACCOUNT = 'tweets.twitter_account';
+    const COL_FAVORITES_QUANTITY = 'popular_tweets.favorites_quantity';
 
     /**
      * the column name for the coordinates field
      */
-    const COL_COORDINATES = 'tweets.coordinates';
+    const COL_COORDINATES = 'popular_tweets.coordinates';
 
     /**
      * the column name for the location field
      */
-    const COL_LOCATION = 'tweets.location';
-
-    /**
-     * the column name for the quality_tweet field
-     */
-    const COL_QUALITY_TWEET = 'tweets.quality_tweet';
+    const COL_LOCATION = 'popular_tweets.location';
 
     /**
      * The default string format for model objects of the related table
      */
     const DEFAULT_STRING_FORMAT = 'YAML';
-
-    /** The enumerated values for the quality_tweet field */
-    const COL_QUALITY_TWEET_POSITIVE = 'positive';
-    const COL_QUALITY_TWEET_NEGATIVE = 'negative';
-    const COL_QUALITY_TWEET_NEUTRAL = 'neutral';
 
     /**
      * holds an array of fieldnames
@@ -143,11 +128,11 @@ class TweetsTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('TweetId', 'ApiTweetId', 'TweetText', 'TweetPublicationHour', 'GeocodeId', 'RetweetsQuantity', 'FavoritesQuantity', 'TwitterAccount', 'Coordinates', 'Location', 'QualityTweet', ),
-        self::TYPE_CAMELNAME     => array('tweetId', 'apiTweetId', 'tweetText', 'tweetPublicationHour', 'geocodeId', 'retweetsQuantity', 'favoritesQuantity', 'twitterAccount', 'coordinates', 'location', 'qualityTweet', ),
-        self::TYPE_COLNAME       => array(TweetsTableMap::COL_TWEET_ID, TweetsTableMap::COL_API_TWEET_ID, TweetsTableMap::COL_TWEET_TEXT, TweetsTableMap::COL_TWEET_PUBLICATION_HOUR, TweetsTableMap::COL_GEOCODE_ID, TweetsTableMap::COL_RETWEETS_QUANTITY, TweetsTableMap::COL_FAVORITES_QUANTITY, TweetsTableMap::COL_TWITTER_ACCOUNT, TweetsTableMap::COL_COORDINATES, TweetsTableMap::COL_LOCATION, TweetsTableMap::COL_QUALITY_TWEET, ),
-        self::TYPE_FIELDNAME     => array('tweet_id', 'api_tweet_id', 'tweet_text', 'tweet_publication_hour', 'geocode_id', 'retweets_quantity', 'favorites_quantity', 'twitter_account', 'coordinates', 'location', 'quality_tweet', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
+        self::TYPE_PHPNAME       => array('PopularTweetId', 'TweetId', 'GeocodeId', 'VotesQuantity', 'RetweetsQuantity', 'TweetPublicationHour', 'FavoritesQuantity', 'Coordinates', 'Location', ),
+        self::TYPE_CAMELNAME     => array('popularTweetId', 'tweetId', 'geocodeId', 'votesQuantity', 'retweetsQuantity', 'tweetPublicationHour', 'favoritesQuantity', 'coordinates', 'location', ),
+        self::TYPE_COLNAME       => array(PopularTweetsTableMap::COL_POPULAR_TWEET_ID, PopularTweetsTableMap::COL_TWEET_ID, PopularTweetsTableMap::COL_GEOCODE_ID, PopularTweetsTableMap::COL_VOTES_QUANTITY, PopularTweetsTableMap::COL_RETWEETS_QUANTITY, PopularTweetsTableMap::COL_TWEET_PUBLICATION_HOUR, PopularTweetsTableMap::COL_FAVORITES_QUANTITY, PopularTweetsTableMap::COL_COORDINATES, PopularTweetsTableMap::COL_LOCATION, ),
+        self::TYPE_FIELDNAME     => array('popular_tweet_id', 'tweet_id', 'geocode_id', 'votes_quantity', 'retweets_quantity', 'tweet_publication_hour', 'favorites_quantity', 'coordinates', 'location', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
     /**
@@ -157,42 +142,12 @@ class TweetsTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('TweetId' => 0, 'ApiTweetId' => 1, 'TweetText' => 2, 'TweetPublicationHour' => 3, 'GeocodeId' => 4, 'RetweetsQuantity' => 5, 'FavoritesQuantity' => 6, 'TwitterAccount' => 7, 'Coordinates' => 8, 'Location' => 9, 'QualityTweet' => 10, ),
-        self::TYPE_CAMELNAME     => array('tweetId' => 0, 'apiTweetId' => 1, 'tweetText' => 2, 'tweetPublicationHour' => 3, 'geocodeId' => 4, 'retweetsQuantity' => 5, 'favoritesQuantity' => 6, 'twitterAccount' => 7, 'coordinates' => 8, 'location' => 9, 'qualityTweet' => 10, ),
-        self::TYPE_COLNAME       => array(TweetsTableMap::COL_TWEET_ID => 0, TweetsTableMap::COL_API_TWEET_ID => 1, TweetsTableMap::COL_TWEET_TEXT => 2, TweetsTableMap::COL_TWEET_PUBLICATION_HOUR => 3, TweetsTableMap::COL_GEOCODE_ID => 4, TweetsTableMap::COL_RETWEETS_QUANTITY => 5, TweetsTableMap::COL_FAVORITES_QUANTITY => 6, TweetsTableMap::COL_TWITTER_ACCOUNT => 7, TweetsTableMap::COL_COORDINATES => 8, TweetsTableMap::COL_LOCATION => 9, TweetsTableMap::COL_QUALITY_TWEET => 10, ),
-        self::TYPE_FIELDNAME     => array('tweet_id' => 0, 'api_tweet_id' => 1, 'tweet_text' => 2, 'tweet_publication_hour' => 3, 'geocode_id' => 4, 'retweets_quantity' => 5, 'favorites_quantity' => 6, 'twitter_account' => 7, 'coordinates' => 8, 'location' => 9, 'quality_tweet' => 10, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
+        self::TYPE_PHPNAME       => array('PopularTweetId' => 0, 'TweetId' => 1, 'GeocodeId' => 2, 'VotesQuantity' => 3, 'RetweetsQuantity' => 4, 'TweetPublicationHour' => 5, 'FavoritesQuantity' => 6, 'Coordinates' => 7, 'Location' => 8, ),
+        self::TYPE_CAMELNAME     => array('popularTweetId' => 0, 'tweetId' => 1, 'geocodeId' => 2, 'votesQuantity' => 3, 'retweetsQuantity' => 4, 'tweetPublicationHour' => 5, 'favoritesQuantity' => 6, 'coordinates' => 7, 'location' => 8, ),
+        self::TYPE_COLNAME       => array(PopularTweetsTableMap::COL_POPULAR_TWEET_ID => 0, PopularTweetsTableMap::COL_TWEET_ID => 1, PopularTweetsTableMap::COL_GEOCODE_ID => 2, PopularTweetsTableMap::COL_VOTES_QUANTITY => 3, PopularTweetsTableMap::COL_RETWEETS_QUANTITY => 4, PopularTweetsTableMap::COL_TWEET_PUBLICATION_HOUR => 5, PopularTweetsTableMap::COL_FAVORITES_QUANTITY => 6, PopularTweetsTableMap::COL_COORDINATES => 7, PopularTweetsTableMap::COL_LOCATION => 8, ),
+        self::TYPE_FIELDNAME     => array('popular_tweet_id' => 0, 'tweet_id' => 1, 'geocode_id' => 2, 'votes_quantity' => 3, 'retweets_quantity' => 4, 'tweet_publication_hour' => 5, 'favorites_quantity' => 6, 'coordinates' => 7, 'location' => 8, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
-
-    /** The enumerated values for this table */
-    protected static $enumValueSets = array(
-                TweetsTableMap::COL_QUALITY_TWEET => array(
-                            self::COL_QUALITY_TWEET_POSITIVE,
-            self::COL_QUALITY_TWEET_NEGATIVE,
-            self::COL_QUALITY_TWEET_NEUTRAL,
-        ),
-    );
-
-    /**
-     * Gets the list of values for all ENUM and SET columns
-     * @return array
-     */
-    public static function getValueSets()
-    {
-      return static::$enumValueSets;
-    }
-
-    /**
-     * Gets the list of values for an ENUM or SET column
-     * @param string $colname
-     * @return array list of possible values for the column
-     */
-    public static function getValueSet($colname)
-    {
-        $valueSets = self::getValueSets();
-
-        return $valueSets[$colname];
-    }
 
     /**
      * Initialize the table attributes and columns
@@ -204,29 +159,22 @@ class TweetsTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('tweets');
-        $this->setPhpName('Tweets');
+        $this->setName('popular_tweets');
+        $this->setPhpName('PopularTweets');
         $this->setIdentifierQuoting(false);
-        $this->setClassName('\\Propel\\Propel\\Tweets');
-        $this->setPackage('Propel.Propel');
+        $this->setClassName('\\PopularTweets');
+        $this->setPackage('');
         $this->setUseIdGenerator(true);
         // columns
-        $this->addPrimaryKey('tweet_id', 'TweetId', 'BIGINT', true, 18, null);
-        $this->addColumn('api_tweet_id', 'ApiTweetId', 'BIGINT', true, 18, null);
-        $this->addColumn('tweet_text', 'TweetText', 'LONGVARCHAR', true, null, null);
-        $this->addColumn('tweet_publication_hour', 'TweetPublicationHour', 'TIMESTAMP', true, null, null);
-        $this->addColumn('geocode_id', 'GeocodeId', 'INTEGER', false, null, null);
+        $this->addPrimaryKey('popular_tweet_id', 'PopularTweetId', 'BIGINT', true, 18, null);
+        $this->addColumn('tweet_id', 'TweetId', 'BIGINT', true, 18, null);
+        $this->addColumn('geocode_id', 'GeocodeId', 'INTEGER', true, null, null);
+        $this->addColumn('votes_quantity', 'VotesQuantity', 'INTEGER', true, null, null);
         $this->addColumn('retweets_quantity', 'RetweetsQuantity', 'INTEGER', false, null, null);
+        $this->addColumn('tweet_publication_hour', 'TweetPublicationHour', 'TIMESTAMP', true, null, null);
         $this->addColumn('favorites_quantity', 'FavoritesQuantity', 'INTEGER', false, null, null);
-        $this->addColumn('twitter_account', 'TwitterAccount', 'LONGVARCHAR', true, null, null);
-        $this->addColumn('coordinates', 'Coordinates', 'LONGVARCHAR', false, null, null);
-        $this->addColumn('location', 'Location', 'LONGVARCHAR', false, null, null);
-        $this->addColumn('quality_tweet', 'QualityTweet', 'ENUM', false, null, null);
-        $this->getColumn('quality_tweet')->setValueSet(array (
-  0 => 'positive',
-  1 => 'negative',
-  2 => 'neutral',
-));
+        $this->addColumn('coordinates', 'Coordinates', 'LONGVARCHAR', true, null, null);
+        $this->addColumn('location', 'Location', 'LONGVARCHAR', true, null, null);
     } // initialize()
 
     /**
@@ -252,11 +200,11 @@ class TweetsTableMap extends TableMap
     public static function getPrimaryKeyHashFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
         // If the PK cannot be derived from the row, return NULL.
-        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('TweetId', TableMap::TYPE_PHPNAME, $indexType)] === null) {
+        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('PopularTweetId', TableMap::TYPE_PHPNAME, $indexType)] === null) {
             return null;
         }
 
-        return null === $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('TweetId', TableMap::TYPE_PHPNAME, $indexType)] || is_scalar($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('TweetId', TableMap::TYPE_PHPNAME, $indexType)]) || is_callable([$row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('TweetId', TableMap::TYPE_PHPNAME, $indexType)], '__toString']) ? (string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('TweetId', TableMap::TYPE_PHPNAME, $indexType)] : $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('TweetId', TableMap::TYPE_PHPNAME, $indexType)];
+        return null === $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('PopularTweetId', TableMap::TYPE_PHPNAME, $indexType)] || is_scalar($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('PopularTweetId', TableMap::TYPE_PHPNAME, $indexType)]) || is_callable([$row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('PopularTweetId', TableMap::TYPE_PHPNAME, $indexType)], '__toString']) ? (string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('PopularTweetId', TableMap::TYPE_PHPNAME, $indexType)] : $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('PopularTweetId', TableMap::TYPE_PHPNAME, $indexType)];
     }
 
     /**
@@ -276,7 +224,7 @@ class TweetsTableMap extends TableMap
         return (string) $row[
             $indexType == TableMap::TYPE_NUM
                 ? 0 + $offset
-                : self::translateFieldName('TweetId', TableMap::TYPE_PHPNAME, $indexType)
+                : self::translateFieldName('PopularTweetId', TableMap::TYPE_PHPNAME, $indexType)
         ];
     }
 
@@ -293,7 +241,7 @@ class TweetsTableMap extends TableMap
      */
     public static function getOMClass($withPrefix = true)
     {
-        return $withPrefix ? TweetsTableMap::CLASS_DEFAULT : TweetsTableMap::OM_CLASS;
+        return $withPrefix ? PopularTweetsTableMap::CLASS_DEFAULT : PopularTweetsTableMap::OM_CLASS;
     }
 
     /**
@@ -307,22 +255,22 @@ class TweetsTableMap extends TableMap
      *
      * @throws PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
-     * @return array           (Tweets object, last column rank)
+     * @return array           (PopularTweets object, last column rank)
      */
     public static function populateObject($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        $key = TweetsTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
-        if (null !== ($obj = TweetsTableMap::getInstanceFromPool($key))) {
+        $key = PopularTweetsTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
+        if (null !== ($obj = PopularTweetsTableMap::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $offset, true); // rehydrate
-            $col = $offset + TweetsTableMap::NUM_HYDRATE_COLUMNS;
+            $col = $offset + PopularTweetsTableMap::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = TweetsTableMap::OM_CLASS;
-            /** @var Tweets $obj */
+            $cls = PopularTweetsTableMap::OM_CLASS;
+            /** @var PopularTweets $obj */
             $obj = new $cls();
             $col = $obj->hydrate($row, $offset, false, $indexType);
-            TweetsTableMap::addInstanceToPool($obj, $key);
+            PopularTweetsTableMap::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -345,18 +293,18 @@ class TweetsTableMap extends TableMap
         $cls = static::getOMClass(false);
         // populate the object(s)
         while ($row = $dataFetcher->fetch()) {
-            $key = TweetsTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
-            if (null !== ($obj = TweetsTableMap::getInstanceFromPool($key))) {
+            $key = PopularTweetsTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
+            if (null !== ($obj = PopularTweetsTableMap::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
                 $results[] = $obj;
             } else {
-                /** @var Tweets $obj */
+                /** @var PopularTweets $obj */
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                TweetsTableMap::addInstanceToPool($obj, $key);
+                PopularTweetsTableMap::addInstanceToPool($obj, $key);
             } // if key exists
         }
 
@@ -377,29 +325,25 @@ class TweetsTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(TweetsTableMap::COL_TWEET_ID);
-            $criteria->addSelectColumn(TweetsTableMap::COL_API_TWEET_ID);
-            $criteria->addSelectColumn(TweetsTableMap::COL_TWEET_TEXT);
-            $criteria->addSelectColumn(TweetsTableMap::COL_TWEET_PUBLICATION_HOUR);
-            $criteria->addSelectColumn(TweetsTableMap::COL_GEOCODE_ID);
-            $criteria->addSelectColumn(TweetsTableMap::COL_RETWEETS_QUANTITY);
-            $criteria->addSelectColumn(TweetsTableMap::COL_FAVORITES_QUANTITY);
-            $criteria->addSelectColumn(TweetsTableMap::COL_TWITTER_ACCOUNT);
-            $criteria->addSelectColumn(TweetsTableMap::COL_COORDINATES);
-            $criteria->addSelectColumn(TweetsTableMap::COL_LOCATION);
-            $criteria->addSelectColumn(TweetsTableMap::COL_QUALITY_TWEET);
+            $criteria->addSelectColumn(PopularTweetsTableMap::COL_POPULAR_TWEET_ID);
+            $criteria->addSelectColumn(PopularTweetsTableMap::COL_TWEET_ID);
+            $criteria->addSelectColumn(PopularTweetsTableMap::COL_GEOCODE_ID);
+            $criteria->addSelectColumn(PopularTweetsTableMap::COL_VOTES_QUANTITY);
+            $criteria->addSelectColumn(PopularTweetsTableMap::COL_RETWEETS_QUANTITY);
+            $criteria->addSelectColumn(PopularTweetsTableMap::COL_TWEET_PUBLICATION_HOUR);
+            $criteria->addSelectColumn(PopularTweetsTableMap::COL_FAVORITES_QUANTITY);
+            $criteria->addSelectColumn(PopularTweetsTableMap::COL_COORDINATES);
+            $criteria->addSelectColumn(PopularTweetsTableMap::COL_LOCATION);
         } else {
+            $criteria->addSelectColumn($alias . '.popular_tweet_id');
             $criteria->addSelectColumn($alias . '.tweet_id');
-            $criteria->addSelectColumn($alias . '.api_tweet_id');
-            $criteria->addSelectColumn($alias . '.tweet_text');
-            $criteria->addSelectColumn($alias . '.tweet_publication_hour');
             $criteria->addSelectColumn($alias . '.geocode_id');
+            $criteria->addSelectColumn($alias . '.votes_quantity');
             $criteria->addSelectColumn($alias . '.retweets_quantity');
+            $criteria->addSelectColumn($alias . '.tweet_publication_hour');
             $criteria->addSelectColumn($alias . '.favorites_quantity');
-            $criteria->addSelectColumn($alias . '.twitter_account');
             $criteria->addSelectColumn($alias . '.coordinates');
             $criteria->addSelectColumn($alias . '.location');
-            $criteria->addSelectColumn($alias . '.quality_tweet');
         }
     }
 
@@ -412,7 +356,7 @@ class TweetsTableMap extends TableMap
      */
     public static function getTableMap()
     {
-        return Propel::getServiceContainer()->getDatabaseMap(TweetsTableMap::DATABASE_NAME)->getTable(TweetsTableMap::TABLE_NAME);
+        return Propel::getServiceContainer()->getDatabaseMap(PopularTweetsTableMap::DATABASE_NAME)->getTable(PopularTweetsTableMap::TABLE_NAME);
     }
 
     /**
@@ -420,16 +364,16 @@ class TweetsTableMap extends TableMap
      */
     public static function buildTableMap()
     {
-        $dbMap = Propel::getServiceContainer()->getDatabaseMap(TweetsTableMap::DATABASE_NAME);
-        if (!$dbMap->hasTable(TweetsTableMap::TABLE_NAME)) {
-            $dbMap->addTableObject(new TweetsTableMap());
+        $dbMap = Propel::getServiceContainer()->getDatabaseMap(PopularTweetsTableMap::DATABASE_NAME);
+        if (!$dbMap->hasTable(PopularTweetsTableMap::TABLE_NAME)) {
+            $dbMap->addTableObject(new PopularTweetsTableMap());
         }
     }
 
     /**
-     * Performs a DELETE on the database, given a Tweets or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a PopularTweets or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or Tweets object or primary key or array of primary keys
+     * @param mixed               $values Criteria or PopularTweets object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param  ConnectionInterface $con the connection to use
      * @return int             The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -440,27 +384,27 @@ class TweetsTableMap extends TableMap
      public static function doDelete($values, ConnectionInterface $con = null)
      {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(TweetsTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(PopularTweetsTableMap::DATABASE_NAME);
         }
 
         if ($values instanceof Criteria) {
             // rename for clarity
             $criteria = $values;
-        } elseif ($values instanceof \Propel\Propel\Tweets) { // it's a model object
+        } elseif ($values instanceof \PopularTweets) { // it's a model object
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(TweetsTableMap::DATABASE_NAME);
-            $criteria->add(TweetsTableMap::COL_TWEET_ID, (array) $values, Criteria::IN);
+            $criteria = new Criteria(PopularTweetsTableMap::DATABASE_NAME);
+            $criteria->add(PopularTweetsTableMap::COL_POPULAR_TWEET_ID, (array) $values, Criteria::IN);
         }
 
-        $query = TweetsQuery::create()->mergeWith($criteria);
+        $query = PopularTweetsQuery::create()->mergeWith($criteria);
 
         if ($values instanceof Criteria) {
-            TweetsTableMap::clearInstancePool();
+            PopularTweetsTableMap::clearInstancePool();
         } elseif (!is_object($values)) { // it's a primary key, or an array of pks
             foreach ((array) $values as $singleval) {
-                TweetsTableMap::removeInstanceFromPool($singleval);
+                PopularTweetsTableMap::removeInstanceFromPool($singleval);
             }
         }
 
@@ -468,20 +412,20 @@ class TweetsTableMap extends TableMap
     }
 
     /**
-     * Deletes all rows from the tweets table.
+     * Deletes all rows from the popular_tweets table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
     public static function doDeleteAll(ConnectionInterface $con = null)
     {
-        return TweetsQuery::create()->doDeleteAll($con);
+        return PopularTweetsQuery::create()->doDeleteAll($con);
     }
 
     /**
-     * Performs an INSERT on the database, given a Tweets or Criteria object.
+     * Performs an INSERT on the database, given a PopularTweets or Criteria object.
      *
-     * @param mixed               $criteria Criteria or Tweets object containing data that is used to create the INSERT statement.
+     * @param mixed               $criteria Criteria or PopularTweets object containing data that is used to create the INSERT statement.
      * @param ConnectionInterface $con the ConnectionInterface connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -490,22 +434,22 @@ class TweetsTableMap extends TableMap
     public static function doInsert($criteria, ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(TweetsTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(PopularTweetsTableMap::DATABASE_NAME);
         }
 
         if ($criteria instanceof Criteria) {
             $criteria = clone $criteria; // rename for clarity
         } else {
-            $criteria = $criteria->buildCriteria(); // build Criteria from Tweets object
+            $criteria = $criteria->buildCriteria(); // build Criteria from PopularTweets object
         }
 
-        if ($criteria->containsKey(TweetsTableMap::COL_TWEET_ID) && $criteria->keyContainsValue(TweetsTableMap::COL_TWEET_ID) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.TweetsTableMap::COL_TWEET_ID.')');
+        if ($criteria->containsKey(PopularTweetsTableMap::COL_POPULAR_TWEET_ID) && $criteria->keyContainsValue(PopularTweetsTableMap::COL_POPULAR_TWEET_ID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.PopularTweetsTableMap::COL_POPULAR_TWEET_ID.')');
         }
 
 
         // Set the correct dbName
-        $query = TweetsQuery::create()->mergeWith($criteria);
+        $query = PopularTweetsQuery::create()->mergeWith($criteria);
 
         // use transaction because $criteria could contain info
         // for more than one table (I guess, conceivably)
@@ -514,7 +458,7 @@ class TweetsTableMap extends TableMap
         });
     }
 
-} // TweetsTableMap
+} // PopularTweetsTableMap
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-TweetsTableMap::buildTableMap();
+PopularTweetsTableMap::buildTableMap();

@@ -76,13 +76,6 @@ abstract class PopularTweets implements ActiveRecordInterface
     protected $tweet_id;
 
     /**
-     * The value for the url_tweet field.
-     *
-     * @var        string
-     */
-    protected $url_tweet;
-
-    /**
      * The value for the geocode_id field.
      *
      * @var        int
@@ -385,16 +378,6 @@ abstract class PopularTweets implements ActiveRecordInterface
     }
 
     /**
-     * Get the [url_tweet] column value.
-     *
-     * @return string
-     */
-    public function getUrlTweet()
-    {
-        return $this->url_tweet;
-    }
-
-    /**
      * Get the [geocode_id] column value.
      *
      * @return int
@@ -513,26 +496,6 @@ abstract class PopularTweets implements ActiveRecordInterface
 
         return $this;
     } // setTweetId()
-
-    /**
-     * Set the value of [url_tweet] column.
-     *
-     * @param string $v new value
-     * @return $this|\Propel\Propel\PopularTweets The current object (for fluent API support)
-     */
-    public function setUrlTweet($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->url_tweet !== $v) {
-            $this->url_tweet = $v;
-            $this->modifiedColumns[PopularTweetsTableMap::COL_URL_TWEET] = true;
-        }
-
-        return $this;
-    } // setUrlTweet()
 
     /**
      * Set the value of [geocode_id] column.
@@ -716,31 +679,28 @@ abstract class PopularTweets implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : PopularTweetsTableMap::translateFieldName('TweetId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->tweet_id = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : PopularTweetsTableMap::translateFieldName('UrlTweet', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->url_tweet = (null !== $col) ? (string) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : PopularTweetsTableMap::translateFieldName('GeocodeId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : PopularTweetsTableMap::translateFieldName('GeocodeId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->geocode_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : PopularTweetsTableMap::translateFieldName('VotesQuantity', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : PopularTweetsTableMap::translateFieldName('VotesQuantity', TableMap::TYPE_PHPNAME, $indexType)];
             $this->votes_quantity = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : PopularTweetsTableMap::translateFieldName('RetweetsQuantity', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : PopularTweetsTableMap::translateFieldName('RetweetsQuantity', TableMap::TYPE_PHPNAME, $indexType)];
             $this->retweets_quantity = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : PopularTweetsTableMap::translateFieldName('TweetPublicationHour', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : PopularTweetsTableMap::translateFieldName('TweetPublicationHour', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
             $this->tweet_publication_hour = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : PopularTweetsTableMap::translateFieldName('FavoritesQuantity', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : PopularTweetsTableMap::translateFieldName('FavoritesQuantity', TableMap::TYPE_PHPNAME, $indexType)];
             $this->favorites_quantity = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : PopularTweetsTableMap::translateFieldName('Coordinates', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : PopularTweetsTableMap::translateFieldName('Coordinates', TableMap::TYPE_PHPNAME, $indexType)];
             $this->coordinates = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 9 + $startcol : PopularTweetsTableMap::translateFieldName('Location', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : PopularTweetsTableMap::translateFieldName('Location', TableMap::TYPE_PHPNAME, $indexType)];
             $this->location = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
@@ -750,7 +710,7 @@ abstract class PopularTweets implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 10; // 10 = PopularTweetsTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 9; // 9 = PopularTweetsTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\Propel\\Propel\\PopularTweets'), 0, $e);
@@ -957,9 +917,6 @@ abstract class PopularTweets implements ActiveRecordInterface
         if ($this->isColumnModified(PopularTweetsTableMap::COL_TWEET_ID)) {
             $modifiedColumns[':p' . $index++]  = 'tweet_id';
         }
-        if ($this->isColumnModified(PopularTweetsTableMap::COL_URL_TWEET)) {
-            $modifiedColumns[':p' . $index++]  = 'url_tweet';
-        }
         if ($this->isColumnModified(PopularTweetsTableMap::COL_GEOCODE_ID)) {
             $modifiedColumns[':p' . $index++]  = 'geocode_id';
         }
@@ -997,9 +954,6 @@ abstract class PopularTweets implements ActiveRecordInterface
                         break;
                     case 'tweet_id':
                         $stmt->bindValue($identifier, $this->tweet_id, PDO::PARAM_INT);
-                        break;
-                    case 'url_tweet':
-                        $stmt->bindValue($identifier, $this->url_tweet, PDO::PARAM_STR);
                         break;
                     case 'geocode_id':
                         $stmt->bindValue($identifier, $this->geocode_id, PDO::PARAM_INT);
@@ -1091,27 +1045,24 @@ abstract class PopularTweets implements ActiveRecordInterface
                 return $this->getTweetId();
                 break;
             case 2:
-                return $this->getUrlTweet();
-                break;
-            case 3:
                 return $this->getGeocodeId();
                 break;
-            case 4:
+            case 3:
                 return $this->getVotesQuantity();
                 break;
-            case 5:
+            case 4:
                 return $this->getRetweetsQuantity();
                 break;
-            case 6:
+            case 5:
                 return $this->getTweetPublicationHour();
                 break;
-            case 7:
+            case 6:
                 return $this->getFavoritesQuantity();
                 break;
-            case 8:
+            case 7:
                 return $this->getCoordinates();
                 break;
-            case 9:
+            case 8:
                 return $this->getLocation();
                 break;
             default:
@@ -1145,17 +1096,16 @@ abstract class PopularTweets implements ActiveRecordInterface
         $result = array(
             $keys[0] => $this->getPopularTweetId(),
             $keys[1] => $this->getTweetId(),
-            $keys[2] => $this->getUrlTweet(),
-            $keys[3] => $this->getGeocodeId(),
-            $keys[4] => $this->getVotesQuantity(),
-            $keys[5] => $this->getRetweetsQuantity(),
-            $keys[6] => $this->getTweetPublicationHour(),
-            $keys[7] => $this->getFavoritesQuantity(),
-            $keys[8] => $this->getCoordinates(),
-            $keys[9] => $this->getLocation(),
+            $keys[2] => $this->getGeocodeId(),
+            $keys[3] => $this->getVotesQuantity(),
+            $keys[4] => $this->getRetweetsQuantity(),
+            $keys[5] => $this->getTweetPublicationHour(),
+            $keys[6] => $this->getFavoritesQuantity(),
+            $keys[7] => $this->getCoordinates(),
+            $keys[8] => $this->getLocation(),
         );
-        if ($result[$keys[6]] instanceof \DateTimeInterface) {
-            $result[$keys[6]] = $result[$keys[6]]->format('c');
+        if ($result[$keys[5]] instanceof \DateTimeInterface) {
+            $result[$keys[5]] = $result[$keys[5]]->format('c');
         }
 
         $virtualColumns = $this->virtualColumns;
@@ -1203,27 +1153,24 @@ abstract class PopularTweets implements ActiveRecordInterface
                 $this->setTweetId($value);
                 break;
             case 2:
-                $this->setUrlTweet($value);
-                break;
-            case 3:
                 $this->setGeocodeId($value);
                 break;
-            case 4:
+            case 3:
                 $this->setVotesQuantity($value);
                 break;
-            case 5:
+            case 4:
                 $this->setRetweetsQuantity($value);
                 break;
-            case 6:
+            case 5:
                 $this->setTweetPublicationHour($value);
                 break;
-            case 7:
+            case 6:
                 $this->setFavoritesQuantity($value);
                 break;
-            case 8:
+            case 7:
                 $this->setCoordinates($value);
                 break;
-            case 9:
+            case 8:
                 $this->setLocation($value);
                 break;
         } // switch()
@@ -1259,28 +1206,25 @@ abstract class PopularTweets implements ActiveRecordInterface
             $this->setTweetId($arr[$keys[1]]);
         }
         if (array_key_exists($keys[2], $arr)) {
-            $this->setUrlTweet($arr[$keys[2]]);
+            $this->setGeocodeId($arr[$keys[2]]);
         }
         if (array_key_exists($keys[3], $arr)) {
-            $this->setGeocodeId($arr[$keys[3]]);
+            $this->setVotesQuantity($arr[$keys[3]]);
         }
         if (array_key_exists($keys[4], $arr)) {
-            $this->setVotesQuantity($arr[$keys[4]]);
+            $this->setRetweetsQuantity($arr[$keys[4]]);
         }
         if (array_key_exists($keys[5], $arr)) {
-            $this->setRetweetsQuantity($arr[$keys[5]]);
+            $this->setTweetPublicationHour($arr[$keys[5]]);
         }
         if (array_key_exists($keys[6], $arr)) {
-            $this->setTweetPublicationHour($arr[$keys[6]]);
+            $this->setFavoritesQuantity($arr[$keys[6]]);
         }
         if (array_key_exists($keys[7], $arr)) {
-            $this->setFavoritesQuantity($arr[$keys[7]]);
+            $this->setCoordinates($arr[$keys[7]]);
         }
         if (array_key_exists($keys[8], $arr)) {
-            $this->setCoordinates($arr[$keys[8]]);
-        }
-        if (array_key_exists($keys[9], $arr)) {
-            $this->setLocation($arr[$keys[9]]);
+            $this->setLocation($arr[$keys[8]]);
         }
     }
 
@@ -1328,9 +1272,6 @@ abstract class PopularTweets implements ActiveRecordInterface
         }
         if ($this->isColumnModified(PopularTweetsTableMap::COL_TWEET_ID)) {
             $criteria->add(PopularTweetsTableMap::COL_TWEET_ID, $this->tweet_id);
-        }
-        if ($this->isColumnModified(PopularTweetsTableMap::COL_URL_TWEET)) {
-            $criteria->add(PopularTweetsTableMap::COL_URL_TWEET, $this->url_tweet);
         }
         if ($this->isColumnModified(PopularTweetsTableMap::COL_GEOCODE_ID)) {
             $criteria->add(PopularTweetsTableMap::COL_GEOCODE_ID, $this->geocode_id);
@@ -1440,7 +1381,6 @@ abstract class PopularTweets implements ActiveRecordInterface
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
         $copyObj->setTweetId($this->getTweetId());
-        $copyObj->setUrlTweet($this->getUrlTweet());
         $copyObj->setGeocodeId($this->getGeocodeId());
         $copyObj->setVotesQuantity($this->getVotesQuantity());
         $copyObj->setRetweetsQuantity($this->getRetweetsQuantity());
@@ -1485,7 +1425,6 @@ abstract class PopularTweets implements ActiveRecordInterface
     {
         $this->popular_tweet_id = null;
         $this->tweet_id = null;
-        $this->url_tweet = null;
         $this->geocode_id = null;
         $this->votes_quantity = null;
         $this->retweets_quantity = null;
