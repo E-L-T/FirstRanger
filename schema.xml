@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <database name="default" defaultIdMethod="native" namespace="Propel" defaultPhpNamingMethod="underscore">
   <table name="comments" idMethod="native" phpName="Comments" namespace="Propel">
-    <column name="id_comment" phpName="IdComment" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
-    <column name="id_user" phpName="IdUser" type="INTEGER" required="true"/>
+    <column name="comment_id" phpName="CommentId" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="user_id" phpName="UserId" type="INTEGER" required="true"/>
     <column name="comment_publication_hour" phpName="CommentPublicationHour" type="TIMESTAMP" required="true"/>
     <column name="likes_count" phpName="LikesCount" type="INTEGER"/>
-    <foreign-key foreignTable="users" name="comments_ibfk_1">
-      <reference local="id_user" foreign="user_id"/>
-    </foreign-key>
-    <index name="id_utilisateur">
-      <index-column name="id_user"/>
-    </index>
+    
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
@@ -26,9 +21,7 @@
     <column name="negative_popular_tweet_id" phpName="NegativePopularTweetId" type="INTEGER" required="true"/>
     <column name="department_twitter_shares_quantity" phpName="DepartmentTwitterSharesQuantity" type="INTEGER"/>
     <column name="department_facebook_shares_quantity" phpName="DepartmentFacebookSharesQuantity" type="INTEGER"/>
-    <index name="code_departement">
-      <index-column name="department_code"/>
-    </index>
+    
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
@@ -37,12 +30,8 @@
     <column name="department_id" phpName="DepartmentId" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="department_code" phpName="DepartmentCode" type="VARCHAR" size="5" required="true"/>
     <column name="department_name" phpName="DepartmentName" type="VARCHAR" size="70" required="true"/>
-    <foreign-key foreignTable="department_summary" name="departments_ibfk_1">
-      <reference local="department_code" foreign="department_code"/>
-    </foreign-key>
-    <index name="code_departement">
-      <index-column name="department_code"/>
-    </index>
+    
+    
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
@@ -60,12 +49,8 @@
     <column name="geocode_id" phpName="GeocodeId" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="geocode_name" phpName="GeocodeName" type="VARCHAR" size="20" required="true"/>
     <column name="department_id" phpName="DepartmentId" type="INTEGER" required="true"/>
-    <foreign-key foreignTable="departments" name="geocodes_ibfk_1">
-      <reference local="department_id" foreign="department_id"/>
-    </foreign-key>
-    <index name="id_departement">
-      <index-column name="department_id"/>
-    </index>
+    <column name="geocode" phpName="Geocode" type="VARCHAR" size="100"  required="true"/>
+    
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
@@ -73,7 +58,6 @@
   <table name="popular_tweets" idMethod="native" phpName="PopularTweets" namespace="Propel">
     <column name="popular_tweet_id" phpName="PopularTweetId" type="BIGINT" size="18" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="tweet_id" phpName="TweetId" type="BIGINT" size="18" required="true"/>
-    <column name="url_tweet" phpName="UrlTweet" type="LONGVARCHAR" required="true"/>
     <column name="geocode_id" phpName="GeocodeId" type="INTEGER" required="true"/>
     <column name="votes_quantity" phpName="VotesQuantity" type="INTEGER" required="true"/>
     <column name="retweets_quantity" phpName="RetweetsQuantity" type="INTEGER"/>
@@ -81,7 +65,7 @@
     <column name="favorites_quantity" phpName="FavoritesQuantity" type="INTEGER"/>
     <column name="coordinates" phpName="Coordinates" type="LONGVARCHAR" required="true"/>
     <column name="location" phpName="Location" type="LONGVARCHAR" required="true"/>
-    <index name="id_tweet">
+    <index name="tweet_id">
       <index-column name="tweet_id"/>
     </index>
     <vendor type="mysql">
@@ -93,19 +77,15 @@
     <column name="api_tweet_id" phpName="ApiTweetId" type="BIGINT" size="18" required="true"/>
     <column name="tweet_text" phpName="TweetText" type="LONGVARCHAR" required="true"/>
     <column name="tweet_publication_hour" phpName="TweetPublicationHour" type="TIMESTAMP" required="true"/>
-    <column name="url_tweet" phpName="UrlTweet" type="LONGVARCHAR" required="true"/>
-    <column name="id_geocode" phpName="IdGeocode" type="INTEGER"/>
+    <column name="geocode_id" phpName="GeocodeId" type="INTEGER"/>
     <column name="retweets_quantity" phpName="RetweetsQuantity" type="INTEGER"/>
     <column name="favorites_quantity" phpName="FavoritesQuantity" type="INTEGER"/>
     <column name="twitter_account" phpName="TwitterAccount" type="LONGVARCHAR" required="true"/>
     <column name="coordinates" phpName="Coordinates" type="LONGVARCHAR"/>
     <column name="location" phpName="Location" type="LONGVARCHAR"/>
-    <foreign-key foreignTable="geocodes" name="tweets_ibfk_1">
-      <reference local="id_geocode" foreign="geocode_id"/>
-    </foreign-key>
-    <index name="id_geocode">
-      <index-column name="id_geocode"/>
-    </index>
+    <column name="quality_tweet" phpName="QualityTweet" type="ENUM" valueSet="positive, negative, neutral"/>
+
+    
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>

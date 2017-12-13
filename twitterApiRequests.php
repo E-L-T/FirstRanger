@@ -56,8 +56,9 @@ $responseTwitter = $connection->get("search/tweets", [
 
 foreach ($responseTwitter->statuses as $status) {
     
-//    $queryTweets = TweetsQuery::create();
-//    $tweet = $queryTweets->filterByApiTweetId($status->id);
+    //$queryTweets = TweetsQuery::create();
+    //$tweet = $queryTweets->filterByApiTweetId($status->id);
+    
 //    if(! $tweet) {
 //        $tweet = new Tweets();
     var_dump($status);
@@ -73,12 +74,15 @@ foreach ($responseTwitter->statuses as $status) {
         $tweet->setFavoritesQuantity($status->retweeted_status->favorite_count);
     }
     $tweet->setTwitterAccount($status->user->screen_name);
-    if(isset($status->user->coordinates)){
-        $tweet->setCoordinates($status->coordinates);
+    if(isset($status->coordinates->coordinates)){
+        $tweet->setCoordinates($status->coordinates->coordinates);
     }
     if(isset($status->user->location)){
         $tweet->setLocation($status->user->location);
-    }
+   }
+//    if(isset($status->place -> bounding_box -> coordinates)){
+//       $tweet->setLocation($status->place -> bounding_box -> coordinates);
+//    }
     
        $tweet->save();
 //    }
