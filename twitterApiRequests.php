@@ -1,6 +1,6 @@
 <?php 
 
-require_once './vendor/autoload.php';
+require_once __DIR__.'/vendor/autoload.php';
 
 use Abraham\TwitterOAuth\TwitterOAuth;
 use Propel\Common\Config\ConfigurationManager;
@@ -9,8 +9,10 @@ use Propel\Propel\TweetsQuery;
 use Propel\Runtime\Connection\ConnectionManagerSingle;
 use Propel\Runtime\Propel;
 
+
+file_put_contents('/var/www/html/FirstRanger/cron.log', 'Je suis passée');
 // Load the configuration file 
-$configManager = new ConfigurationManager( 'propel.php' );
+$configManager = new ConfigurationManager( __DIR__.'/propel.php' );
 
 // Set up the connection manager
 $manager = new ConnectionManagerSingle();
@@ -42,26 +44,51 @@ $content = $connection->get("account/verify_credentials");
 
 //Create tweet
 //$new_status = $connection->post("statuses/update", ["status" => "This tweet was sent by twitter API"]);
+//écupérer le min id de ma dernière tranche
+//$minId. if id < miniD
+//    
+// $minId = 1345;
+//
+//foreach($statuses as $status) {
+//    id($status->id < $minId){
+//        $minId = $status->id;
+//}
+//}
+////récupérer le dernier id inséré dans la bdd
+//echo 'debut';
+//$tweet = new Tweets();
+//$queryTweets = TweetsQuery::create();
+//$lastTweet = $queryTweets->orderByTweetId('desc')->limit(1)->findOne();
+//$lastId = $lastTweet->getApiTweetId();
+////$lastId = $lastTweet::index;
+//        //(ApiTweetId->)->filterByGeocodeId(1);  //orderByApiTweetId('desc')->limit(1);
+//var_dump($lastTweet);
+//
+//
+//echo 'post vardump lastweet';
+//var_dump($lastId);
+//echo 'cetait le lastId';
+//
 
 //Get tweets
 $responseTwitter = $connection->get("search/tweets", [
     "q" => "\xF0\x9F\x98\x81 OR \xF0\x9F\x98\x82 OR \xF0\x9F\x98\x83 -RT",      //on précise qu'on veut pas les RT.
-
-    "count" => "100", 
+    "count" => "10", 
     "result_type" => "recent", 
-    "geocode" => "48.857204,2.334131,6km"
+    "geocode" => "48.857204,2.334131,6km",
+//    "max_id"=> "$minId"
     ]);
 
 //$tweets = new \Propel\Runtime\Collection\ObjectCollection();
 
 foreach ($responseTwitter->statuses as $status) {
     
-    //$queryTweets = TweetsQuery::create();
-    //$tweet = $queryTweets->filterByApiTweetId($status->id);
+    $queryTweets = TweetsQuery::create();
+    $tweet = $queryTweets->filterByApiTweetId($status->id)->findOne();
     
-//    if(! $tweet) {
-//        $tweet = new Tweets();
-    var_dump($status);
+   if(! $tweet) {
+//        
+    
     $tweet = new Tweets();
     $tweet->setApiTweetId($status->id);
     $tweet->setTweetText($status->text);
@@ -86,9 +113,8 @@ foreach ($responseTwitter->statuses as $status) {
 //    }
     
        $tweet->save();
-//    }
+   }
     
-   //$tweets->append($tweet);
 }
 
 
