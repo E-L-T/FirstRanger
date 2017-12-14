@@ -1,6 +1,6 @@
-<?php 
+<?php
 
-require_once __DIR__.'/vendor/autoload.php';
+require_once __DIR__ . '/vendor/autoload.php';
 
 use Abraham\TwitterOAuth\TwitterOAuth;
 use Propel\Common\Config\ConfigurationManager;
@@ -9,14 +9,13 @@ use Propel\Propel\TweetsQuery;
 use Propel\Runtime\Connection\ConnectionManagerSingle;
 use Propel\Runtime\Propel;
 
-
-file_put_contents('/var/www/html/FirstRanger/cron.log', 'Je suis passée');
+//file_put_contents('/var/www/html/FirstRanger/cron.log', 'Je suis passée');
 // Load the configuration file 
-$configManager = new ConfigurationManager( __DIR__.'/propel.php' );
+$configManager = new ConfigurationManager(__DIR__ . '/propel.php');
 
 // Set up the connection manager
 $manager = new ConnectionManagerSingle();
-$manager->setConfiguration( $configManager->getConnectionParametersArray()[ 'default' ] );
+$manager->setConfiguration($configManager->getConnectionParametersArray()['default']);
 $manager->setName('default');
 
 // Add the connection manager to the service container
@@ -26,109 +25,114 @@ $serviceContainer->setConnectionManager('default', $manager);
 $serviceContainer->setDefaultDatasource('default');
 
 //keys and tokens
-$consumerKey= 'wMrUwEMjfe4kCQlPHpvUJFReG';
-$consumerSecret= '3cBvcG8ZuEbbPFUnVIuhHjwoVJaU1VdQmC8PDKz9UUNx6U4k3e';
-$accessToken= '36630957-ND7GjGn55DFBGZFkjkGUXbEoJZvCzcV5tvkbRRTd7';
-$accessTokenSecret='uUawifFFSBK6efJk9dkrSjqPZsu6uyQZYN2LG2OM2RvuG';
+$consumerKey = 'wMrUwEMjfe4kCQlPHpvUJFReG';
+$consumerSecret = '3cBvcG8ZuEbbPFUnVIuhHjwoVJaU1VdQmC8PDKz9UUNx6U4k3e';
+$accessToken = '36630957-ND7GjGn55DFBGZFkjkGUXbEoJZvCzcV5tvkbRRTd7';
+$accessTokenSecret = 'uUawifFFSBK6efJk9dkrSjqPZsu6uyQZYN2LG2OM2RvuG';
 
 //include library
 require "twitteroauth/autoload.php";
 
-
-
-//$argv[1];
-
 //Connect to API
-$connection= new TwitterOAuth($consumerKey, $consumerSecret, $accessToken, $accessTokenSecret);
+$connection = new TwitterOAuth($consumerKey, $consumerSecret, $accessToken, $accessTokenSecret);
 $content = $connection->get("account/verify_credentials");
 
 //Create tweet
 //$new_status = $connection->post("statuses/update", ["status" => "This tweet was sent by twitter API"]);
-//écupérer le min id de ma dernière tranche
-//$minId. if id < miniD
-//    
-// $minId = 1345;
-//
-//foreach($statuses as $status) {
-//    id($status->id < $minId){
-//        $minId = $status->id;
-//}
-//}
-////récupérer le dernier id inséré dans la bdd
-//echo 'debut';
-//$tweet = new Tweets();
-//$queryTweets = TweetsQuery::create();
-//$lastTweet = $queryTweets->orderByTweetId('desc')->limit(1)->findOne();
-//$lastId = $lastTweet->getApiTweetId();
-////$lastId = $lastTweet::index;
-//        //(ApiTweetId->)->filterByGeocodeId(1);  //orderByApiTweetId('desc')->limit(1);
-//var_dump($lastTweet);
-//
-//
-//echo 'post vardump lastweet';
-//var_dump($lastId);
-//echo 'cetait le lastId';
-//
+$minId = 99999999999999999999999;
 
-//Get tweets
-$responseTwitter = $connection->get("search/tweets", [
-    "q" => "\xF0\x9F\x98\x81 OR \xF0\x9F\x98\x82 OR \xF0\x9F\x98\x83 -RT",      //on précise qu'on veut pas les RT.
-    "count" => "10", 
-    "result_type" => "recent", 
-    "geocode" => "48.857204,2.334131,6km",
-//    "max_id"=> "$minId"
-    ]);
+$nowRef = new DateTime('now');
 
-//$tweets = new \Propel\Runtime\Collection\ObjectCollection();
-
-foreach ($responseTwitter->statuses as $status) {
-    
-    $queryTweets = TweetsQuery::create();
-    $tweet = $queryTweets->filterByApiTweetId($status->id)->findOne();
-    
-   if(! $tweet) {
-//        
-    
+do {
+    echo 'debut';
+    echo "\n";
     $tweet = new Tweets();
-    $tweet->setApiTweetId($status->id);
-    $tweet->setTweetText($status->text);
-    $tweet->setTweetPublicationHour($status->created_at);
-    $tweet->setGeocodeId(1);
-    if(isset($status->retweet_count)){
-        $tweet->setRetweetsQuantity($status->retweet_count);
+    $queryTweets = TweetsQuery::create();
+    $lastTweet = $queryTweets->orderByTweetId('desc')->limit(1)->findOne();
+     if($lastTweet){
+        $lastId = $lastTweet->getApiTweetId();
     }
-    if(isset($status->retweeted_status->favorite_count)) {
-        $tweet->setFavoritesQuantity($status->retweeted_status->favorite_count);
-    }
-    $tweet->setTwitterAccount($status->user->screen_name);
-    if(isset($status->coordinates->coordinates)){
-        $tweet->setCoordinates($status->coordinates->coordinates);
-    }
-    if(isset($status->user->location)){
-        $tweet->setLocation($status->user->location);
-   }
-    $tweet->setQualityTweet("positive");
-//    if(isset($status->place -> bounding_box -> coordinates)){
-//       $tweet->setLocation($status->place -> bounding_box -> coordinates);
-//    }
+//    echo 'post vardump lastweet';
+//    echo $lastId;
+
+    //Get tweets
+    //
+    //création d'une boucle foreach pour récupérer tous les géocodes
+    //
     
-       $tweet->save();
-   }
+    //
+    //première requête
+    if ($minId === 99999999999999999999999) {
+        $responseTwitter = $connection->get("search/tweets", [
+            "q" => "\xF0\x9F\x98\x81 OR \xF0\x9F\x98\x82 OR \xF0\x9F\x98\x83 OR \xF0\x9F\x98\x84 OR \xF0\x9F\x98\x85 OR \xF0\x9F\x98\x86 OR \xF0\x9F\x98\x89 OR \xF0\x9F\x98\x8A OR \xF0\x9F\x98\x8B OR \xF0\x9F\x98\x8D OR \xF0\x9F\x98\x98 OR \xF0\x9F\x98\x9A OR \xF0\x9F\x98\x9C OR \xF0\x9F\x98\x9D OR \xF0\x9F\x98\xB8 OR \xF0\x9F\x98\xB9 OR \xF0\x9F\x98\xBA OR \xF0\x9F\x98\xBB OR \xF0\x9F\x98\x80 OR \xF0\x9F\x98\x87 OR \xF0\x9F\x98\x88 OR \xF0\x9F\x98\x8E OR \xF0\x9F\x98\x9B OR \xF0\x9F\x98\xAE OR \xF0\x9F\x98\x97 OR \xF0\x9F\x98\x99 OR \xF0\x9F\x91\x8D OR \xF0\x9F\x91\xA6 OR \xF0\x9F\x91\xA7 OR \xF0\x9F\x91\xA8 OR \xF0\x9F\x91\xA9 OR \xF0\x9F\x92\x8B OR \xF0\x9F\x92\x8C OR \xF0\x9F\x92\x8F OR \xF0\x9F\x92\x90 OR \xF0\x9F\x92\x91 OR \xF0\x9F\x91\xBC OR \xF0\x9F\x91\x8C OR \xF0\x9F\x91\x84 OR \xF0\x9F\x92\x93 OR \xF0\x9F\x92\x95 OR \xF0\x9F\x92\x96 OR \xF0\x9F\x92\x97 OR \xF0\x9F\x92\x98 OR \xF0\x9F\x92\x99 OR \xF0\x9F\x92\x9A OR \xF0\x9F\x92\x9B OR \xF0\x9F\x92\x9C -RT", //on précise qu'on veut pas les RT.
+            "count" => "100",
+            "result_type" => "recent",
+            "geocode" => "48.857204,2.334131,6km",
+                //    "max_id"=> "$minId"
+        ]);
+    } else {
+        $responseTwitter = $connection->get("search/tweets", [
+            "q" => "\xF0\x9F\x98\x81 OR \xF0\x9F\x98\x82 OR \xF0\x9F\x98\x83 OR \xF0\x9F\x98\x84 OR \xF0\x9F\x98\x85 OR \xF0\x9F\x98\x86 OR \xF0\x9F\x98\x89 OR \xF0\x9F\x98\x8A OR \xF0\x9F\x98\x8B OR \xF0\x9F\x98\x8D OR \xF0\x9F\x98\x98 OR \xF0\x9F\x98\x9A OR \xF0\x9F\x98\x9C OR \xF0\x9F\x98\x9D OR \xF0\x9F\x98\xB8 OR \xF0\x9F\x98\xB9 OR \xF0\x9F\x98\xBA OR \xF0\x9F\x98\xBB OR \xF0\x9F\x98\x80 OR \xF0\x9F\x98\x87 OR \xF0\x9F\x98\x88 OR \xF0\x9F\x98\x8E OR \xF0\x9F\x98\x9B OR \xF0\x9F\x98\xAE OR \xF0\x9F\x98\x97 OR \xF0\x9F\x98\x99 OR \xF0\x9F\x91\x8D OR \xF0\x9F\x91\xA6 OR \xF0\x9F\x91\xA7 OR \xF0\x9F\x91\xA8 OR \xF0\x9F\x91\xA9 OR \xF0\x9F\x92\x8B OR \xF0\x9F\x92\x8C OR \xF0\x9F\x92\x8F OR \xF0\x9F\x92\x90 OR \xF0\x9F\x92\x91 OR \xF0\x9F\x91\xBC OR \xF0\x9F\x91\x8C OR \xF0\x9F\x91\x84 OR \xF0\x9F\x92\x93 OR \xF0\x9F\x92\x95 OR \xF0\x9F\x92\x96 OR \xF0\x9F\x92\x97 OR \xF0\x9F\x92\x98 OR \xF0\x9F\x92\x99 OR \xF0\x9F\x92\x9A OR \xF0\x9F\x92\x9B OR \xF0\x9F\x92\x9C -RT", //on précise qu'on veut pas les RT.
+            "count" => "100",
+            "result_type" => "recent",
+            "geocode" => "48.857204,2.334131,6km",
+            "max_id" => "$minId"
+        ]);
+    }
+    echo 'MinID : ';
+    echo strval($minId);
+    echo "\n";
     
-}
+    var_dump($responseTwitter);
+    
+    foreach ($responseTwitter->statuses as $status) {
 
+        if ($status->id < $minId) {
+            $minId = $status->id;
+        }
 
-//$statuses = $connection->get("search/tweets", ["q" => "\xF0\x9F\x98*", "count" => "100", "geocode" => "48.856924,2.352684100000033,10km"]);
+        $queryTweets = TweetsQuery::create();
+        $tweet = $queryTweets->filterByApiTweetId($status->id)->findOne(); //vérifie que le tweet récupéré auprès de l'api n'est pas déjà dans la bdd
+        
+        echo "status dat twitter";
+        echo $status->created_at;
+        echo "\n";
+        $statusDateTime = DateTime::createFromFormat('D M j H:i:s P Y', $status->created_at);
+         
+        echo 'status date : ';
+        echo $statusDateTime->format('Y-m-d H:i:s');
+        echo "\n";
+        
+        
+        if (!$tweet) {
+//        
 
-//$statuses = $connection->get("search/tweets", ["q" => " \xF0\x9F\x98\x81 OR \xF0\x9F\x98\x82 OR \xF0\x9F\x98\x83", "count" => "1", "geocode" => "48.856924,2.352684100000033,10km"]);
+            $tweet = new Tweets();
+            $tweet->setApiTweetId($status->id);
+            $tweet->setTweetText($status->text);
+            $tweet->setTweetPublicationHour($status->created_at);
+            $tweet->setGeocodeId(1);
+            if (isset($status->retweet_count)) {
+                $tweet->setRetweetsQuantity($status->retweet_count);
+            }
+            if (isset($status->retweeted_status->favorite_count)) {
+                $tweet->setFavoritesQuantity($status->retweeted_status->favorite_count);
+            }
+            $tweet->setTwitterAccount($status->user->screen_name);
+            if (isset($status->coordinates->coordinates)) {
+                $tweet->setCoordinates($status->coordinates->coordinates);
+            }
+            if (isset($status->user->location)) {
+                $tweet->setLocation($status->user->location);
+            }
+            $tweet->setQualityTweet("positive");
 
-//"lang"=>"fr", , "count" => "100", "geocode" => "[37.781157,-122.398720,1mi]" , "result_type" => "popular"
-//https:api.twitter.com/1.1/search/tweets.json?q=%23freebandnames&since_id=24012619984051000&max_id=250126199840518145&result_type=mixed&count=4
-//$statuses = $connection->get("statuses/home_timeline", ["count" => 25, "exclude-replies" => true]);
+            $tweet->save();
+        }
+    }
+    $now = clone $nowRef;
+} while ($now->sub(new DateInterval('PT6H')) < $statusDateTime);
 
-//$f = fopen('12-11-20km.json', 'a');
-//fwrite($f, json_encode($statuses, JSON_PRETTY_PRINT));
-
-//print_r($statuses);
-
+// new Datetime() create from format.
+//récupérer le dernier id inséré dans la bdd
 ?>
