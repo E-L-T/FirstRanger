@@ -63,17 +63,17 @@ $geocodesArray = $queryGeocodes->orderByGeocodeId('asc')->find();
 //var_dump($geocodesArray);
 
 foreach ($geocodesArray as $geocodeRow) {
-//
+
 //première requête
-//    echo 'la ligne de geocode est : ';
-//    var_dump($geocodeRow);
-//
-//    $geocode = $geocodeRow->getGeocode();
-//    echo 'le geocode unique est : ';
-//    var_dump($geocode);
-//    $geocodeId = $geocodeRow->getGeocodeId();
-//    echo 'le geocodeId est : ';
-//    var_dump($geocodeId);
+    echo 'la ligne de geocode est : ';
+    var_dump($geocodeRow);
+
+    $geocode = $geocodeRow->getGeocode();
+    echo 'le geocode unique est : ';
+    var_dump($geocode);
+    $geocodeId = $geocodeRow->getGeocodeId();
+    echo 'le geocodeId est : ';
+    var_dump($geocodeId);
 
     do {
 
