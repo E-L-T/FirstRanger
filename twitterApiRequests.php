@@ -43,7 +43,7 @@ $content = $connection->get("account/verify_credentials");
 //$new_status = $connection->post("statuses/update", ["status" => "This tweet was sent by twitter API"]);
 
 $nowRef = new DateTime('now');
-var_dump($nowRef);
+//var_dump($nowRef);
 $tweet = new Tweets();
 $queryTweets = TweetsQuery::create();
 $geocode = new Geocodes();
@@ -51,17 +51,17 @@ $geocode = new Geocodes();
 $queryGeocodes = GeocodesQuery::create();
 $geocodesArray = $queryGeocodes->orderByGeocodeId('asc')->find();
 
-echo 'vardump de geocode array : \n';
-var_dump($geocodesArray);
-echo 'vardump de geocode array : \n';
-var_dump($geocodesArray);
+//echo 'vardump de geocode array : \n';
+//var_dump($geocodesArray);
+//echo 'vardump de geocode array : \n';
+//var_dump($geocodesArray);
 
 foreach ($geocodesArray as $geocodeRow) {
     //
     $minId = 99999999999999999999999;
 
-    echo 'la ligne de geocode est : ';
-    var_dump($geocodeRow);
+//    echo 'la ligne de geocode est : ';
+//    var_dump($geocodeRow);
 
     $geocode = $geocodeRow->getGeocode();
     echo 'le geocode unique est : ';
@@ -161,12 +161,12 @@ foreach ($geocodesArray as $geocodeRow) {
             }
         }
         $now = clone $nowRef;
-        var_dump($now);
-        var_dump($now->sub(new DateInterval('PT6H')));
-        var_dump($now->sub(new DateInterval('PT3M')));
-        var_dump($statusDateTime);
-        var_dump($now->sub(new DateInterval('PT1M')) > $statusDateTime);
-    } while ($now->sub(new DateInterval('PT1M')) < $statusDateTime);
+//        var_dump($now);
+//        var_dump($now->sub(new DateInterval('PT6H')));
+//        var_dump($now->sub(new DateInterval('PT3M')));
+//        var_dump($statusDateTime);
+//        var_dump($now->sub(new DateInterval('PT1M')) > $statusDateTime);
+    } while ($now->sub(new DateInterval('PT1H')) < $statusDateTime);
 }
 // new Datetime() create from format.
 //récupérer le dernier id inséré dans la bdd
