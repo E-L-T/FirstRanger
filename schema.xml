@@ -5,7 +5,12 @@
     <column name="user_id" phpName="UserId" type="INTEGER" required="true"/>
     <column name="comment_publication_hour" phpName="CommentPublicationHour" type="TIMESTAMP" required="true"/>
     <column name="likes_count" phpName="LikesCount" type="INTEGER"/>
-    
+    <foreign-key foreignTable="users" name="comments_ibfk_1">
+     <reference local="user_id" foreign="user_id"/>
+   </foreign-key>
+   <index name="user_id">
+     <index-column name="user_id"/>
+   </index>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
@@ -21,7 +26,9 @@
     <column name="negative_popular_tweet_id" phpName="NegativePopularTweetId" type="INTEGER" required="true"/>
     <column name="department_twitter_shares_quantity" phpName="DepartmentTwitterSharesQuantity" type="INTEGER"/>
     <column name="department_facebook_shares_quantity" phpName="DepartmentFacebookSharesQuantity" type="INTEGER"/>
-    
+    <index name="department_code">
+     <index-column name="department_code"/>
+   </index>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
@@ -30,7 +37,12 @@
     <column name="department_id" phpName="DepartmentId" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="department_code" phpName="DepartmentCode" type="VARCHAR" size="5" required="true"/>
     <column name="department_name" phpName="DepartmentName" type="VARCHAR" size="70" required="true"/>
-    
+    <foreign-key foreignTable="department_summary" name="departments_ibfk_1">
+     <reference local="department_code" foreign="department_code"/>
+   </foreign-key>
+   <index name="department_code">
+     <index-column name="department_code"/>
+   </index>
     
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
@@ -50,7 +62,12 @@
     <column name="geocode_name" phpName="GeocodeName" type="VARCHAR" size="20" required="true"/>
     <column name="department_id" phpName="DepartmentId" type="INTEGER" required="true"/>
     <column name="geocode" phpName="Geocode" type="VARCHAR" size="100"  required="true"/>
-    
+    <foreign-key foreignTable="departments" name="geocodes_ibfk_1">
+     <reference local="department_id" foreign="department_id"/>
+   </foreign-key>
+   <index name="department_id">
+     <index-column name="department_id"/>
+   </index>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
@@ -84,7 +101,15 @@
     <column name="coordinates" phpName="Coordinates" type="LONGVARCHAR"/>
     <column name="location" phpName="Location" type="LONGVARCHAR"/>
     <column name="quality_tweet" phpName="QualityTweet" type="LONGVARCHAR" />
-
+    <foreign-key foreignTable="geocodes" name="tweets_ibfk_1">
+     <reference local="geocode_id" foreign="geocode_id"/>
+   </foreign-key>
+    <foreign-key foreignTable="popular_tweets" name="tweets_ibfk_2">
+     <reference local="tweet_id" foreign="tweet_id"/>
+   </foreign-key>
+   <index name="geocode_id">
+     <index-column name="geocode_id"/>
+   </index>
     
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
