@@ -64,11 +64,11 @@ foreach ($geocodesArray as $geocodeRow) {
 //    var_dump($geocodeRow);
 
     $geocode = $geocodeRow->getGeocode();
-    echo 'le geocode unique est : ';
-    echo $geocode;
+//    echo 'le geocode unique est : ';
+//    echo $geocode;
     $geocodeId = $geocodeRow->getGeocodeId();
-    echo 'le echo de geocodeId est : ';
-    echo $geocodeId;
+//    echo 'le echo de geocodeId est : ';
+//    echo $geocodeId;
 
     do {
         echo 'debut';
@@ -105,15 +105,15 @@ foreach ($geocodesArray as $geocodeRow) {
                 "max_id" => $minId,
             ]);
         }
-        echo '2e requete.  MinID : ';
-        echo strval($minId);
-        echo "\n";
-
-        echo '2e requete.  geocode : ';
-        echo strval($geocode);
-        echo "\n";
-
-        var_dump($responseTwitter);
+//        echo '2e requete.  MinID : ';
+//        echo strval($minId);
+//        echo "\n";
+//
+//        echo '2e requete.  geocode : ';
+//        echo strval($geocode);
+//        echo "\n";
+//
+//        var_dump($responseTwitter);
 
         foreach ($responseTwitter->statuses as $status) {
 
@@ -124,14 +124,14 @@ foreach ($geocodesArray as $geocodeRow) {
             $queryTweets = TweetsQuery::create();
             $tweet = $queryTweets->filterByApiTweetId($status->id)->findOne(); //vérifie que le tweet récupéré auprès de l'api n'est pas déjà dans la bdd
 
-            echo "status dat twitter";
-            echo $status->created_at;
-            echo "\n";
+//            echo "status dat twitter";
+//            echo $status->created_at;
+//            echo "\n";
             $statusDateTime = DateTime::createFromFormat('D M j H:i:s P Y', $status->created_at);
 
-            echo 'status date : ';
-            echo $statusDateTime->format('Y-m-d H:i:s');
-            echo "\n";
+//            echo 'status date : ';
+//            echo $statusDateTime->format('Y-m-d H:i:s');
+//            echo "\n";
 
 
             if (!$tweet) {

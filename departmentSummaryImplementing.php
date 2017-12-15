@@ -6,9 +6,6 @@ use Propel\Common\Config\ConfigurationManager;
 use Propel\Propel\Departments;
 use Propel\Propel\DepartmentsQuery;
 use Propel\Propel\DepartmentSummary;
-use Propel\Propel\DepartmentSummaryQuery;
-use Propel\Propel\Geocodes;
-use Propel\Propel\GeocodesQuery;
 use Propel\Propel\Tweets;
 use Propel\Propel\TweetsQuery;
 use Propel\Runtime\Connection\ConnectionManagerSingle;
@@ -42,14 +39,24 @@ $nowRef = new DateTime('now');
 $tweets = new Tweets();
 $queryTweets = TweetsQuery::create();
 
+
+
+//creation de l'objet departement
+//$departments = new Departments();
+//$queryDepartments = DepartmentsQuery::create();
+//$departmentsCodeDepartments = $queryDepartments->filterByDepartmentCode()->find();
 //$geocodes = new Geocodes();
 //$queryGeocodes = GeocodesQuery()::create();
 //
-//$departments = new Departments();
-//$queryDepartments = DepartmentsQuery()::create();
+//creation du tableau departement 
+$resultat = $pdo->query("SELECT  department_code FROM departments");
+$departmentsCodeDepartments = $resultat->fetchAll();
+//var_dump($departmentsCodeDepartments);
+
+
 
 $tweetsArray = $queryTweets->filterByTweetPublicationHour(array(
-            'min' => strtotime('-3 hours'), //'2017-12-15 05:01:33',//$nowRef->sub(new DateInterval('PT6H')),
+            'min' => strtotime('-6 hours'), //'2017-12-15 05:01:33',//$nowRef->sub(new DateInterval('PT6H')),
             'max' => time(),
         ))
         ->find();
@@ -85,15 +92,15 @@ foreach ($tweetsArray as $tweet) {
     $departmentCodeTweet = $resultat->fetch();
     //var_dump( $departmentCodeTweet);
     $departmentCode = $departmentCodeTweet['department_code'];
-    echo $departmentCode;
+    //echo $departmentCode;
     //on recupere la qualité du tweet
     $tweetQuality = $tweet->getQualityTweet();
-    var_dump($tweetQuality);
+    //var_dump($tweetQuality);
 
     if ($departmentCode === '75') {
         if ($tweetQuality === 'positive') {
             $positiveParisCount ++;
-            echo 'positif paris 1 ça marche';
+            //echo 'positif paris 1 ça marche';
         } elseif ($tweetQuality === 'neutral') {
             $neutralParisCount ++;
         } elseif ($tweetQuality === 'negative') {
@@ -125,49 +132,56 @@ foreach ($tweetsArray as $tweet) {
         }
     }
 }
-echo 'nb de tw + a paris : ';
-echo $positiveParisCount;
-echo 'nb de tw neutre a paris : ';
-echo $neutralParisCount;
-echo 'nb de tw - a paris : ';
-echo $negativeParisCount;
+//echo 'nb de tw + a paris : ';
+//echo $positiveParisCount;
+//echo 'nb de tw neutre a paris : ';
+//echo $neutralParisCount;
+//echo 'nb de tw - a paris : ';
+//echo $negativeParisCount;
 
 
 
 
-//    $tweetQuality = $tweet->getQualityTweet();
-//    $tweet= TweetsQuery::create()->findPK();
-//    $department = $tweet->left
-//    
-//    $geocodeIdTweets = $tweet->getGeocodeId()->;
-//    
-//    $geocodeIdGeocodes = $tweet->getGeocodeId();
-//    
-//    $departmentIdGeocodes = $geocodes->getDepartmentId();
-//    
-//    $departmentIdDepartments = $departments->getDepartmentId();
-//    
-//    $departmentCodeDepartments = $departments->getDepartmentCode();
-//    
-//    $departmentCodeDepartmentSummary = $departmentSummary->getDepartmentCode();
-//    
-//    
-//    
-//            
-//            //= $geocodeId->getDepartmentId();
-//            
-//    if($tweet->getGeocodeId()) //si le tweet vient de tel deprtt
-//    // on veut calculer le nb de tweets positifs, neutres et negatifs, par departements.
-//    // soit 12 variables.
-//    //en incrémentant une variable totalTweets + - ou neutre
-//    
-//
-//}
-//
-//$departmentSummary->setMapPublicationHour(time());
-//$departmentSummary->getDepartmentCode()
-//
-//$departmentSummary->save();
-//  
+//$queryDepartmentSummary = DepartmentSummaryQuery()::create();
 
 
+        //creation de l'objet résumédepartt
+        $departmentSummary = new DepartmentSummary();
+        $departmentSummary->setMapPublicationHour(time());
+        $departmentSummary->setDepartmentCode('75');
+        $departmentSummary->setDepartmentPositiveTweetsQuantity($positiveParisCount);
+        $departmentSummary->setDepartmentNeutralTweetsQuantity($neutralParisCount);
+        $departmentSummary->setDepartmentNegativeTweetsQuantity($negativeParisCount);
+        $departmentSummary->save();
+        
+        //creation de l'objet résumédepartt
+        $departmentSummary = new DepartmentSummary();
+        $departmentSummary->setMapPublicationHour(time());
+        $departmentSummary->setDepartmentCode('92');
+        $departmentSummary->setDepartmentPositiveTweetsQuantity($positiveHDSCount);
+        $departmentSummary->setDepartmentNeutralTweetsQuantity($neutralHDSCount);
+        $departmentSummary->setDepartmentNegativeTweetsQuantity($negativeHDSCount);
+        $departmentSummary->save();
+
+        //creation de l'objet résumédepartt
+        $departmentSummary = new DepartmentSummary();
+        $departmentSummary->setMapPublicationHour(time());
+        $departmentSummary->setDepartmentCode('93');
+        $departmentSummary->setDepartmentPositiveTweetsQuantity($positiveSSDCount);
+        $departmentSummary->setDepartmentNeutralTweetsQuantity($neutralSSDCount);
+        $departmentSummary->setDepartmentNegativeTweetsQuantity($negativeSSDCount);
+        $departmentSummary->save();
+        
+        //creation de l'objet résumédepartt
+        $departmentSummary = new DepartmentSummary();
+        $departmentSummary->setMapPublicationHour(time());
+        $departmentSummary->setDepartmentCode('94');
+        $departmentSummary->setDepartmentPositiveTweetsQuantity($positiveVDMCount);
+        $departmentSummary->setDepartmentNeutralTweetsQuantity($neutralVDMCount);
+        $departmentSummary->setDepartmentNegativeTweetsQuantity($negativeVDMCount);
+        $departmentSummary->save();
+
+
+
+
+echo 'l insertion a marché';

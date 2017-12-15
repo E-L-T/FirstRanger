@@ -26,9 +26,9 @@
     <column name="negative_popular_tweet_id" phpName="NegativePopularTweetId" type="INTEGER" required="true"/>
     <column name="department_twitter_shares_quantity" phpName="DepartmentTwitterSharesQuantity" type="INTEGER"/>
     <column name="department_facebook_shares_quantity" phpName="DepartmentFacebookSharesQuantity" type="INTEGER"/>
-    <index name="department_code">
+<!--    <index name="department_code">
      <index-column name="department_code"/>
-   </index>
+   </index>-->
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
@@ -37,12 +37,12 @@
     <column name="department_id" phpName="DepartmentId" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="department_code" phpName="DepartmentCode" type="VARCHAR" size="5" required="true"/>
     <column name="department_name" phpName="DepartmentName" type="VARCHAR" size="70" required="true"/>
-    <foreign-key foreignTable="department_summary" name="departments_ibfk_1">
+<!--    <foreign-key foreignTable="department_summary" name="departments_ibfk_1">
      <reference local="department_code" foreign="department_code"/>
    </foreign-key>
    <index name="department_code">
      <index-column name="department_code"/>
-   </index>
+   </index>-->
     
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
