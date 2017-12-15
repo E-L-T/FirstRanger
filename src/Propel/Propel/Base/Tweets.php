@@ -5,6 +5,10 @@ namespace Propel\Propel\Base;
 use \DateTime;
 use \Exception;
 use \PDO;
+use Propel\Propel\Geocodes as ChildGeocodes;
+use Propel\Propel\GeocodesQuery as ChildGeocodesQuery;
+use Propel\Propel\PopularTweets as ChildPopularTweets;
+use Propel\Propel\PopularTweetsQuery as ChildPopularTweetsQuery;
 use Propel\Propel\TweetsQuery as ChildTweetsQuery;
 use Propel\Propel\Map\TweetsTableMap;
 use Propel\Runtime\Propel;
@@ -137,6 +141,16 @@ abstract class Tweets implements ActiveRecordInterface
      * @var        string
      */
     protected $quality_tweet;
+
+    /**
+     * @var        ChildGeocodes
+     */
+    protected $aGeocodes;
+
+    /**
+     * @var        ChildPopularTweets
+     */
+    protected $aPopularTweets;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -508,6 +522,10 @@ abstract class Tweets implements ActiveRecordInterface
             $this->modifiedColumns[TweetsTableMap::COL_TWEET_ID] = true;
         }
 
+        if ($this->aPopularTweets !== null && $this->aPopularTweets->getTweetId() !== $v) {
+            $this->aPopularTweets = null;
+        }
+
         return $this;
     } // setTweetId()
 
@@ -586,6 +604,10 @@ abstract class Tweets implements ActiveRecordInterface
         if ($this->geocode_id !== $v) {
             $this->geocode_id = $v;
             $this->modifiedColumns[TweetsTableMap::COL_GEOCODE_ID] = true;
+        }
+
+        if ($this->aGeocodes !== null && $this->aGeocodes->getGeocodeId() !== $v) {
+            $this->aGeocodes = null;
         }
 
         return $this;
@@ -812,6 +834,12 @@ abstract class Tweets implements ActiveRecordInterface
      */
     public function ensureConsistency()
     {
+        if ($this->aPopularTweets !== null && $this->tweet_id !== $this->aPopularTweets->getTweetId()) {
+            $this->aPopularTweets = null;
+        }
+        if ($this->aGeocodes !== null && $this->geocode_id !== $this->aGeocodes->getGeocodeId()) {
+            $this->aGeocodes = null;
+        }
     } // ensureConsistency
 
     /**
@@ -851,6 +879,8 @@ abstract class Tweets implements ActiveRecordInterface
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->aGeocodes = null;
+            $this->aPopularTweets = null;
         } // if (deep)
     }
 
@@ -953,6 +983,25 @@ abstract class Tweets implements ActiveRecordInterface
         $affectedRows = 0; // initialize var to track total num of affected rows
         if (!$this->alreadyInSave) {
             $this->alreadyInSave = true;
+
+            // We call the save method on the following object(s) if they
+            // were passed to this object by their corresponding set
+            // method.  This object relates to these object(s) by a
+            // foreign key reference.
+
+            if ($this->aGeocodes !== null) {
+                if ($this->aGeocodes->isModified() || $this->aGeocodes->isNew()) {
+                    $affectedRows += $this->aGeocodes->save($con);
+                }
+                $this->setGeocodes($this->aGeocodes);
+            }
+
+            if ($this->aPopularTweets !== null) {
+                if ($this->aPopularTweets->isModified() || $this->aPopularTweets->isNew()) {
+                    $affectedRows += $this->aPopularTweets->save($con);
+                }
+                $this->setPopularTweets($this->aPopularTweets);
+            }
 
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
@@ -1180,10 +1229,11 @@ abstract class Tweets implements ActiveRecordInterface
      *                    Defaults to TableMap::TYPE_PHPNAME.
      * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
+     * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
      * @return array an associative array containing the field names (as keys) and field values
      */
-    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
+    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
 
         if (isset($alreadyDumpedObjects['Tweets'][$this->hashCode()])) {
@@ -1213,6 +1263,38 @@ abstract class Tweets implements ActiveRecordInterface
             $result[$key] = $virtualColumn;
         }
 
+        if ($includeForeignObjects) {
+            if (null !== $this->aGeocodes) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'geocodes';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'geocodes';
+                        break;
+                    default:
+                        $key = 'Geocodes';
+                }
+
+                $result[$key] = $this->aGeocodes->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->aPopularTweets) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'popularTweets';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'popular_tweets';
+                        break;
+                    default:
+                        $key = 'PopularTweets';
+                }
+
+                $result[$key] = $this->aPopularTweets->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+        }
 
         return $result;
     }
@@ -1444,8 +1526,15 @@ abstract class Tweets implements ActiveRecordInterface
     {
         $validPk = null !== $this->getTweetId();
 
-        $validPrimaryKeyFKs = 0;
+        $validPrimaryKeyFKs = 1;
         $primaryKeyFKs = [];
+
+        //relation tweets_ibfk_2 to table popular_tweets
+        if ($this->aPopularTweets && $hash = spl_object_hash($this->aPopularTweets)) {
+            $primaryKeyFKs[] = $hash;
+        } else {
+            $validPrimaryKeyFKs = false;
+        }
 
         if ($validPk) {
             return crc32(json_encode($this->getPrimaryKey(), JSON_UNESCAPED_UNICODE));
@@ -1537,12 +1626,116 @@ abstract class Tweets implements ActiveRecordInterface
     }
 
     /**
+     * Declares an association between this object and a ChildGeocodes object.
+     *
+     * @param  ChildGeocodes $v
+     * @return $this|\Propel\Propel\Tweets The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setGeocodes(ChildGeocodes $v = null)
+    {
+        if ($v === null) {
+            $this->setGeocodeId(NULL);
+        } else {
+            $this->setGeocodeId($v->getGeocodeId());
+        }
+
+        $this->aGeocodes = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the ChildGeocodes object, it will not be re-added.
+        if ($v !== null) {
+            $v->addTweets($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated ChildGeocodes object
+     *
+     * @param  ConnectionInterface $con Optional Connection object.
+     * @return ChildGeocodes The associated ChildGeocodes object.
+     * @throws PropelException
+     */
+    public function getGeocodes(ConnectionInterface $con = null)
+    {
+        if ($this->aGeocodes === null && ($this->geocode_id != 0)) {
+            $this->aGeocodes = ChildGeocodesQuery::create()->findPk($this->geocode_id, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aGeocodes->addTweetss($this);
+             */
+        }
+
+        return $this->aGeocodes;
+    }
+
+    /**
+     * Declares an association between this object and a ChildPopularTweets object.
+     *
+     * @param  ChildPopularTweets $v
+     * @return $this|\Propel\Propel\Tweets The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setPopularTweets(ChildPopularTweets $v = null)
+    {
+        if ($v === null) {
+            $this->setTweetId(NULL);
+        } else {
+            $this->setTweetId($v->getTweetId());
+        }
+
+        $this->aPopularTweets = $v;
+
+        // Add binding for other direction of this 1:1 relationship.
+        if ($v !== null) {
+            $v->setTweets($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated ChildPopularTweets object
+     *
+     * @param  ConnectionInterface $con Optional Connection object.
+     * @return ChildPopularTweets The associated ChildPopularTweets object.
+     * @throws PropelException
+     */
+    public function getPopularTweets(ConnectionInterface $con = null)
+    {
+        if ($this->aPopularTweets === null && (($this->tweet_id !== "" && $this->tweet_id !== null))) {
+            $this->aPopularTweets = ChildPopularTweetsQuery::create()
+                ->filterByTweets($this) // here
+                ->findOne($con);
+            // Because this foreign key represents a one-to-one relationship, we will create a bi-directional association.
+            $this->aPopularTweets->setTweets($this);
+        }
+
+        return $this->aPopularTweets;
+    }
+
+    /**
      * Clears the current object, sets all attributes to their default values and removes
      * outgoing references as well as back-references (from other objects to this one. Results probably in a database
      * change of those foreign objects when you call `save` there).
      */
     public function clear()
     {
+        if (null !== $this->aGeocodes) {
+            $this->aGeocodes->removeTweets($this);
+        }
+        if (null !== $this->aPopularTweets) {
+            $this->aPopularTweets->removeTweets($this);
+        }
         $this->tweet_id = null;
         $this->api_tweet_id = null;
         $this->tweet_text = null;
@@ -1574,6 +1767,8 @@ abstract class Tweets implements ActiveRecordInterface
         if ($deep) {
         } // if ($deep)
 
+        $this->aGeocodes = null;
+        $this->aPopularTweets = null;
     }
 
     /**

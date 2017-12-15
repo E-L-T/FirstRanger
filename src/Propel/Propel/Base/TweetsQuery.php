@@ -10,6 +10,7 @@ use Propel\Propel\Map\TweetsTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
+use Propel\Runtime\ActiveQuery\ModelJoin;
 use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
@@ -50,6 +51,28 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildTweetsQuery leftJoinWith($relation) Adds a LEFT JOIN clause and with to the query
  * @method     ChildTweetsQuery rightJoinWith($relation) Adds a RIGHT JOIN clause and with to the query
  * @method     ChildTweetsQuery innerJoinWith($relation) Adds a INNER JOIN clause and with to the query
+ *
+ * @method     ChildTweetsQuery leftJoinGeocodes($relationAlias = null) Adds a LEFT JOIN clause to the query using the Geocodes relation
+ * @method     ChildTweetsQuery rightJoinGeocodes($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Geocodes relation
+ * @method     ChildTweetsQuery innerJoinGeocodes($relationAlias = null) Adds a INNER JOIN clause to the query using the Geocodes relation
+ *
+ * @method     ChildTweetsQuery joinWithGeocodes($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Geocodes relation
+ *
+ * @method     ChildTweetsQuery leftJoinWithGeocodes() Adds a LEFT JOIN clause and with to the query using the Geocodes relation
+ * @method     ChildTweetsQuery rightJoinWithGeocodes() Adds a RIGHT JOIN clause and with to the query using the Geocodes relation
+ * @method     ChildTweetsQuery innerJoinWithGeocodes() Adds a INNER JOIN clause and with to the query using the Geocodes relation
+ *
+ * @method     ChildTweetsQuery leftJoinPopularTweets($relationAlias = null) Adds a LEFT JOIN clause to the query using the PopularTweets relation
+ * @method     ChildTweetsQuery rightJoinPopularTweets($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PopularTweets relation
+ * @method     ChildTweetsQuery innerJoinPopularTweets($relationAlias = null) Adds a INNER JOIN clause to the query using the PopularTweets relation
+ *
+ * @method     ChildTweetsQuery joinWithPopularTweets($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the PopularTweets relation
+ *
+ * @method     ChildTweetsQuery leftJoinWithPopularTweets() Adds a LEFT JOIN clause and with to the query using the PopularTweets relation
+ * @method     ChildTweetsQuery rightJoinWithPopularTweets() Adds a RIGHT JOIN clause and with to the query using the PopularTweets relation
+ * @method     ChildTweetsQuery innerJoinWithPopularTweets() Adds a INNER JOIN clause and with to the query using the PopularTweets relation
+ *
+ * @method     \Propel\Propel\GeocodesQuery|\Propel\Propel\PopularTweetsQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
  * @method     ChildTweets findOne(ConnectionInterface $con = null) Return the first ChildTweets matching the query
  * @method     ChildTweets findOneOrCreate(ConnectionInterface $con = null) Return the first ChildTweets matching the query, or a new ChildTweets object populated from the query conditions when no match is found
@@ -291,6 +314,8 @@ abstract class TweetsQuery extends ModelCriteria
      * $query->filterByTweetId(array('min' => 12)); // WHERE tweet_id > 12
      * </code>
      *
+     * @see       filterByPopularTweets()
+     *
      * @param     mixed $tweetId The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
@@ -440,6 +465,8 @@ abstract class TweetsQuery extends ModelCriteria
      * $query->filterByGeocodeId(array(12, 34)); // WHERE geocode_id IN (12, 34)
      * $query->filterByGeocodeId(array('min' => 12)); // WHERE geocode_id > 12
      * </code>
+     *
+     * @see       filterByGeocodes()
      *
      * @param     mixed $geocodeId The value to use as filter.
      *              Use scalar values for equality.
@@ -652,6 +679,160 @@ abstract class TweetsQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(TweetsTableMap::COL_QUALITY_TWEET, $qualityTweet, $comparison);
+    }
+
+    /**
+     * Filter the query by a related \Propel\Propel\Geocodes object
+     *
+     * @param \Propel\Propel\Geocodes|ObjectCollection $geocodes The related object(s) to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @throws \Propel\Runtime\Exception\PropelException
+     *
+     * @return ChildTweetsQuery The current query, for fluid interface
+     */
+    public function filterByGeocodes($geocodes, $comparison = null)
+    {
+        if ($geocodes instanceof \Propel\Propel\Geocodes) {
+            return $this
+                ->addUsingAlias(TweetsTableMap::COL_GEOCODE_ID, $geocodes->getGeocodeId(), $comparison);
+        } elseif ($geocodes instanceof ObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(TweetsTableMap::COL_GEOCODE_ID, $geocodes->toKeyValue('PrimaryKey', 'GeocodeId'), $comparison);
+        } else {
+            throw new PropelException('filterByGeocodes() only accepts arguments of type \Propel\Propel\Geocodes or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Geocodes relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildTweetsQuery The current query, for fluid interface
+     */
+    public function joinGeocodes($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Geocodes');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Geocodes');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Geocodes relation Geocodes object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \Propel\Propel\GeocodesQuery A secondary query class using the current class as primary query
+     */
+    public function useGeocodesQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinGeocodes($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Geocodes', '\Propel\Propel\GeocodesQuery');
+    }
+
+    /**
+     * Filter the query by a related \Propel\Propel\PopularTweets object
+     *
+     * @param \Propel\Propel\PopularTweets|ObjectCollection $popularTweets The related object(s) to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @throws \Propel\Runtime\Exception\PropelException
+     *
+     * @return ChildTweetsQuery The current query, for fluid interface
+     */
+    public function filterByPopularTweets($popularTweets, $comparison = null)
+    {
+        if ($popularTweets instanceof \Propel\Propel\PopularTweets) {
+            return $this
+                ->addUsingAlias(TweetsTableMap::COL_TWEET_ID, $popularTweets->getTweetId(), $comparison);
+        } elseif ($popularTweets instanceof ObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(TweetsTableMap::COL_TWEET_ID, $popularTweets->toKeyValue('PrimaryKey', 'TweetId'), $comparison);
+        } else {
+            throw new PropelException('filterByPopularTweets() only accepts arguments of type \Propel\Propel\PopularTweets or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PopularTweets relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildTweetsQuery The current query, for fluid interface
+     */
+    public function joinPopularTweets($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PopularTweets');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PopularTweets');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PopularTweets relation PopularTweets object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \Propel\Propel\PopularTweetsQuery A secondary query class using the current class as primary query
+     */
+    public function usePopularTweetsQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinPopularTweets($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PopularTweets', '\Propel\Propel\PopularTweetsQuery');
     }
 
     /**

@@ -10,6 +10,7 @@ use Propel\Propel\Map\DepartmentsTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
+use Propel\Runtime\ActiveQuery\ModelJoin;
 use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
@@ -34,6 +35,28 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildDepartmentsQuery leftJoinWith($relation) Adds a LEFT JOIN clause and with to the query
  * @method     ChildDepartmentsQuery rightJoinWith($relation) Adds a RIGHT JOIN clause and with to the query
  * @method     ChildDepartmentsQuery innerJoinWith($relation) Adds a INNER JOIN clause and with to the query
+ *
+ * @method     ChildDepartmentsQuery leftJoinDepartmentSummary($relationAlias = null) Adds a LEFT JOIN clause to the query using the DepartmentSummary relation
+ * @method     ChildDepartmentsQuery rightJoinDepartmentSummary($relationAlias = null) Adds a RIGHT JOIN clause to the query using the DepartmentSummary relation
+ * @method     ChildDepartmentsQuery innerJoinDepartmentSummary($relationAlias = null) Adds a INNER JOIN clause to the query using the DepartmentSummary relation
+ *
+ * @method     ChildDepartmentsQuery joinWithDepartmentSummary($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the DepartmentSummary relation
+ *
+ * @method     ChildDepartmentsQuery leftJoinWithDepartmentSummary() Adds a LEFT JOIN clause and with to the query using the DepartmentSummary relation
+ * @method     ChildDepartmentsQuery rightJoinWithDepartmentSummary() Adds a RIGHT JOIN clause and with to the query using the DepartmentSummary relation
+ * @method     ChildDepartmentsQuery innerJoinWithDepartmentSummary() Adds a INNER JOIN clause and with to the query using the DepartmentSummary relation
+ *
+ * @method     ChildDepartmentsQuery leftJoinGeocodes($relationAlias = null) Adds a LEFT JOIN clause to the query using the Geocodes relation
+ * @method     ChildDepartmentsQuery rightJoinGeocodes($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Geocodes relation
+ * @method     ChildDepartmentsQuery innerJoinGeocodes($relationAlias = null) Adds a INNER JOIN clause to the query using the Geocodes relation
+ *
+ * @method     ChildDepartmentsQuery joinWithGeocodes($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Geocodes relation
+ *
+ * @method     ChildDepartmentsQuery leftJoinWithGeocodes() Adds a LEFT JOIN clause and with to the query using the Geocodes relation
+ * @method     ChildDepartmentsQuery rightJoinWithGeocodes() Adds a RIGHT JOIN clause and with to the query using the Geocodes relation
+ * @method     ChildDepartmentsQuery innerJoinWithGeocodes() Adds a INNER JOIN clause and with to the query using the Geocodes relation
+ *
+ * @method     \Propel\Propel\DepartmentSummaryQuery|\Propel\Propel\GeocodesQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
  * @method     ChildDepartments findOne(ConnectionInterface $con = null) Return the first ChildDepartments matching the query
  * @method     ChildDepartments findOneOrCreate(ConnectionInterface $con = null) Return the first ChildDepartments matching the query, or a new ChildDepartments object populated from the query conditions when no match is found
@@ -330,6 +353,156 @@ abstract class DepartmentsQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(DepartmentsTableMap::COL_DEPARTMENT_NAME, $departmentName, $comparison);
+    }
+
+    /**
+     * Filter the query by a related \Propel\Propel\DepartmentSummary object
+     *
+     * @param \Propel\Propel\DepartmentSummary|ObjectCollection $departmentSummary The related object(s) to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @throws \Propel\Runtime\Exception\PropelException
+     *
+     * @return ChildDepartmentsQuery The current query, for fluid interface
+     */
+    public function filterByDepartmentSummary($departmentSummary, $comparison = null)
+    {
+        if ($departmentSummary instanceof \Propel\Propel\DepartmentSummary) {
+            return $this
+                ->addUsingAlias(DepartmentsTableMap::COL_DEPARTMENT_CODE, $departmentSummary->getDepartmentCode(), $comparison);
+        } elseif ($departmentSummary instanceof ObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(DepartmentsTableMap::COL_DEPARTMENT_CODE, $departmentSummary->toKeyValue('PrimaryKey', 'DepartmentCode'), $comparison);
+        } else {
+            throw new PropelException('filterByDepartmentSummary() only accepts arguments of type \Propel\Propel\DepartmentSummary or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the DepartmentSummary relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildDepartmentsQuery The current query, for fluid interface
+     */
+    public function joinDepartmentSummary($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('DepartmentSummary');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'DepartmentSummary');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the DepartmentSummary relation DepartmentSummary object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \Propel\Propel\DepartmentSummaryQuery A secondary query class using the current class as primary query
+     */
+    public function useDepartmentSummaryQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinDepartmentSummary($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'DepartmentSummary', '\Propel\Propel\DepartmentSummaryQuery');
+    }
+
+    /**
+     * Filter the query by a related \Propel\Propel\Geocodes object
+     *
+     * @param \Propel\Propel\Geocodes|ObjectCollection $geocodes the related object to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildDepartmentsQuery The current query, for fluid interface
+     */
+    public function filterByGeocodes($geocodes, $comparison = null)
+    {
+        if ($geocodes instanceof \Propel\Propel\Geocodes) {
+            return $this
+                ->addUsingAlias(DepartmentsTableMap::COL_DEPARTMENT_ID, $geocodes->getDepartmentId(), $comparison);
+        } elseif ($geocodes instanceof ObjectCollection) {
+            return $this
+                ->useGeocodesQuery()
+                ->filterByPrimaryKeys($geocodes->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByGeocodes() only accepts arguments of type \Propel\Propel\Geocodes or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Geocodes relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildDepartmentsQuery The current query, for fluid interface
+     */
+    public function joinGeocodes($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Geocodes');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Geocodes');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Geocodes relation Geocodes object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \Propel\Propel\GeocodesQuery A secondary query class using the current class as primary query
+     */
+    public function useGeocodesQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinGeocodes($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Geocodes', '\Propel\Propel\GeocodesQuery');
     }
 
     /**

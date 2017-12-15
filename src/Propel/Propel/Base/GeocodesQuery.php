@@ -10,6 +10,7 @@ use Propel\Propel\Map\GeocodesTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
+use Propel\Runtime\ActiveQuery\ModelJoin;
 use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
@@ -36,6 +37,28 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildGeocodesQuery leftJoinWith($relation) Adds a LEFT JOIN clause and with to the query
  * @method     ChildGeocodesQuery rightJoinWith($relation) Adds a RIGHT JOIN clause and with to the query
  * @method     ChildGeocodesQuery innerJoinWith($relation) Adds a INNER JOIN clause and with to the query
+ *
+ * @method     ChildGeocodesQuery leftJoinDepartments($relationAlias = null) Adds a LEFT JOIN clause to the query using the Departments relation
+ * @method     ChildGeocodesQuery rightJoinDepartments($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Departments relation
+ * @method     ChildGeocodesQuery innerJoinDepartments($relationAlias = null) Adds a INNER JOIN clause to the query using the Departments relation
+ *
+ * @method     ChildGeocodesQuery joinWithDepartments($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Departments relation
+ *
+ * @method     ChildGeocodesQuery leftJoinWithDepartments() Adds a LEFT JOIN clause and with to the query using the Departments relation
+ * @method     ChildGeocodesQuery rightJoinWithDepartments() Adds a RIGHT JOIN clause and with to the query using the Departments relation
+ * @method     ChildGeocodesQuery innerJoinWithDepartments() Adds a INNER JOIN clause and with to the query using the Departments relation
+ *
+ * @method     ChildGeocodesQuery leftJoinTweets($relationAlias = null) Adds a LEFT JOIN clause to the query using the Tweets relation
+ * @method     ChildGeocodesQuery rightJoinTweets($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Tweets relation
+ * @method     ChildGeocodesQuery innerJoinTweets($relationAlias = null) Adds a INNER JOIN clause to the query using the Tweets relation
+ *
+ * @method     ChildGeocodesQuery joinWithTweets($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Tweets relation
+ *
+ * @method     ChildGeocodesQuery leftJoinWithTweets() Adds a LEFT JOIN clause and with to the query using the Tweets relation
+ * @method     ChildGeocodesQuery rightJoinWithTweets() Adds a RIGHT JOIN clause and with to the query using the Tweets relation
+ * @method     ChildGeocodesQuery innerJoinWithTweets() Adds a INNER JOIN clause and with to the query using the Tweets relation
+ *
+ * @method     \Propel\Propel\DepartmentsQuery|\Propel\Propel\TweetsQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
  * @method     ChildGeocodes findOne(ConnectionInterface $con = null) Return the first ChildGeocodes matching the query
  * @method     ChildGeocodes findOneOrCreate(ConnectionInterface $con = null) Return the first ChildGeocodes matching the query, or a new ChildGeocodes object populated from the query conditions when no match is found
@@ -322,6 +345,8 @@ abstract class GeocodesQuery extends ModelCriteria
      * $query->filterByDepartmentId(array('min' => 12)); // WHERE department_id > 12
      * </code>
      *
+     * @see       filterByDepartments()
+     *
      * @param     mixed $departmentId The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
@@ -376,6 +401,156 @@ abstract class GeocodesQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(GeocodesTableMap::COL_GEOCODE, $geocode, $comparison);
+    }
+
+    /**
+     * Filter the query by a related \Propel\Propel\Departments object
+     *
+     * @param \Propel\Propel\Departments|ObjectCollection $departments The related object(s) to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @throws \Propel\Runtime\Exception\PropelException
+     *
+     * @return ChildGeocodesQuery The current query, for fluid interface
+     */
+    public function filterByDepartments($departments, $comparison = null)
+    {
+        if ($departments instanceof \Propel\Propel\Departments) {
+            return $this
+                ->addUsingAlias(GeocodesTableMap::COL_DEPARTMENT_ID, $departments->getDepartmentId(), $comparison);
+        } elseif ($departments instanceof ObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(GeocodesTableMap::COL_DEPARTMENT_ID, $departments->toKeyValue('PrimaryKey', 'DepartmentId'), $comparison);
+        } else {
+            throw new PropelException('filterByDepartments() only accepts arguments of type \Propel\Propel\Departments or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Departments relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildGeocodesQuery The current query, for fluid interface
+     */
+    public function joinDepartments($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Departments');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Departments');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Departments relation Departments object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \Propel\Propel\DepartmentsQuery A secondary query class using the current class as primary query
+     */
+    public function useDepartmentsQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinDepartments($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Departments', '\Propel\Propel\DepartmentsQuery');
+    }
+
+    /**
+     * Filter the query by a related \Propel\Propel\Tweets object
+     *
+     * @param \Propel\Propel\Tweets|ObjectCollection $tweets the related object to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildGeocodesQuery The current query, for fluid interface
+     */
+    public function filterByTweets($tweets, $comparison = null)
+    {
+        if ($tweets instanceof \Propel\Propel\Tweets) {
+            return $this
+                ->addUsingAlias(GeocodesTableMap::COL_GEOCODE_ID, $tweets->getGeocodeId(), $comparison);
+        } elseif ($tweets instanceof ObjectCollection) {
+            return $this
+                ->useTweetsQuery()
+                ->filterByPrimaryKeys($tweets->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByTweets() only accepts arguments of type \Propel\Propel\Tweets or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Tweets relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildGeocodesQuery The current query, for fluid interface
+     */
+    public function joinTweets($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Tweets');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Tweets');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Tweets relation Tweets object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \Propel\Propel\TweetsQuery A secondary query class using the current class as primary query
+     */
+    public function useTweetsQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinTweets($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Tweets', '\Propel\Propel\TweetsQuery');
     }
 
     /**

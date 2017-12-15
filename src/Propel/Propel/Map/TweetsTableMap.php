@@ -176,11 +176,11 @@ class TweetsTableMap extends TableMap
         $this->setPackage('Propel.Propel');
         $this->setUseIdGenerator(true);
         // columns
-        $this->addPrimaryKey('tweet_id', 'TweetId', 'BIGINT', true, 18, null);
+        $this->addForeignPrimaryKey('tweet_id', 'TweetId', 'BIGINT' , 'popular_tweets', 'tweet_id', true, 18, null);
         $this->addColumn('api_tweet_id', 'ApiTweetId', 'BIGINT', true, 18, null);
         $this->addColumn('tweet_text', 'TweetText', 'LONGVARCHAR', true, null, null);
         $this->addColumn('tweet_publication_hour', 'TweetPublicationHour', 'TIMESTAMP', true, null, null);
-        $this->addColumn('geocode_id', 'GeocodeId', 'INTEGER', false, null, null);
+        $this->addForeignKey('geocode_id', 'GeocodeId', 'INTEGER', 'geocodes', 'geocode_id', false, null, null);
         $this->addColumn('retweets_quantity', 'RetweetsQuantity', 'INTEGER', false, null, null);
         $this->addColumn('favorites_quantity', 'FavoritesQuantity', 'INTEGER', false, null, null);
         $this->addColumn('twitter_account', 'TwitterAccount', 'LONGVARCHAR', true, null, null);
@@ -194,6 +194,20 @@ class TweetsTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('Geocodes', '\\Propel\\Propel\\Geocodes', RelationMap::MANY_TO_ONE, array (
+  0 =>
+  array (
+    0 => ':geocode_id',
+    1 => ':geocode_id',
+  ),
+), null, null, null, false);
+        $this->addRelation('PopularTweets', '\\Propel\\Propel\\PopularTweets', RelationMap::MANY_TO_ONE, array (
+  0 =>
+  array (
+    0 => ':tweet_id',
+    1 => ':tweet_id',
+  ),
+), null, null, null, false);
     } // buildRelations()
 
     /**

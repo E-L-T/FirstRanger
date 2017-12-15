@@ -6,6 +6,8 @@ use \DateTime;
 use \Exception;
 use \PDO;
 use Propel\Propel\PopularTweetsQuery as ChildPopularTweetsQuery;
+use Propel\Propel\Tweets as ChildTweets;
+use Propel\Propel\TweetsQuery as ChildTweetsQuery;
 use Propel\Propel\Map\PopularTweetsTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
@@ -123,6 +125,11 @@ abstract class PopularTweets implements ActiveRecordInterface
      * @var        string
      */
     protected $location;
+
+    /**
+     * @var        ChildTweets one-to-one related ChildTweets object
+     */
+    protected $singleTweets;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -771,6 +778,8 @@ abstract class PopularTweets implements ActiveRecordInterface
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->singleTweets = null;
+
         } // if (deep)
     }
 
@@ -883,6 +892,12 @@ abstract class PopularTweets implements ActiveRecordInterface
                     $affectedRows += $this->doUpdate($con);
                 }
                 $this->resetModified();
+            }
+
+            if ($this->singleTweets !== null) {
+                if (!$this->singleTweets->isDeleted() && ($this->singleTweets->isNew() || $this->singleTweets->isModified())) {
+                    $affectedRows += $this->singleTweets->save($con);
+                }
             }
 
             $this->alreadyInSave = false;
@@ -1082,10 +1097,11 @@ abstract class PopularTweets implements ActiveRecordInterface
      *                    Defaults to TableMap::TYPE_PHPNAME.
      * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
+     * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
      * @return array an associative array containing the field names (as keys) and field values
      */
-    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
+    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
 
         if (isset($alreadyDumpedObjects['PopularTweets'][$this->hashCode()])) {
@@ -1113,6 +1129,23 @@ abstract class PopularTweets implements ActiveRecordInterface
             $result[$key] = $virtualColumn;
         }
 
+        if ($includeForeignObjects) {
+            if (null !== $this->singleTweets) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'tweets';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'tweets';
+                        break;
+                    default:
+                        $key = 'Tweets';
+                }
+
+                $result[$key] = $this->singleTweets->toArray($keyType, $includeLazyLoadColumns, $alreadyDumpedObjects, true);
+            }
+        }
 
         return $result;
     }
@@ -1388,6 +1421,19 @@ abstract class PopularTweets implements ActiveRecordInterface
         $copyObj->setFavoritesQuantity($this->getFavoritesQuantity());
         $copyObj->setCoordinates($this->getCoordinates());
         $copyObj->setLocation($this->getLocation());
+
+        if ($deepCopy) {
+            // important: temporarily setNew(false) because this affects the behavior of
+            // the getter/setter methods for fkey referrer objects.
+            $copyObj->setNew(false);
+
+            $relObj = $this->getTweets();
+            if ($relObj) {
+                $copyObj->setTweets($relObj->copy($deepCopy));
+            }
+
+        } // if ($deepCopy)
+
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setPopularTweetId(NULL); // this is a auto-increment column, so set to default value
@@ -1414,6 +1460,55 @@ abstract class PopularTweets implements ActiveRecordInterface
         $this->copyInto($copyObj, $deepCopy);
 
         return $copyObj;
+    }
+
+
+    /**
+     * Initializes a collection based on the name of a relation.
+     * Avoids crafting an 'init[$relationName]s' method name
+     * that wouldn't work when StandardEnglishPluralizer is used.
+     *
+     * @param      string $relationName The name of the relation to initialize
+     * @return void
+     */
+    public function initRelation($relationName)
+    {
+    }
+
+    /**
+     * Gets a single ChildTweets object, which is related to this object by a one-to-one relationship.
+     *
+     * @param  ConnectionInterface $con optional connection object
+     * @return ChildTweets
+     * @throws PropelException
+     */
+    public function getTweets(ConnectionInterface $con = null)
+    {
+
+        if ($this->singleTweets === null && !$this->isNew()) {
+            $this->singleTweets = ChildTweetsQuery::create()->findPk($this->getPrimaryKey(), $con);
+        }
+
+        return $this->singleTweets;
+    }
+
+    /**
+     * Sets a single ChildTweets object as related to this object by a one-to-one relationship.
+     *
+     * @param  ChildTweets $v ChildTweets
+     * @return $this|\Propel\Propel\PopularTweets The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setTweets(ChildTweets $v = null)
+    {
+        $this->singleTweets = $v;
+
+        // Make sure that that the passed-in ChildTweets isn't already associated with this object
+        if ($v !== null && $v->getPopularTweets(null, false) === null) {
+            $v->setPopularTweets($this);
+        }
+
+        return $this;
     }
 
     /**
@@ -1450,8 +1545,12 @@ abstract class PopularTweets implements ActiveRecordInterface
     public function clearAllReferences($deep = false)
     {
         if ($deep) {
+            if ($this->singleTweets) {
+                $this->singleTweets->clearAllReferences($deep);
+            }
         } // if ($deep)
 
+        $this->singleTweets = null;
     }
 
     /**

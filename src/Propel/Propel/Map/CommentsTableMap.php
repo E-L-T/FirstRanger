@@ -142,7 +142,7 @@ class CommentsTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('comment_id', 'CommentId', 'INTEGER', true, null, null);
-        $this->addColumn('user_id', 'UserId', 'INTEGER', true, null, null);
+        $this->addForeignKey('user_id', 'UserId', 'INTEGER', 'users', 'user_id', true, null, null);
         $this->addColumn('comment_publication_hour', 'CommentPublicationHour', 'TIMESTAMP', true, null, null);
         $this->addColumn('likes_count', 'LikesCount', 'INTEGER', false, null, null);
     } // initialize()
@@ -152,6 +152,13 @@ class CommentsTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('Users', '\\Propel\\Propel\\Users', RelationMap::MANY_TO_ONE, array (
+  0 =>
+  array (
+    0 => ':user_id',
+    1 => ':user_id',
+  ),
+), null, null, null, false);
     } // buildRelations()
 
     /**

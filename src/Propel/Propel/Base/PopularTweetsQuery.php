@@ -10,6 +10,7 @@ use Propel\Propel\Map\PopularTweetsTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
+use Propel\Runtime\ActiveQuery\ModelJoin;
 use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
@@ -46,6 +47,18 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildPopularTweetsQuery leftJoinWith($relation) Adds a LEFT JOIN clause and with to the query
  * @method     ChildPopularTweetsQuery rightJoinWith($relation) Adds a RIGHT JOIN clause and with to the query
  * @method     ChildPopularTweetsQuery innerJoinWith($relation) Adds a INNER JOIN clause and with to the query
+ *
+ * @method     ChildPopularTweetsQuery leftJoinTweets($relationAlias = null) Adds a LEFT JOIN clause to the query using the Tweets relation
+ * @method     ChildPopularTweetsQuery rightJoinTweets($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Tweets relation
+ * @method     ChildPopularTweetsQuery innerJoinTweets($relationAlias = null) Adds a INNER JOIN clause to the query using the Tweets relation
+ *
+ * @method     ChildPopularTweetsQuery joinWithTweets($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Tweets relation
+ *
+ * @method     ChildPopularTweetsQuery leftJoinWithTweets() Adds a LEFT JOIN clause and with to the query using the Tweets relation
+ * @method     ChildPopularTweetsQuery rightJoinWithTweets() Adds a RIGHT JOIN clause and with to the query using the Tweets relation
+ * @method     ChildPopularTweetsQuery innerJoinWithTweets() Adds a INNER JOIN clause and with to the query using the Tweets relation
+ *
+ * @method     \Propel\Propel\TweetsQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
  * @method     ChildPopularTweets findOne(ConnectionInterface $con = null) Return the first ChildPopularTweets matching the query
  * @method     ChildPopularTweets findOneOrCreate(ConnectionInterface $con = null) Return the first ChildPopularTweets matching the query, or a new ChildPopularTweets object populated from the query conditions when no match is found
@@ -608,6 +621,79 @@ abstract class PopularTweetsQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PopularTweetsTableMap::COL_LOCATION, $location, $comparison);
+    }
+
+    /**
+     * Filter the query by a related \Propel\Propel\Tweets object
+     *
+     * @param \Propel\Propel\Tweets|ObjectCollection $tweets the related object to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildPopularTweetsQuery The current query, for fluid interface
+     */
+    public function filterByTweets($tweets, $comparison = null)
+    {
+        if ($tweets instanceof \Propel\Propel\Tweets) {
+            return $this
+                ->addUsingAlias(PopularTweetsTableMap::COL_TWEET_ID, $tweets->getTweetId(), $comparison);
+        } elseif ($tweets instanceof ObjectCollection) {
+            return $this
+                ->useTweetsQuery()
+                ->filterByPrimaryKeys($tweets->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByTweets() only accepts arguments of type \Propel\Propel\Tweets or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Tweets relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildPopularTweetsQuery The current query, for fluid interface
+     */
+    public function joinTweets($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Tweets');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Tweets');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Tweets relation Tweets object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \Propel\Propel\TweetsQuery A secondary query class using the current class as primary query
+     */
+    public function useTweetsQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinTweets($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Tweets', '\Propel\Propel\TweetsQuery');
     }
 
     /**

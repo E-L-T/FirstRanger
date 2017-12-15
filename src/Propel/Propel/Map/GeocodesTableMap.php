@@ -143,7 +143,7 @@ class GeocodesTableMap extends TableMap
         // columns
         $this->addPrimaryKey('geocode_id', 'GeocodeId', 'INTEGER', true, null, null);
         $this->addColumn('geocode_name', 'GeocodeName', 'VARCHAR', true, 20, null);
-        $this->addColumn('department_id', 'DepartmentId', 'INTEGER', true, null, null);
+        $this->addForeignKey('department_id', 'DepartmentId', 'INTEGER', 'departments', 'department_id', true, null, null);
         $this->addColumn('geocode', 'Geocode', 'VARCHAR', true, 100, null);
     } // initialize()
 
@@ -152,6 +152,20 @@ class GeocodesTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('Departments', '\\Propel\\Propel\\Departments', RelationMap::MANY_TO_ONE, array (
+  0 =>
+  array (
+    0 => ':department_id',
+    1 => ':department_id',
+  ),
+), null, null, null, false);
+        $this->addRelation('Tweets', '\\Propel\\Propel\\Tweets', RelationMap::ONE_TO_MANY, array (
+  0 =>
+  array (
+    0 => ':geocode_id',
+    1 => ':geocode_id',
+  ),
+), null, null, 'Tweetss', false);
     } // buildRelations()
 
     /**

@@ -182,6 +182,13 @@ class PopularTweetsTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('Tweets', '\\Propel\\Propel\\Tweets', RelationMap::ONE_TO_ONE, array (
+  0 =>
+  array (
+    0 => ':tweet_id',
+    1 => ':tweet_id',
+  ),
+), null, null, null, false);
     } // buildRelations()
 
     /**

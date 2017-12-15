@@ -4,13 +4,20 @@ namespace Propel\Propel\Base;
 
 use \Exception;
 use \PDO;
+use Propel\Propel\Departments as ChildDepartments;
+use Propel\Propel\DepartmentsQuery as ChildDepartmentsQuery;
+use Propel\Propel\Geocodes as ChildGeocodes;
 use Propel\Propel\GeocodesQuery as ChildGeocodesQuery;
+use Propel\Propel\Tweets as ChildTweets;
+use Propel\Propel\TweetsQuery as ChildTweetsQuery;
 use Propel\Propel\Map\GeocodesTableMap;
+use Propel\Propel\Map\TweetsTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
 use Propel\Runtime\ActiveRecord\ActiveRecordInterface;
 use Propel\Runtime\Collection\Collection;
+use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\BadMethodCallException;
 use Propel\Runtime\Exception\LogicException;
@@ -88,12 +95,29 @@ abstract class Geocodes implements ActiveRecordInterface
     protected $geocode;
 
     /**
+     * @var        ChildDepartments
+     */
+    protected $aDepartments;
+
+    /**
+     * @var        ObjectCollection|ChildTweets[] Collection to store aggregation of ChildTweets objects.
+     */
+    protected $collTweetss;
+    protected $collTweetssPartial;
+
+    /**
      * Flag to prevent endless save loop, if this object is referenced
      * by another object which falls in this transaction.
      *
      * @var boolean
      */
     protected $alreadyInSave = false;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var ObjectCollection|ChildTweets[]
+     */
+    protected $tweetssScheduledForDeletion = null;
 
     /**
      * Initializes internal state of Propel\Propel\Base\Geocodes object.
@@ -417,6 +441,10 @@ abstract class Geocodes implements ActiveRecordInterface
             $this->modifiedColumns[GeocodesTableMap::COL_DEPARTMENT_ID] = true;
         }
 
+        if ($this->aDepartments !== null && $this->aDepartments->getDepartmentId() !== $v) {
+            $this->aDepartments = null;
+        }
+
         return $this;
     } // setDepartmentId()
 
@@ -517,6 +545,9 @@ abstract class Geocodes implements ActiveRecordInterface
      */
     public function ensureConsistency()
     {
+        if ($this->aDepartments !== null && $this->department_id !== $this->aDepartments->getDepartmentId()) {
+            $this->aDepartments = null;
+        }
     } // ensureConsistency
 
     /**
@@ -555,6 +586,9 @@ abstract class Geocodes implements ActiveRecordInterface
         $this->hydrate($row, 0, true, $dataFetcher->getIndexType()); // rehydrate
 
         if ($deep) {  // also de-associate any related objects?
+
+            $this->aDepartments = null;
+            $this->collTweetss = null;
 
         } // if (deep)
     }
@@ -659,6 +693,18 @@ abstract class Geocodes implements ActiveRecordInterface
         if (!$this->alreadyInSave) {
             $this->alreadyInSave = true;
 
+            // We call the save method on the following object(s) if they
+            // were passed to this object by their corresponding set
+            // method.  This object relates to these object(s) by a
+            // foreign key reference.
+
+            if ($this->aDepartments !== null) {
+                if ($this->aDepartments->isModified() || $this->aDepartments->isNew()) {
+                    $affectedRows += $this->aDepartments->save($con);
+                }
+                $this->setDepartments($this->aDepartments);
+            }
+
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
                 if ($this->isNew()) {
@@ -668,6 +714,24 @@ abstract class Geocodes implements ActiveRecordInterface
                     $affectedRows += $this->doUpdate($con);
                 }
                 $this->resetModified();
+            }
+
+            if ($this->tweetssScheduledForDeletion !== null) {
+                if (!$this->tweetssScheduledForDeletion->isEmpty()) {
+                    foreach ($this->tweetssScheduledForDeletion as $tweets) {
+                        // need to save related object because we set the relation to null
+                        $tweets->save($con);
+                    }
+                    $this->tweetssScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collTweetss !== null) {
+                foreach ($this->collTweetss as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
             }
 
             $this->alreadyInSave = false;
@@ -822,10 +886,11 @@ abstract class Geocodes implements ActiveRecordInterface
      *                    Defaults to TableMap::TYPE_PHPNAME.
      * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
+     * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
      * @return array an associative array containing the field names (as keys) and field values
      */
-    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
+    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
 
         if (isset($alreadyDumpedObjects['Geocodes'][$this->hashCode()])) {
@@ -844,6 +909,38 @@ abstract class Geocodes implements ActiveRecordInterface
             $result[$key] = $virtualColumn;
         }
 
+        if ($includeForeignObjects) {
+            if (null !== $this->aDepartments) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'departments';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'departments';
+                        break;
+                    default:
+                        $key = 'Departments';
+                }
+
+                $result[$key] = $this->aDepartments->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->collTweetss) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'tweetss';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'tweetss';
+                        break;
+                    default:
+                        $key = 'Tweetss';
+                }
+
+                $result[$key] = $this->collTweetss->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+        }
 
         return $result;
     }
@@ -1069,6 +1166,20 @@ abstract class Geocodes implements ActiveRecordInterface
         $copyObj->setGeocodeName($this->getGeocodeName());
         $copyObj->setDepartmentId($this->getDepartmentId());
         $copyObj->setGeocode($this->getGeocode());
+
+        if ($deepCopy) {
+            // important: temporarily setNew(false) because this affects the behavior of
+            // the getter/setter methods for fkey referrer objects.
+            $copyObj->setNew(false);
+
+            foreach ($this->getTweetss() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addTweets($relObj->copy($deepCopy));
+                }
+            }
+
+        } // if ($deepCopy)
+
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setGeocodeId(NULL); // this is a auto-increment column, so set to default value
@@ -1098,12 +1209,333 @@ abstract class Geocodes implements ActiveRecordInterface
     }
 
     /**
+     * Declares an association between this object and a ChildDepartments object.
+     *
+     * @param  ChildDepartments $v
+     * @return $this|\Propel\Propel\Geocodes The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setDepartments(ChildDepartments $v = null)
+    {
+        if ($v === null) {
+            $this->setDepartmentId(NULL);
+        } else {
+            $this->setDepartmentId($v->getDepartmentId());
+        }
+
+        $this->aDepartments = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the ChildDepartments object, it will not be re-added.
+        if ($v !== null) {
+            $v->addGeocodes($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated ChildDepartments object
+     *
+     * @param  ConnectionInterface $con Optional Connection object.
+     * @return ChildDepartments The associated ChildDepartments object.
+     * @throws PropelException
+     */
+    public function getDepartments(ConnectionInterface $con = null)
+    {
+        if ($this->aDepartments === null && ($this->department_id != 0)) {
+            $this->aDepartments = ChildDepartmentsQuery::create()->findPk($this->department_id, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aDepartments->addGeocodess($this);
+             */
+        }
+
+        return $this->aDepartments;
+    }
+
+
+    /**
+     * Initializes a collection based on the name of a relation.
+     * Avoids crafting an 'init[$relationName]s' method name
+     * that wouldn't work when StandardEnglishPluralizer is used.
+     *
+     * @param      string $relationName The name of the relation to initialize
+     * @return void
+     */
+    public function initRelation($relationName)
+    {
+        if ('Tweets' == $relationName) {
+            $this->initTweetss();
+            return;
+        }
+    }
+
+    /**
+     * Clears out the collTweetss collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addTweetss()
+     */
+    public function clearTweetss()
+    {
+        $this->collTweetss = null; // important to set this to NULL since that means it is uninitialized
+    }
+
+    /**
+     * Reset is the collTweetss collection loaded partially.
+     */
+    public function resetPartialTweetss($v = true)
+    {
+        $this->collTweetssPartial = $v;
+    }
+
+    /**
+     * Initializes the collTweetss collection.
+     *
+     * By default this just sets the collTweetss collection to an empty array (like clearcollTweetss());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param      boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initTweetss($overrideExisting = true)
+    {
+        if (null !== $this->collTweetss && !$overrideExisting) {
+            return;
+        }
+
+        $collectionClassName = TweetsTableMap::getTableMap()->getCollectionClassName();
+
+        $this->collTweetss = new $collectionClassName;
+        $this->collTweetss->setModel('\Propel\Propel\Tweets');
+    }
+
+    /**
+     * Gets an array of ChildTweets objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this ChildGeocodes is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @return ObjectCollection|ChildTweets[] List of ChildTweets objects
+     * @throws PropelException
+     */
+    public function getTweetss(Criteria $criteria = null, ConnectionInterface $con = null)
+    {
+        $partial = $this->collTweetssPartial && !$this->isNew();
+        if (null === $this->collTweetss || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collTweetss) {
+                // return empty collection
+                $this->initTweetss();
+            } else {
+                $collTweetss = ChildTweetsQuery::create(null, $criteria)
+                    ->filterByGeocodes($this)
+                    ->find($con);
+
+                if (null !== $criteria) {
+                    if (false !== $this->collTweetssPartial && count($collTweetss)) {
+                        $this->initTweetss(false);
+
+                        foreach ($collTweetss as $obj) {
+                            if (false == $this->collTweetss->contains($obj)) {
+                                $this->collTweetss->append($obj);
+                            }
+                        }
+
+                        $this->collTweetssPartial = true;
+                    }
+
+                    return $collTweetss;
+                }
+
+                if ($partial && $this->collTweetss) {
+                    foreach ($this->collTweetss as $obj) {
+                        if ($obj->isNew()) {
+                            $collTweetss[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collTweetss = $collTweetss;
+                $this->collTweetssPartial = false;
+            }
+        }
+
+        return $this->collTweetss;
+    }
+
+    /**
+     * Sets a collection of ChildTweets objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param      Collection $tweetss A Propel collection.
+     * @param      ConnectionInterface $con Optional connection object
+     * @return $this|ChildGeocodes The current object (for fluent API support)
+     */
+    public function setTweetss(Collection $tweetss, ConnectionInterface $con = null)
+    {
+        /** @var ChildTweets[] $tweetssToDelete */
+        $tweetssToDelete = $this->getTweetss(new Criteria(), $con)->diff($tweetss);
+
+
+        $this->tweetssScheduledForDeletion = $tweetssToDelete;
+
+        foreach ($tweetssToDelete as $tweetsRemoved) {
+            $tweetsRemoved->setGeocodes(null);
+        }
+
+        $this->collTweetss = null;
+        foreach ($tweetss as $tweets) {
+            $this->addTweets($tweets);
+        }
+
+        $this->collTweetss = $tweetss;
+        $this->collTweetssPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Tweets objects.
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct
+     * @param      ConnectionInterface $con
+     * @return int             Count of related Tweets objects.
+     * @throws PropelException
+     */
+    public function countTweetss(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    {
+        $partial = $this->collTweetssPartial && !$this->isNew();
+        if (null === $this->collTweetss || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collTweetss) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getTweetss());
+            }
+
+            $query = ChildTweetsQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByGeocodes($this)
+                ->count($con);
+        }
+
+        return count($this->collTweetss);
+    }
+
+    /**
+     * Method called to associate a ChildTweets object to this object
+     * through the ChildTweets foreign key attribute.
+     *
+     * @param  ChildTweets $l ChildTweets
+     * @return $this|\Propel\Propel\Geocodes The current object (for fluent API support)
+     */
+    public function addTweets(ChildTweets $l)
+    {
+        if ($this->collTweetss === null) {
+            $this->initTweetss();
+            $this->collTweetssPartial = true;
+        }
+
+        if (!$this->collTweetss->contains($l)) {
+            $this->doAddTweets($l);
+
+            if ($this->tweetssScheduledForDeletion and $this->tweetssScheduledForDeletion->contains($l)) {
+                $this->tweetssScheduledForDeletion->remove($this->tweetssScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param ChildTweets $tweets The ChildTweets object to add.
+     */
+    protected function doAddTweets(ChildTweets $tweets)
+    {
+        $this->collTweetss[]= $tweets;
+        $tweets->setGeocodes($this);
+    }
+
+    /**
+     * @param  ChildTweets $tweets The ChildTweets object to remove.
+     * @return $this|ChildGeocodes The current object (for fluent API support)
+     */
+    public function removeTweets(ChildTweets $tweets)
+    {
+        if ($this->getTweetss()->contains($tweets)) {
+            $pos = $this->collTweetss->search($tweets);
+            $this->collTweetss->remove($pos);
+            if (null === $this->tweetssScheduledForDeletion) {
+                $this->tweetssScheduledForDeletion = clone $this->collTweetss;
+                $this->tweetssScheduledForDeletion->clear();
+            }
+            $this->tweetssScheduledForDeletion[]= $tweets;
+            $tweets->setGeocodes(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Geocodes is new, it will return
+     * an empty collection; or if this Geocodes has previously
+     * been saved, it will retrieve related Tweetss from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Geocodes.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildTweets[] List of ChildTweets objects
+     */
+    public function getTweetssJoinPopularTweets(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildTweetsQuery::create(null, $criteria);
+        $query->joinWith('PopularTweets', $joinBehavior);
+
+        return $this->getTweetss($query, $con);
+    }
+
+    /**
      * Clears the current object, sets all attributes to their default values and removes
      * outgoing references as well as back-references (from other objects to this one. Results probably in a database
      * change of those foreign objects when you call `save` there).
      */
     public function clear()
     {
+        if (null !== $this->aDepartments) {
+            $this->aDepartments->removeGeocodes($this);
+        }
         $this->geocode_id = null;
         $this->geocode_name = null;
         $this->department_id = null;
@@ -1126,8 +1558,15 @@ abstract class Geocodes implements ActiveRecordInterface
     public function clearAllReferences($deep = false)
     {
         if ($deep) {
+            if ($this->collTweetss) {
+                foreach ($this->collTweetss as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
         } // if ($deep)
 
+        $this->collTweetss = null;
+        $this->aDepartments = null;
     }
 
     /**

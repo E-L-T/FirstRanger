@@ -188,6 +188,13 @@ class DepartmentSummaryTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('Departments', '\\Propel\\Propel\\Departments', RelationMap::ONE_TO_MANY, array (
+  0 =>
+  array (
+    0 => ':department_code',
+    1 => ':department_code',
+  ),
+), null, null, 'Departmentss', false);
     } // buildRelations()
 
     /**
