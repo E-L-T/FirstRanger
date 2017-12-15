@@ -136,7 +136,6 @@ foreach ($geocodesArray as $geocodeRow) {
 
             if (!$tweet) {
 //        
-
                 $tweet = new Tweets();
                 $tweet->setApiTweetId($status->id);
                 $tweet->setTweetText($status->text);
@@ -166,7 +165,7 @@ foreach ($geocodesArray as $geocodeRow) {
 //        var_dump($now->sub(new DateInterval('PT3M')));
 //        var_dump($statusDateTime);
 //        var_dump($now->sub(new DateInterval('PT1M')) > $statusDateTime);
-    } while ($now->sub(new DateInterval('PT1H')) < $statusDateTime);
+    } while ($now->sub(new DateInterval('PT6H')) < $statusDateTime);
 }
 // new Datetime() create from format.
 //récupérer le dernier id inséré dans la bdd

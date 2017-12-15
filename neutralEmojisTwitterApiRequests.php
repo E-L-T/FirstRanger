@@ -41,79 +41,89 @@ $content = $connection->get("account/verify_credentials");
 
 //Create tweet
 //$new_status = $connection->post("statuses/update", ["status" => "This tweet was sent by twitter API"]);
-$minId = 99999999999999999999999;
 
 $nowRef = new DateTime('now');
-
+//var_dump($nowRef);
 $tweet = new Tweets();
 $queryTweets = TweetsQuery::create();
 $geocode = new Geocodes();
 
-
-
-//    echo 'post vardump lastweet';
-//    echo $lastId;
-//Get tweets
-//
-//création d'une boucle foreach pour récupérer tous les géocodes
-//
 $queryGeocodes = GeocodesQuery::create();
 $geocodesArray = $queryGeocodes->orderByGeocodeId('asc')->find();
-//echo 'la liste de geocodes est : ';
+
+//echo 'vardump de geocode array : \n';
+//var_dump($geocodesArray);
+//echo 'vardump de geocode array : \n';
 //var_dump($geocodesArray);
 
 foreach ($geocodesArray as $geocodeRow) {
+    //
+    $minId = 99999999999999999999999;
 
-//première requête
-    echo 'la ligne de geocode est : ';
-    var_dump($geocodeRow);
+//    echo 'la ligne de geocode est : ';
+//    var_dump($geocodeRow);
 
     $geocode = $geocodeRow->getGeocode();
     echo 'le geocode unique est : ';
-    var_dump($geocode);
+    echo $geocode;
     $geocodeId = $geocodeRow->getGeocodeId();
-    echo 'le geocodeId est : ';
-    var_dump($geocodeId);
+    echo 'le echo de geocodeId est : ';
+    echo $geocodeId;
 
     do {
-
-        $lastTweet = $queryTweets->orderByTweetId('desc')->limit(1)->findOne(); //recupere l'id du dernier tweet inséré en bdd
-        if ($lastTweet) {
-            $lastId = $lastTweet->getApiTweetId();
-        }
-
+        echo 'debut';
+        echo "\n";
+//        $tweet = new Tweets();
+//        $queryTweets = TweetsQuery::create();
+//        $lastTweet = $queryTweets->orderByTweetId('desc')->limit(1)->findOne();
+//        if ($lastTweet) {
+//            $lastId = $lastTweet->getApiTweetId();
+//        }
+//    echo 'post vardump lastweet';
+//    echo $lastId;
+        //Get tweets
+        //
+    //création d'une boucle foreach pour récupérer tous les géocodes
+        //
+    
+    //
+    //première requête
         if ($minId === 99999999999999999999999) {
             $responseTwitter = $connection->get("search/tweets", [
-                "q" => "\xF0\x9F\x98\x81 OR \xF0\x9F\x98\x82 OR \xF0\x9F\x98\x83 OR \xF0\x9F\x98\x84 OR \xF0\x9F\x98\x85 OR \xF0\x9F\x98\x86 OR \xF0\x9F\x98\x89 OR \xF0\x9F\x98\x8A OR \xF0\x9F\x98\x8B OR \xF0\x9F\x98\x8D OR \xF0\x9F\x98\x98 OR \xF0\x9F\x98\x9A OR \xF0\x9F\x98\x9C OR \xF0\x9F\x98\x9D OR \xF0\x9F\x98\xB8 OR \xF0\x9F\x98\xB9 OR \xF0\x9F\x98\xBA OR \xF0\x9F\x98\xBB OR \xF0\x9F\x98\x80 OR \xF0\x9F\x98\x87 OR \xF0\x9F\x98\x88 OR \xF0\x9F\x98\x8E OR \xF0\x9F\x98\x9B OR \xF0\x9F\x98\xAE OR \xF0\x9F\x98\x97 OR \xF0\x9F\x98\x99 OR \xF0\x9F\x91\x8D OR \xF0\x9F\x91\xA6 OR \xF0\x9F\x91\xA7 OR \xF0\x9F\x91\xA8 OR \xF0\x9F\x91\xA9 OR \xF0\x9F\x92\x8B OR \xF0\x9F\x92\x8C OR \xF0\x9F\x92\x8F OR \xF0\x9F\x92\x90 OR \xF0\x9F\x92\x91 OR \xF0\x9F\x91\xBC OR \xF0\x9F\x91\x8C OR \xF0\x9F\x91\x84 OR \xF0\x9F\x92\x93 OR \xF0\x9F\x92\x95 OR \xF0\x9F\x92\x96 OR \xF0\x9F\x92\x97 OR \xF0\x9F\x92\x98 OR \xF0\x9F\x92\x99 OR \xF0\x9F\x92\x9A OR \xF0\x9F\x92\x9B OR \xF0\x9F\x92\x9C -RT", //on précise qu'on veut pas les RT.
+                "q" => "\xF0\x9F\x98\x8C OR \xF0\x9F\x98\x8F OR \xF0\x9F\x98\xB5 OR \xF0\x9F\x98\xB7 OR \xF0\x9F\x98\x90 OR \xF0\x9F\x98\xB6 OR \xF0\x9F\x98\x91 OR \xF0\x9F\x98\xB4 OR \xF0\x9F\x92\x82 OR \xF0\x9F\x91\xBB OR \xF0\x9F\x91\xAA OR \xF0\x9F\x91\xAB OR \xF0\x9F\x91\xAE OR \xF0\x9F\x91\xB1 OR \xF0\x9F\x91\xB2 OR \xF0\x9F\x91\xB3 OR \xF0\x9F\x91\xB4 OR \xF0\x9F\x91\xB5 OR \xF0\x9F\x91\xB6 OR \xF0\x9F\x91\xB7 OR \xF0\x9F\x91\xB8 OR \xF0\x9F\x91\xBD OR \xF0\x9F\x91\xBE OR \xF0\x9F\x92\x81 OR \xF0\x9F\x92\x83 OR \xF0\x9F\x92\x86 OR \xF0\x9F\x92\x87 OR \xF0\x9F\x91\xB0 OR \xF0\x9F\x91\xAF OR \xF0\x9F\x9A\x81 OR \xF0\x9F\x9A\x82 OR \xF0\x9F\x9A\x86 OR \xF0\x9F\x9A\x88 OR \xF0\x9F\x9A\x8A OR \xF0\x9F\x9A\x8D OR \xF0\x9F\x9A\x8E OR \xF0\x9F\x9A\x90 OR \xF0\x9F\x9A\x94 OR \xF0\x9F\x9A\x96 OR \xF0\x9F\x9A\x98 OR \xF0\x9F\x9A\x9B OR \xF0\x9F\x9A\x9C -RT", //on précise qu'on veut pas les RT.
                 "count" => "100",
                 "result_type" => "recent",
                 "geocode" => $geocode,
-                    //    "max_id"=> "$minId"
+                    //"max_id" => "$minId"
             ]);
         } else {
-            echo '2e requete et plus...';
-            echo 'le geocode est : ';
-            echo $geocode;
-            echo 'le minId est : ';
-            echo $minId;
             $responseTwitter = $connection->get("search/tweets", [
-                "q" => "\xF0\x9F\x98\x81 OR \xF0\x9F\x98\x82 OR \xF0\x9F\x98\x83 OR \xF0\x9F\x98\x84 OR \xF0\x9F\x98\x85 OR \xF0\x9F\x98\x86 OR \xF0\x9F\x98\x89 OR \xF0\x9F\x98\x8A OR \xF0\x9F\x98\x8B OR \xF0\x9F\x98\x8D OR \xF0\x9F\x98\x98 OR \xF0\x9F\x98\x9A OR \xF0\x9F\x98\x9C OR \xF0\x9F\x98\x9D OR \xF0\x9F\x98\xB8 OR \xF0\x9F\x98\xB9 OR \xF0\x9F\x98\xBA OR \xF0\x9F\x98\xBB OR \xF0\x9F\x98\x80 OR \xF0\x9F\x98\x87 OR \xF0\x9F\x98\x88 OR \xF0\x9F\x98\x8E OR \xF0\x9F\x98\x9B OR \xF0\x9F\x98\xAE OR \xF0\x9F\x98\x97 OR \xF0\x9F\x98\x99 OR \xF0\x9F\x91\x8D OR \xF0\x9F\x91\xA6 OR \xF0\x9F\x91\xA7 OR \xF0\x9F\x91\xA8 OR \xF0\x9F\x91\xA9 OR \xF0\x9F\x92\x8B OR \xF0\x9F\x92\x8C OR \xF0\x9F\x92\x8F OR \xF0\x9F\x92\x90 OR \xF0\x9F\x92\x91 OR \xF0\x9F\x91\xBC OR \xF0\x9F\x91\x8C OR \xF0\x9F\x91\x84 OR \xF0\x9F\x92\x93 OR \xF0\x9F\x92\x95 OR \xF0\x9F\x92\x96 OR \xF0\x9F\x92\x97 OR \xF0\x9F\x92\x98 OR \xF0\x9F\x92\x99 OR \xF0\x9F\x92\x9A OR \xF0\x9F\x92\x9B OR \xF0\x9F\x92\x9C -RT", //on précise qu'on veut pas les RT.
+                "q" => "\xF0\x9F\x98\x8C OR \xF0\x9F\x98\x8F OR \xF0\x9F\x98\xB5 OR \xF0\x9F\x98\xB7 OR \xF0\x9F\x98\x90 OR \xF0\x9F\x98\xB6 OR \xF0\x9F\x98\x91 OR \xF0\x9F\x98\xB4 OR \xF0\x9F\x92\x82 OR \xF0\x9F\x91\xBB OR \xF0\x9F\x91\xAA OR \xF0\x9F\x91\xAB OR \xF0\x9F\x91\xAE OR \xF0\x9F\x91\xB1 OR \xF0\x9F\x91\xB2 OR \xF0\x9F\x91\xB3 OR \xF0\x9F\x91\xB4 OR \xF0\x9F\x91\xB5 OR \xF0\x9F\x91\xB6 OR \xF0\x9F\x91\xB7 OR \xF0\x9F\x91\xB8 OR \xF0\x9F\x91\xBD OR \xF0\x9F\x91\xBE OR \xF0\x9F\x92\x81 OR \xF0\x9F\x92\x83 OR \xF0\x9F\x92\x86 OR \xF0\x9F\x92\x87 OR \xF0\x9F\x91\xB0 OR \xF0\x9F\x91\xAF OR \xF0\x9F\x9A\x81 OR \xF0\x9F\x9A\x82 OR \xF0\x9F\x9A\x86 OR \xF0\x9F\x9A\x88 OR \xF0\x9F\x9A\x8A OR \xF0\x9F\x9A\x8D OR \xF0\x9F\x9A\x8E OR \xF0\x9F\x9A\x90 OR \xF0\x9F\x9A\x94 OR \xF0\x9F\x9A\x96 OR \xF0\x9F\x9A\x98 OR \xF0\x9F\x9A\x9B OR \xF0\x9F\x9A\x9C -RT", //on précise qu'on veut pas les RT.
+                "geocode" => $geocode,
                 "count" => "100",
                 "result_type" => "recent",
-                "geocode" => "$geocode",
-                "max_id" => "$minId"
+                "max_id" => $minId,
             ]);
         }
-        echo 'le var dump de response twitter est :';
+        echo '2e requete.  MinID : ';
+        echo strval($minId);
+        echo "\n";
+
+        echo '2e requete.  geocode : ';
+        echo strval($geocode);
+        echo "\n";
+
         var_dump($responseTwitter);
-        
+
         foreach ($responseTwitter->statuses as $status) {
+
             if ($status->id < $minId) {
                 $minId = $status->id;
             }
 
             $queryTweets = TweetsQuery::create();
             $tweet = $queryTweets->filterByApiTweetId($status->id)->findOne(); //vérifie que le tweet récupéré auprès de l'api n'est pas déjà dans la bdd
+
             echo "status dat twitter";
             echo $status->created_at;
             echo "\n";
@@ -126,12 +136,11 @@ foreach ($geocodesArray as $geocodeRow) {
 
             if (!$tweet) {
 //        
-
                 $tweet = new Tweets();
                 $tweet->setApiTweetId($status->id);
                 $tweet->setTweetText($status->text);
                 $tweet->setTweetPublicationHour($status->created_at);
-                $tweet->setGeocodeId(1);
+                $tweet->setGeocodeId($geocodeId);
                 if (isset($status->retweet_count)) {
                     $tweet->setRetweetsQuantity($status->retweet_count);
                 }
@@ -145,30 +154,19 @@ foreach ($geocodesArray as $geocodeRow) {
                 if (isset($status->user->location)) {
                     $tweet->setLocation($status->user->location);
                 }
-                $tweet->setQualityTweet("positive");
+                $tweet->setQualityTweet("neutral");
 
                 $tweet->save();
             }
         }
         $now = clone $nowRef;
+//        var_dump($now);
+//        var_dump($now->sub(new DateInterval('PT6H')));
+//        var_dump($now->sub(new DateInterval('PT3M')));
+//        var_dump($statusDateTime);
+//        var_dump($now->sub(new DateInterval('PT1M')) > $statusDateTime);
     } while ($now->sub(new DateInterval('PT6H')) < $statusDateTime);
 }
-
-//echo 'MinID : ';
-//echo strval($minId);
-//echo "\n";
-//
-//var_dump($responseTwitter);
-
-
-
 // new Datetime() create from format.
 //récupérer le dernier id inséré dans la bdd
-?><?php
-
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
+?>
