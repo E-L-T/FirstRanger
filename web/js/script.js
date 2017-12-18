@@ -1,5 +1,44 @@
 google.maps.event.addDomListener(window, 'load', init);
 
+function getColor(note) {
+        if (note <= 5) {
+            return '#A4A4A4';
+        }
+        if (note <= 10) {
+            return '#D8D8D8';
+        }
+        if (note <= 11) {
+            return '#EFF8FB';
+        }
+        if (note <= 12) {
+            return '#E0F2F7';
+        }
+        if (note <= 13) {
+            return '#CEECF5';
+        }
+        if (note <= 14) {
+            return '#A9E2F3';
+        }
+        if (note <= 15) {
+            return '#81DAF5';
+        }
+        if (note <= 16) {
+            return '#58D3F7';
+        }
+        if (note <= 17) {
+            return '#2ECCFA';
+        }
+        if (note <= 18) {
+            return '#00BFFF';
+        }
+        if (note <= 19) {
+            return '#01A9DB';
+        }
+        if (note <= 20) {
+            return '#0489B1';
+        }
+    }
+
 function init() {
     // Basic options for a simple Google Map
     // For more options see: https://developers.google.com/maps/documentation/javascript/reference#MapOptions
@@ -23,7 +62,7 @@ function init() {
     var map = new google.maps.Map(mapElement, mapOptions);
 
     var geocoder = new google.maps.Geocoder();
-
+    
     google.maps.event.addListener(map, 'click', function (event) {
         geocoder.geocode({
             'latLng': event.latLng
@@ -70,6 +109,8 @@ function init() {
             }
         });
     });
+    
+
     var polyCoords94 = [
 
         new google.maps.LatLng(48.8488878, 2.416766300000063),
@@ -167,7 +208,6 @@ function init() {
         new google.maps.LatLng(48.6971517, 2.5751946999999973),
         new google.maps.LatLng(48.6973588, 2.579797800000051),
         new google.maps.LatLng(48.6882907, 2.5728257000000667),
-
         new google.maps.LatLng(48.7018731, 2.5694131999999854),
         new google.maps.LatLng(48.71133589999999, 2.575389399999949),
         new google.maps.LatLng(48.71133589999999, 2.575389399999949),
@@ -218,21 +258,20 @@ function init() {
 
     ];
 
-    var poly = new google.maps.Polygon({
+    var poly94 = new google.maps.Polygon({
         paths: polyCoords94,
         strokeColor: "#000000",
         strokeOpacity: 0.8,
         strokeWeight: 2,
-        fillColor: "#fa58f4",
+        fillColor: getColor(VDMMood),
         fillOpacity: 1
     });
 
-    poly.setMap(map);
+    poly94.setMap(map);
 
 
 
     var polyCoords93 = [
-
         new google.maps.LatLng(48.9496303, 2.293935000000033),
         new google.maps.LatLng(48.9577748, 2.289344099999994),
         new google.maps.LatLng(48.96159859999999, 2.290983800000049),
@@ -372,22 +411,21 @@ function init() {
 
     ];
 
-    var poly = new google.maps.Polygon({
+    var poly93 = new google.maps.Polygon({
         paths: polyCoords93,
         strokeColor: "#000000",
         strokeOpacity: 0.8,
         strokeWeight: 2,
-        fillColor: "#fbeffb",
+        fillColor: getColor(SSDMood),
         fillOpacity: 1
     });
-    poly.setMap(map);
+    poly93.setMap(map);
 
 
 
     var polyCoords75 = [
 
         new google.maps.LatLng(48.8318871, 2.2798812999999427),
-
         new google.maps.LatLng(48.8170397, 2.3324322999999367),
         new google.maps.LatLng(48.81841610000001, 2.3523907999999665),
         new google.maps.LatLng(48.8153898, 2.35571989999994),
@@ -396,7 +434,6 @@ function init() {
         new google.maps.LatLng(48.84887210000001, 2.4165934999999763),
         new google.maps.LatLng(48.876165, 2.412978100000032),
         new google.maps.LatLng(48.8800906, 2.410351999999989),
-
         new google.maps.LatLng(48.8817347, 2.4030264000000443),
         new google.maps.LatLng(48.8845839, 2.400052599999981),
         new google.maps.LatLng(48.8941476, 2.3979546000000482),
@@ -404,7 +441,6 @@ function init() {
         new google.maps.LatLng(48.8896691, 2.2955881999999974),
         new google.maps.LatLng(48.8830266, 2.28107829999999),
         new google.maps.LatLng(48.8784255, 2.280630100000053),
-
         new google.maps.LatLng(48.87773050000001, 2.2777121999999963),
         new google.maps.LatLng(48.8803439, 2.2592548999999735),
         new google.maps.LatLng(48.8733985, 2.255983399999991),
@@ -412,7 +448,6 @@ function init() {
         new google.maps.LatLng(48.8678654, 2.2339663999999857),
         new google.maps.LatLng(48.8532291, 2.225804100000005),
         new google.maps.LatLng(48.84891930000001, 2.2403629000000365),
-
         new google.maps.LatLng(48.8345955, 2.2557249000000184),
         new google.maps.LatLng(48.83325809999999, 2.263652699999966),
         new google.maps.LatLng(48.8348036, 2.2688259000000244),
@@ -422,15 +457,15 @@ function init() {
         new google.maps.LatLng(48.8277265, 2.2729276000000027),
     ];
 
-    var poly = new google.maps.Polygon({
+    var poly75 = new google.maps.Polygon({
         paths: polyCoords75,
         strokeColor: "#000000",
         strokeOpacity: 0.8,
         strokeWeight: 2,
-        fillColor: "#F6CEEC",
+        fillColor: getColor(parisMood),
         fillOpacity: 1
     });
-    poly.setMap(map);
+    poly75.setMap(map);
 
     var polyCoords92 = [
 
@@ -459,7 +494,6 @@ function init() {
         new google.maps.LatLng(48.8694812, 2.1587849000000006),
         new google.maps.LatLng(48.8557654, 2.1510087999999996),
         new google.maps.LatLng(48.8557654, 2.1510087999999996),
-
         new google.maps.LatLng(48.8472708, 2.1596223000000236),
         new google.maps.LatLng(48.8480013, 2.1511801000000332),
         new google.maps.LatLng(48.8412465, 2.1461446000000706),
@@ -501,19 +535,31 @@ function init() {
         strokeColor: "#000000",
         strokeOpacity: 0.8,
         strokeWeight: 2,
-        fillColor: "#f5a9f2",
+        fillColor: getColor(HDSMood),
         fillOpacity: 1
     });
-    
+
     poly92.setMap(map);
-    
     google.maps.event.addListener(poly92, 'click', function (event) {
         console.log('test');
         param = '&dpt=' + 92;
         monAjax(param);
     });
-
-    
+    google.maps.event.addListener(poly94, 'click', function (event) {
+        console.log('test');
+        param = '&dpt=' + 94;
+        monAjax(param);
+    });
+    google.maps.event.addListener(poly93, 'click', function (event) {
+        console.log('test');
+        param = '&dpt=' + 93;
+        monAjax(param);
+    });
+    google.maps.event.addListener(poly75, 'click', function (event) {
+        console.log('test');
+        param = '&dpt=' + 75;
+        monAjax(param);
+    });
 
     function monAjax(arg) {
         //e.preventDefault();
@@ -523,7 +569,7 @@ function init() {
             var xhttp = new XMLHttpRequest();
         else // pour IE
             var xhttp = new ActiveXObject("Microsoft.XMLHTTP");
-        
+
         console.log(arg);
 
         xhttp.open("POST", file, true); // on écrit la demande envoyée au serveur, ie envoie de la variable file (fichier.php)
@@ -534,15 +580,13 @@ function init() {
             if (xhttp.status == 200 && xhttp.readyState == 4) {
                 console.log(xhttp.responseText);
                 var result = xhttp.responseText;//je stocke le résultat de la requête dans une variable
-                document.getElementById('message').textcontent = result;
+                document.getElementById('message').innerHTML = result;
                 console.log(result);
-
-                
             }
         }
         xhttp.send(param);
     }
-}
+}    
 
 $('.datepicker').datepicker({
     autoclose: true,

@@ -8,12 +8,16 @@ use Silex\Provider\HttpFragmentServiceProvider;
 use Silex\Provider\FormServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
 use App\CustomApp;
+use App\RecentDistrictClass;
 
 $app = new CustomApp();
 $app->register(new ServiceControllerServiceProvider());
 $app->register(new AssetServiceProvider());
 $app->register(new TwigServiceProvider());
 $app->register(new HttpFragmentServiceProvider());
+$app['recentDistrictMap'] = function(){
+    return new RecentDistrictClass();
+};
 
 $app['twig'] = $app->extend('twig', function ($twig, $app) {
     // add custom globals, filters, tags, ...

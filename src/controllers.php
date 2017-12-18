@@ -5,6 +5,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use App\RecentDistrictClass;
 
 //Request::setTrustedProxies(array('127.0.0.1'));
 
@@ -28,8 +29,9 @@ $app->before(function() use ($app) {
 });
 
 $app->get('/', function () use ($app) {
-    
-            return $app['twig']->render('homepage.html.twig');
+            $map = $app['recentDistrictMap'];
+            $map->generateDistrictMap();
+            return $app['twig']->render('homepage.html.twig', ['map'=>$map]);
         })
         ->bind('homepage')
 ;
