@@ -10,6 +10,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 require __DIR__ . '/controllers_admin.php';
 
+
 $app->before(function() use ($app) {
     $token = $app['security.token_storage']->getToken();
 
@@ -27,10 +28,16 @@ $app->before(function() use ($app) {
 });
 
 $app->get('/', function () use ($app) {
-
-            return $app['twig']->render('index.html.twig');
+    
+            return $app['twig']->render('homepage.html.twig');
         })
         ->bind('homepage')
+;
+$app->get('/about', function () use ($app) {
+
+            return $app['twig']->render('about.html.twig');
+        })
+        ->bind('about')
 ;
 
 $app->get('/login', function(Request $request) use ($app) {

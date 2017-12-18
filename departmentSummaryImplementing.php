@@ -39,8 +39,6 @@ $nowRef = new DateTime('now');
 $tweets = new Tweets();
 $queryTweets = TweetsQuery::create();
 
-
-
 //creation de l'objet departement
 //$departments = new Departments();
 //$queryDepartments = DepartmentsQuery::create();
@@ -52,7 +50,6 @@ $queryTweets = TweetsQuery::create();
 $resultat = $pdo->query("SELECT  department_code FROM departments");
 $departmentsCodeDepartments = $resultat->fetchAll();
 //var_dump($departmentsCodeDepartments);
-
 
 
 $tweetsArray = $queryTweets->filterByTweetPublicationHour(array(

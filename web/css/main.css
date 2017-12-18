@@ -1,0 +1,51 @@
+#map {
+    height: 500px;
+    margin: 20px 0 100px 0;
+}
+/* Optional: Makes the sample page fill the window. */
+html, body {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #e6ecf0;
+    color: #14171a;
+}
+
+header {
+    height : 100px;
+}
+
+#mainNav {
+    height : 100px;
+    background-color: #fff;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+#mainNav.navbar-shrink {
+    height: 100px;
+    background-color: #fff;
+}
+
+#mainNav .navbar-toggler {
+    font-size: 14px;
+    padding: 11px;
+    color: #14171a;;
+    border: 1px solid #14171a;;
+}
+
+#mainNav a {
+    color: #14171a;
+}
+
+#mainNav a:hover {
+    color: #1c94e0;
+}
+
+.logo {
+    width: 100px;
+}
+
+.calendar-body {
+    margin-top: 20px;
+}

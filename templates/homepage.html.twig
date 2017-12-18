@@ -1,0 +1,40 @@
+{% extends "layout.html.twig" %}
+
+
+{% block content %} 
+    <div class="calendar-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <label for="datepicker">Calendrier</label>
+                    <input id="datepicker" class="datepicker" data-date-format="mm/dd/yyyy">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="intro-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div id="map"></div>
+                    <div id='message'></div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Map Section -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12" style="text-align: center; margin-bottom: 50px;">
+                L'humeur régionale est : <span id='districtMood'></span><br>
+                Le département de meilleur humeur : <span id='bestMoodDepartment'></span><br>
+                Le département de moins bonne humeur :<span id='worstMoodDepartment'></span><br>
+            </div>
+        </div>
+    </div>
+{% endblock %}
