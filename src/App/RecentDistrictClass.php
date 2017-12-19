@@ -2,7 +2,6 @@
 
 namespace App;
 
-
 use Propel\Propel\Departments;
 use Propel\Propel\DepartmentsQuery;
 use Propel\Propel\DepartmentSummary;
@@ -60,8 +59,17 @@ class RecentDistrictClass
     private $worstMood;
     private $bestMoodDepartment;
     private $worstMoodDepartment;
+    private $iframeParisPositif;
+    private $iframeParisNegatif;
+    private $iframeHDSPositif;
+    private $iframeHDSNegatif;
+    private $iframeSSDPositif;
+    private $iframeSSDNegatif;
+    private $iframeVDMPositif;
+    private $iframeVDMNegatif;
 
-    public function generateDistrictMap()
+
+    public function generateDistrictMap($hour = null)
     {
 
 
@@ -72,32 +80,35 @@ class RecentDistrictClass
             \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_BOTH
         ));
 
-
+        if (is_null($hour)) {
+            $hour = date('Y-m-d h:i:s');
+            echo $hour;
+        }
 
 //
 //$resultat = $pdo->query("SELECT  department_code FROM departments");
 //$departmentsCodeDepartments = $resultat->fetchAll();
 //récupération des données pour chaque département
-        $resultat = $pdo->query("SELECT department_positive_tweets_quantity, department_negative_tweets_quantity, department_neutral_tweets_quantity FROM department_summary WHERE department_code = '75' ORDER BY map_publication_hour DESC LIMIT 1");
+        $resultat = $pdo->query("SELECT department_positive_tweets_quantity, department_negative_tweets_quantity, department_neutral_tweets_quantity FROM department_summary WHERE department_code = '75' AND map_publication_hour < '$hour' ORDER BY map_publication_hour DESC LIMIT 1");
 
         $resultatParis = $resultat->fetchAll();
 
 //var_dump($resultatParis);
 
-        $resultat = $pdo->query("SELECT department_positive_tweets_quantity, department_negative_tweets_quantity, department_neutral_tweets_quantity FROM department_summary WHERE department_code = '92' ORDER BY map_publication_hour DESC LIMIT 1");
+        $resultat = $pdo->query("SELECT department_positive_tweets_quantity, department_negative_tweets_quantity, department_neutral_tweets_quantity FROM department_summary WHERE department_code = '92' AND map_publication_hour < '$hour' ORDER BY map_publication_hour DESC LIMIT 1");
 
         $resultatHDS = $resultat->fetchAll();
 
 //var_dump($resultatHDS);
 
 
-        $resultat = $pdo->query("SELECT department_positive_tweets_quantity, department_negative_tweets_quantity, department_neutral_tweets_quantity FROM department_summary WHERE department_code = '93' ORDER BY map_publication_hour DESC LIMIT 1");
+        $resultat = $pdo->query("SELECT department_positive_tweets_quantity, department_negative_tweets_quantity, department_neutral_tweets_quantity FROM department_summary WHERE department_code = '93' AND map_publication_hour < '$hour' ORDER BY map_publication_hour DESC LIMIT 1");
 
         $resultatSSD = $resultat->fetchAll();
 
 //var_dump($resultatSSD);
 
-        $resultat = $pdo->query("SELECT department_positive_tweets_quantity, department_negative_tweets_quantity, department_neutral_tweets_quantity FROM department_summary WHERE department_code = '94' ORDER BY map_publication_hour DESC LIMIT 1");
+        $resultat = $pdo->query("SELECT department_positive_tweets_quantity, department_negative_tweets_quantity, department_neutral_tweets_quantity FROM department_summary WHERE department_code = '94' AND map_publication_hour < '$hour'ORDER BY map_publication_hour DESC LIMIT 1");
 
         $resultatVDM = $resultat->fetchAll();
 
@@ -255,6 +266,21 @@ class RecentDistrictClass
             $this->worstMood = $this->VDMMood;
             $this->worstMoodDepartment = 'Val-de-Marne';
         }
+        
+        //private $iframeParisPositif;
+    //    private $iframeParisNegatif;
+    //    private $iframeHDSPositif;
+    //    private $iframeHDSNegatif;
+    //    private $iframeSSDPositif;
+    //    private $iframeSSDNegatif;
+    //    private $iframeVDMPositif;
+    //    private $iframeVDMNegatif;
+    $date = date('Y-m-d H:i:s');
+    $resultat = $pdo->query("SELECT iframe FROM popular_tweets WHERE department_code = '75' AND iframe_quality = 'positive' AND tweet_publication_hour < '$date' ORDER BY tweet_publication_hour DESC LIMIT 1");
+    
+    $iframeParisPositifArray = $resultat->fetch();
+    $this->iframeParisPositif = htmlspecialchars($iframeParisPositifArray['iframe'], ENT_HTML5);
+        
     }
 
     function getParisPositiveQuantity()
@@ -441,5 +467,47 @@ class RecentDistrictClass
     {
         return $this->worstMoodDepartment;
     }
+    
+    public function getIframeParisPositif()
+    {
+        return $this->iframeParisPositif;
+    }
+
+    public function getIframeParisNegatif()
+    {
+        return $this->iframeParisNegatif;
+    }
+
+    public function getIframeHDSPositif()
+    {
+        return $this->iframeHDSPositif;
+    }
+
+    public function getIframeHDSNegatif()
+    {
+        return $this->iframeHDSNegatif;
+    }
+
+    public function getIframeSSDPositif()
+    {
+        return $this->iframeSSDPositif;
+    }
+
+    public function getIframeSSDNegatif()
+    {
+        return $this->iframeSSDNegatif;
+    }
+
+    public function getIframeVDMPositif()
+    {
+        return $this->iframeVDMPositif;
+    }
+
+    public function getIframeVDMNegatif()
+    {
+        return $this->iframeVDMNegatif;
+    }
+
+
 
 }

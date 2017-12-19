@@ -10,7 +10,6 @@ use Propel\Propel\Map\PopularTweetsTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
-use Propel\Runtime\ActiveQuery\ModelJoin;
 use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
@@ -21,24 +20,16 @@ use Propel\Runtime\Exception\PropelException;
  *
  *
  * @method     ChildPopularTweetsQuery orderByPopularTweetId($order = Criteria::ASC) Order by the popular_tweet_id column
- * @method     ChildPopularTweetsQuery orderByTweetId($order = Criteria::ASC) Order by the tweet_id column
- * @method     ChildPopularTweetsQuery orderByGeocodeId($order = Criteria::ASC) Order by the geocode_id column
- * @method     ChildPopularTweetsQuery orderByVotesQuantity($order = Criteria::ASC) Order by the votes_quantity column
- * @method     ChildPopularTweetsQuery orderByRetweetsQuantity($order = Criteria::ASC) Order by the retweets_quantity column
  * @method     ChildPopularTweetsQuery orderByTweetPublicationHour($order = Criteria::ASC) Order by the tweet_publication_hour column
- * @method     ChildPopularTweetsQuery orderByFavoritesQuantity($order = Criteria::ASC) Order by the favorites_quantity column
- * @method     ChildPopularTweetsQuery orderByCoordinates($order = Criteria::ASC) Order by the coordinates column
- * @method     ChildPopularTweetsQuery orderByLocation($order = Criteria::ASC) Order by the location column
+ * @method     ChildPopularTweetsQuery orderByIframe($order = Criteria::ASC) Order by the iframe column
+ * @method     ChildPopularTweetsQuery orderByDepartmentCode($order = Criteria::ASC) Order by the department_code column
+ * @method     ChildPopularTweetsQuery orderByIframeQuality($order = Criteria::ASC) Order by the iframe_quality column
  *
  * @method     ChildPopularTweetsQuery groupByPopularTweetId() Group by the popular_tweet_id column
- * @method     ChildPopularTweetsQuery groupByTweetId() Group by the tweet_id column
- * @method     ChildPopularTweetsQuery groupByGeocodeId() Group by the geocode_id column
- * @method     ChildPopularTweetsQuery groupByVotesQuantity() Group by the votes_quantity column
- * @method     ChildPopularTweetsQuery groupByRetweetsQuantity() Group by the retweets_quantity column
  * @method     ChildPopularTweetsQuery groupByTweetPublicationHour() Group by the tweet_publication_hour column
- * @method     ChildPopularTweetsQuery groupByFavoritesQuantity() Group by the favorites_quantity column
- * @method     ChildPopularTweetsQuery groupByCoordinates() Group by the coordinates column
- * @method     ChildPopularTweetsQuery groupByLocation() Group by the location column
+ * @method     ChildPopularTweetsQuery groupByIframe() Group by the iframe column
+ * @method     ChildPopularTweetsQuery groupByDepartmentCode() Group by the department_code column
+ * @method     ChildPopularTweetsQuery groupByIframeQuality() Group by the iframe_quality column
  *
  * @method     ChildPopularTweetsQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildPopularTweetsQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -48,54 +39,30 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildPopularTweetsQuery rightJoinWith($relation) Adds a RIGHT JOIN clause and with to the query
  * @method     ChildPopularTweetsQuery innerJoinWith($relation) Adds a INNER JOIN clause and with to the query
  *
- * @method     ChildPopularTweetsQuery leftJoinTweets($relationAlias = null) Adds a LEFT JOIN clause to the query using the Tweets relation
- * @method     ChildPopularTweetsQuery rightJoinTweets($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Tweets relation
- * @method     ChildPopularTweetsQuery innerJoinTweets($relationAlias = null) Adds a INNER JOIN clause to the query using the Tweets relation
- *
- * @method     ChildPopularTweetsQuery joinWithTweets($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Tweets relation
- *
- * @method     ChildPopularTweetsQuery leftJoinWithTweets() Adds a LEFT JOIN clause and with to the query using the Tweets relation
- * @method     ChildPopularTweetsQuery rightJoinWithTweets() Adds a RIGHT JOIN clause and with to the query using the Tweets relation
- * @method     ChildPopularTweetsQuery innerJoinWithTweets() Adds a INNER JOIN clause and with to the query using the Tweets relation
- *
- * @method     \Propel\Propel\TweetsQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
- *
  * @method     ChildPopularTweets findOne(ConnectionInterface $con = null) Return the first ChildPopularTweets matching the query
  * @method     ChildPopularTweets findOneOrCreate(ConnectionInterface $con = null) Return the first ChildPopularTweets matching the query, or a new ChildPopularTweets object populated from the query conditions when no match is found
  *
  * @method     ChildPopularTweets findOneByPopularTweetId(string $popular_tweet_id) Return the first ChildPopularTweets filtered by the popular_tweet_id column
- * @method     ChildPopularTweets findOneByTweetId(string $tweet_id) Return the first ChildPopularTweets filtered by the tweet_id column
- * @method     ChildPopularTweets findOneByGeocodeId(int $geocode_id) Return the first ChildPopularTweets filtered by the geocode_id column
- * @method     ChildPopularTweets findOneByVotesQuantity(int $votes_quantity) Return the first ChildPopularTweets filtered by the votes_quantity column
- * @method     ChildPopularTweets findOneByRetweetsQuantity(int $retweets_quantity) Return the first ChildPopularTweets filtered by the retweets_quantity column
  * @method     ChildPopularTweets findOneByTweetPublicationHour(string $tweet_publication_hour) Return the first ChildPopularTweets filtered by the tweet_publication_hour column
- * @method     ChildPopularTweets findOneByFavoritesQuantity(int $favorites_quantity) Return the first ChildPopularTweets filtered by the favorites_quantity column
- * @method     ChildPopularTweets findOneByCoordinates(string $coordinates) Return the first ChildPopularTweets filtered by the coordinates column
- * @method     ChildPopularTweets findOneByLocation(string $location) Return the first ChildPopularTweets filtered by the location column *
+ * @method     ChildPopularTweets findOneByIframe(string $iframe) Return the first ChildPopularTweets filtered by the iframe column
+ * @method     ChildPopularTweets findOneByDepartmentCode(int $department_code) Return the first ChildPopularTweets filtered by the department_code column
+ * @method     ChildPopularTweets findOneByIframeQuality(string $iframe_quality) Return the first ChildPopularTweets filtered by the iframe_quality column *
 
  * @method     ChildPopularTweets requirePk($key, ConnectionInterface $con = null) Return the ChildPopularTweets by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPopularTweets requireOne(ConnectionInterface $con = null) Return the first ChildPopularTweets matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildPopularTweets requireOneByPopularTweetId(string $popular_tweet_id) Return the first ChildPopularTweets filtered by the popular_tweet_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildPopularTweets requireOneByTweetId(string $tweet_id) Return the first ChildPopularTweets filtered by the tweet_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildPopularTweets requireOneByGeocodeId(int $geocode_id) Return the first ChildPopularTweets filtered by the geocode_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildPopularTweets requireOneByVotesQuantity(int $votes_quantity) Return the first ChildPopularTweets filtered by the votes_quantity column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildPopularTweets requireOneByRetweetsQuantity(int $retweets_quantity) Return the first ChildPopularTweets filtered by the retweets_quantity column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPopularTweets requireOneByTweetPublicationHour(string $tweet_publication_hour) Return the first ChildPopularTweets filtered by the tweet_publication_hour column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildPopularTweets requireOneByFavoritesQuantity(int $favorites_quantity) Return the first ChildPopularTweets filtered by the favorites_quantity column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildPopularTweets requireOneByCoordinates(string $coordinates) Return the first ChildPopularTweets filtered by the coordinates column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildPopularTweets requireOneByLocation(string $location) Return the first ChildPopularTweets filtered by the location column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPopularTweets requireOneByIframe(string $iframe) Return the first ChildPopularTweets filtered by the iframe column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPopularTweets requireOneByDepartmentCode(int $department_code) Return the first ChildPopularTweets filtered by the department_code column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPopularTweets requireOneByIframeQuality(string $iframe_quality) Return the first ChildPopularTweets filtered by the iframe_quality column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildPopularTweets[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildPopularTweets objects based on current ModelCriteria
  * @method     ChildPopularTweets[]|ObjectCollection findByPopularTweetId(string $popular_tweet_id) Return ChildPopularTweets objects filtered by the popular_tweet_id column
- * @method     ChildPopularTweets[]|ObjectCollection findByTweetId(string $tweet_id) Return ChildPopularTweets objects filtered by the tweet_id column
- * @method     ChildPopularTweets[]|ObjectCollection findByGeocodeId(int $geocode_id) Return ChildPopularTweets objects filtered by the geocode_id column
- * @method     ChildPopularTweets[]|ObjectCollection findByVotesQuantity(int $votes_quantity) Return ChildPopularTweets objects filtered by the votes_quantity column
- * @method     ChildPopularTweets[]|ObjectCollection findByRetweetsQuantity(int $retweets_quantity) Return ChildPopularTweets objects filtered by the retweets_quantity column
  * @method     ChildPopularTweets[]|ObjectCollection findByTweetPublicationHour(string $tweet_publication_hour) Return ChildPopularTweets objects filtered by the tweet_publication_hour column
- * @method     ChildPopularTweets[]|ObjectCollection findByFavoritesQuantity(int $favorites_quantity) Return ChildPopularTweets objects filtered by the favorites_quantity column
- * @method     ChildPopularTweets[]|ObjectCollection findByCoordinates(string $coordinates) Return ChildPopularTweets objects filtered by the coordinates column
- * @method     ChildPopularTweets[]|ObjectCollection findByLocation(string $location) Return ChildPopularTweets objects filtered by the location column
+ * @method     ChildPopularTweets[]|ObjectCollection findByIframe(string $iframe) Return ChildPopularTweets objects filtered by the iframe column
+ * @method     ChildPopularTweets[]|ObjectCollection findByDepartmentCode(int $department_code) Return ChildPopularTweets objects filtered by the department_code column
+ * @method     ChildPopularTweets[]|ObjectCollection findByIframeQuality(string $iframe_quality) Return ChildPopularTweets objects filtered by the iframe_quality column
  * @method     ChildPopularTweets[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
@@ -194,7 +161,7 @@ abstract class PopularTweetsQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT popular_tweet_id, tweet_id, geocode_id, votes_quantity, retweets_quantity, tweet_publication_hour, favorites_quantity, coordinates, location FROM popular_tweets WHERE popular_tweet_id = :p0';
+        $sql = 'SELECT popular_tweet_id, tweet_publication_hour, iframe, department_code, iframe_quality FROM popular_tweets WHERE popular_tweet_id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -326,170 +293,6 @@ abstract class PopularTweetsQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the tweet_id column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByTweetId(1234); // WHERE tweet_id = 1234
-     * $query->filterByTweetId(array(12, 34)); // WHERE tweet_id IN (12, 34)
-     * $query->filterByTweetId(array('min' => 12)); // WHERE tweet_id > 12
-     * </code>
-     *
-     * @param     mixed $tweetId The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return $this|ChildPopularTweetsQuery The current query, for fluid interface
-     */
-    public function filterByTweetId($tweetId = null, $comparison = null)
-    {
-        if (is_array($tweetId)) {
-            $useMinMax = false;
-            if (isset($tweetId['min'])) {
-                $this->addUsingAlias(PopularTweetsTableMap::COL_TWEET_ID, $tweetId['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($tweetId['max'])) {
-                $this->addUsingAlias(PopularTweetsTableMap::COL_TWEET_ID, $tweetId['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(PopularTweetsTableMap::COL_TWEET_ID, $tweetId, $comparison);
-    }
-
-    /**
-     * Filter the query on the geocode_id column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByGeocodeId(1234); // WHERE geocode_id = 1234
-     * $query->filterByGeocodeId(array(12, 34)); // WHERE geocode_id IN (12, 34)
-     * $query->filterByGeocodeId(array('min' => 12)); // WHERE geocode_id > 12
-     * </code>
-     *
-     * @param     mixed $geocodeId The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return $this|ChildPopularTweetsQuery The current query, for fluid interface
-     */
-    public function filterByGeocodeId($geocodeId = null, $comparison = null)
-    {
-        if (is_array($geocodeId)) {
-            $useMinMax = false;
-            if (isset($geocodeId['min'])) {
-                $this->addUsingAlias(PopularTweetsTableMap::COL_GEOCODE_ID, $geocodeId['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($geocodeId['max'])) {
-                $this->addUsingAlias(PopularTweetsTableMap::COL_GEOCODE_ID, $geocodeId['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(PopularTweetsTableMap::COL_GEOCODE_ID, $geocodeId, $comparison);
-    }
-
-    /**
-     * Filter the query on the votes_quantity column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByVotesQuantity(1234); // WHERE votes_quantity = 1234
-     * $query->filterByVotesQuantity(array(12, 34)); // WHERE votes_quantity IN (12, 34)
-     * $query->filterByVotesQuantity(array('min' => 12)); // WHERE votes_quantity > 12
-     * </code>
-     *
-     * @param     mixed $votesQuantity The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return $this|ChildPopularTweetsQuery The current query, for fluid interface
-     */
-    public function filterByVotesQuantity($votesQuantity = null, $comparison = null)
-    {
-        if (is_array($votesQuantity)) {
-            $useMinMax = false;
-            if (isset($votesQuantity['min'])) {
-                $this->addUsingAlias(PopularTweetsTableMap::COL_VOTES_QUANTITY, $votesQuantity['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($votesQuantity['max'])) {
-                $this->addUsingAlias(PopularTweetsTableMap::COL_VOTES_QUANTITY, $votesQuantity['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(PopularTweetsTableMap::COL_VOTES_QUANTITY, $votesQuantity, $comparison);
-    }
-
-    /**
-     * Filter the query on the retweets_quantity column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByRetweetsQuantity(1234); // WHERE retweets_quantity = 1234
-     * $query->filterByRetweetsQuantity(array(12, 34)); // WHERE retweets_quantity IN (12, 34)
-     * $query->filterByRetweetsQuantity(array('min' => 12)); // WHERE retweets_quantity > 12
-     * </code>
-     *
-     * @param     mixed $retweetsQuantity The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return $this|ChildPopularTweetsQuery The current query, for fluid interface
-     */
-    public function filterByRetweetsQuantity($retweetsQuantity = null, $comparison = null)
-    {
-        if (is_array($retweetsQuantity)) {
-            $useMinMax = false;
-            if (isset($retweetsQuantity['min'])) {
-                $this->addUsingAlias(PopularTweetsTableMap::COL_RETWEETS_QUANTITY, $retweetsQuantity['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($retweetsQuantity['max'])) {
-                $this->addUsingAlias(PopularTweetsTableMap::COL_RETWEETS_QUANTITY, $retweetsQuantity['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(PopularTweetsTableMap::COL_RETWEETS_QUANTITY, $retweetsQuantity, $comparison);
-    }
-
-    /**
      * Filter the query on the tweet_publication_hour column
      *
      * Example usage:
@@ -533,16 +336,41 @@ abstract class PopularTweetsQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the favorites_quantity column
+     * Filter the query on the iframe column
      *
      * Example usage:
      * <code>
-     * $query->filterByFavoritesQuantity(1234); // WHERE favorites_quantity = 1234
-     * $query->filterByFavoritesQuantity(array(12, 34)); // WHERE favorites_quantity IN (12, 34)
-     * $query->filterByFavoritesQuantity(array('min' => 12)); // WHERE favorites_quantity > 12
+     * $query->filterByIframe('fooValue');   // WHERE iframe = 'fooValue'
+     * $query->filterByIframe('%fooValue%', Criteria::LIKE); // WHERE iframe LIKE '%fooValue%'
      * </code>
      *
-     * @param     mixed $favoritesQuantity The value to use as filter.
+     * @param     string $iframe The value to use as filter.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildPopularTweetsQuery The current query, for fluid interface
+     */
+    public function filterByIframe($iframe = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($iframe)) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PopularTweetsTableMap::COL_IFRAME, $iframe, $comparison);
+    }
+
+    /**
+     * Filter the query on the department_code column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByDepartmentCode(1234); // WHERE department_code = 1234
+     * $query->filterByDepartmentCode(array(12, 34)); // WHERE department_code IN (12, 34)
+     * $query->filterByDepartmentCode(array('min' => 12)); // WHERE department_code > 12
+     * </code>
+     *
+     * @param     mixed $departmentCode The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
@@ -550,16 +378,16 @@ abstract class PopularTweetsQuery extends ModelCriteria
      *
      * @return $this|ChildPopularTweetsQuery The current query, for fluid interface
      */
-    public function filterByFavoritesQuantity($favoritesQuantity = null, $comparison = null)
+    public function filterByDepartmentCode($departmentCode = null, $comparison = null)
     {
-        if (is_array($favoritesQuantity)) {
+        if (is_array($departmentCode)) {
             $useMinMax = false;
-            if (isset($favoritesQuantity['min'])) {
-                $this->addUsingAlias(PopularTweetsTableMap::COL_FAVORITES_QUANTITY, $favoritesQuantity['min'], Criteria::GREATER_EQUAL);
+            if (isset($departmentCode['min'])) {
+                $this->addUsingAlias(PopularTweetsTableMap::COL_DEPARTMENT_CODE, $departmentCode['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
-            if (isset($favoritesQuantity['max'])) {
-                $this->addUsingAlias(PopularTweetsTableMap::COL_FAVORITES_QUANTITY, $favoritesQuantity['max'], Criteria::LESS_EQUAL);
+            if (isset($departmentCode['max'])) {
+                $this->addUsingAlias(PopularTweetsTableMap::COL_DEPARTMENT_CODE, $departmentCode['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -570,130 +398,32 @@ abstract class PopularTweetsQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PopularTweetsTableMap::COL_FAVORITES_QUANTITY, $favoritesQuantity, $comparison);
+        return $this->addUsingAlias(PopularTweetsTableMap::COL_DEPARTMENT_CODE, $departmentCode, $comparison);
     }
 
     /**
-     * Filter the query on the coordinates column
+     * Filter the query on the iframe_quality column
      *
      * Example usage:
      * <code>
-     * $query->filterByCoordinates('fooValue');   // WHERE coordinates = 'fooValue'
-     * $query->filterByCoordinates('%fooValue%', Criteria::LIKE); // WHERE coordinates LIKE '%fooValue%'
+     * $query->filterByIframeQuality('fooValue');   // WHERE iframe_quality = 'fooValue'
+     * $query->filterByIframeQuality('%fooValue%', Criteria::LIKE); // WHERE iframe_quality LIKE '%fooValue%'
      * </code>
      *
-     * @param     string $coordinates The value to use as filter.
+     * @param     string $iframeQuality The value to use as filter.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return $this|ChildPopularTweetsQuery The current query, for fluid interface
      */
-    public function filterByCoordinates($coordinates = null, $comparison = null)
+    public function filterByIframeQuality($iframeQuality = null, $comparison = null)
     {
         if (null === $comparison) {
-            if (is_array($coordinates)) {
+            if (is_array($iframeQuality)) {
                 $comparison = Criteria::IN;
             }
         }
 
-        return $this->addUsingAlias(PopularTweetsTableMap::COL_COORDINATES, $coordinates, $comparison);
-    }
-
-    /**
-     * Filter the query on the location column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByLocation('fooValue');   // WHERE location = 'fooValue'
-     * $query->filterByLocation('%fooValue%', Criteria::LIKE); // WHERE location LIKE '%fooValue%'
-     * </code>
-     *
-     * @param     string $location The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return $this|ChildPopularTweetsQuery The current query, for fluid interface
-     */
-    public function filterByLocation($location = null, $comparison = null)
-    {
-        if (null === $comparison) {
-            if (is_array($location)) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(PopularTweetsTableMap::COL_LOCATION, $location, $comparison);
-    }
-
-    /**
-     * Filter the query by a related \Propel\Propel\Tweets object
-     *
-     * @param \Propel\Propel\Tweets|ObjectCollection $tweets the related object to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return ChildPopularTweetsQuery The current query, for fluid interface
-     */
-    public function filterByTweets($tweets, $comparison = null)
-    {
-        if ($tweets instanceof \Propel\Propel\Tweets) {
-            return $this
-                ->addUsingAlias(PopularTweetsTableMap::COL_TWEET_ID, $tweets->getTweetId(), $comparison);
-        } elseif ($tweets instanceof ObjectCollection) {
-            return $this
-                ->useTweetsQuery()
-                ->filterByPrimaryKeys($tweets->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByTweets() only accepts arguments of type \Propel\Propel\Tweets or Collection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the Tweets relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return $this|ChildPopularTweetsQuery The current query, for fluid interface
-     */
-    public function joinTweets($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Tweets');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'Tweets');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the Tweets relation Tweets object
-     *
-     * @see useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return \Propel\Propel\TweetsQuery A secondary query class using the current class as primary query
-     */
-    public function useTweetsQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        return $this
-            ->joinTweets($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Tweets', '\Propel\Propel\TweetsQuery');
+        return $this->addUsingAlias(PopularTweetsTableMap::COL_IFRAME_QUALITY, $iframeQuality, $comparison);
     }
 
     /**

@@ -59,7 +59,7 @@ class PopularTweetsTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 9;
+    const NUM_COLUMNS = 5;
 
     /**
      * The number of lazy-loaded columns
@@ -69,7 +69,7 @@ class PopularTweetsTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 9;
+    const NUM_HYDRATE_COLUMNS = 5;
 
     /**
      * the column name for the popular_tweet_id field
@@ -77,44 +77,24 @@ class PopularTweetsTableMap extends TableMap
     const COL_POPULAR_TWEET_ID = 'popular_tweets.popular_tweet_id';
 
     /**
-     * the column name for the tweet_id field
-     */
-    const COL_TWEET_ID = 'popular_tweets.tweet_id';
-
-    /**
-     * the column name for the geocode_id field
-     */
-    const COL_GEOCODE_ID = 'popular_tweets.geocode_id';
-
-    /**
-     * the column name for the votes_quantity field
-     */
-    const COL_VOTES_QUANTITY = 'popular_tweets.votes_quantity';
-
-    /**
-     * the column name for the retweets_quantity field
-     */
-    const COL_RETWEETS_QUANTITY = 'popular_tweets.retweets_quantity';
-
-    /**
      * the column name for the tweet_publication_hour field
      */
     const COL_TWEET_PUBLICATION_HOUR = 'popular_tweets.tweet_publication_hour';
 
     /**
-     * the column name for the favorites_quantity field
+     * the column name for the iframe field
      */
-    const COL_FAVORITES_QUANTITY = 'popular_tweets.favorites_quantity';
+    const COL_IFRAME = 'popular_tweets.iframe';
 
     /**
-     * the column name for the coordinates field
+     * the column name for the department_code field
      */
-    const COL_COORDINATES = 'popular_tweets.coordinates';
+    const COL_DEPARTMENT_CODE = 'popular_tweets.department_code';
 
     /**
-     * the column name for the location field
+     * the column name for the iframe_quality field
      */
-    const COL_LOCATION = 'popular_tweets.location';
+    const COL_IFRAME_QUALITY = 'popular_tweets.iframe_quality';
 
     /**
      * The default string format for model objects of the related table
@@ -128,11 +108,11 @@ class PopularTweetsTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('PopularTweetId', 'TweetId', 'GeocodeId', 'VotesQuantity', 'RetweetsQuantity', 'TweetPublicationHour', 'FavoritesQuantity', 'Coordinates', 'Location', ),
-        self::TYPE_CAMELNAME     => array('popularTweetId', 'tweetId', 'geocodeId', 'votesQuantity', 'retweetsQuantity', 'tweetPublicationHour', 'favoritesQuantity', 'coordinates', 'location', ),
-        self::TYPE_COLNAME       => array(PopularTweetsTableMap::COL_POPULAR_TWEET_ID, PopularTweetsTableMap::COL_TWEET_ID, PopularTweetsTableMap::COL_GEOCODE_ID, PopularTweetsTableMap::COL_VOTES_QUANTITY, PopularTweetsTableMap::COL_RETWEETS_QUANTITY, PopularTweetsTableMap::COL_TWEET_PUBLICATION_HOUR, PopularTweetsTableMap::COL_FAVORITES_QUANTITY, PopularTweetsTableMap::COL_COORDINATES, PopularTweetsTableMap::COL_LOCATION, ),
-        self::TYPE_FIELDNAME     => array('popular_tweet_id', 'tweet_id', 'geocode_id', 'votes_quantity', 'retweets_quantity', 'tweet_publication_hour', 'favorites_quantity', 'coordinates', 'location', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, )
+        self::TYPE_PHPNAME       => array('PopularTweetId', 'TweetPublicationHour', 'Iframe', 'DepartmentCode', 'IframeQuality', ),
+        self::TYPE_CAMELNAME     => array('popularTweetId', 'tweetPublicationHour', 'iframe', 'departmentCode', 'iframeQuality', ),
+        self::TYPE_COLNAME       => array(PopularTweetsTableMap::COL_POPULAR_TWEET_ID, PopularTweetsTableMap::COL_TWEET_PUBLICATION_HOUR, PopularTweetsTableMap::COL_IFRAME, PopularTweetsTableMap::COL_DEPARTMENT_CODE, PopularTweetsTableMap::COL_IFRAME_QUALITY, ),
+        self::TYPE_FIELDNAME     => array('popular_tweet_id', 'tweet_publication_hour', 'iframe', 'department_code', 'iframe_quality', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
     );
 
     /**
@@ -142,11 +122,11 @@ class PopularTweetsTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('PopularTweetId' => 0, 'TweetId' => 1, 'GeocodeId' => 2, 'VotesQuantity' => 3, 'RetweetsQuantity' => 4, 'TweetPublicationHour' => 5, 'FavoritesQuantity' => 6, 'Coordinates' => 7, 'Location' => 8, ),
-        self::TYPE_CAMELNAME     => array('popularTweetId' => 0, 'tweetId' => 1, 'geocodeId' => 2, 'votesQuantity' => 3, 'retweetsQuantity' => 4, 'tweetPublicationHour' => 5, 'favoritesQuantity' => 6, 'coordinates' => 7, 'location' => 8, ),
-        self::TYPE_COLNAME       => array(PopularTweetsTableMap::COL_POPULAR_TWEET_ID => 0, PopularTweetsTableMap::COL_TWEET_ID => 1, PopularTweetsTableMap::COL_GEOCODE_ID => 2, PopularTweetsTableMap::COL_VOTES_QUANTITY => 3, PopularTweetsTableMap::COL_RETWEETS_QUANTITY => 4, PopularTweetsTableMap::COL_TWEET_PUBLICATION_HOUR => 5, PopularTweetsTableMap::COL_FAVORITES_QUANTITY => 6, PopularTweetsTableMap::COL_COORDINATES => 7, PopularTweetsTableMap::COL_LOCATION => 8, ),
-        self::TYPE_FIELDNAME     => array('popular_tweet_id' => 0, 'tweet_id' => 1, 'geocode_id' => 2, 'votes_quantity' => 3, 'retweets_quantity' => 4, 'tweet_publication_hour' => 5, 'favorites_quantity' => 6, 'coordinates' => 7, 'location' => 8, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, )
+        self::TYPE_PHPNAME       => array('PopularTweetId' => 0, 'TweetPublicationHour' => 1, 'Iframe' => 2, 'DepartmentCode' => 3, 'IframeQuality' => 4, ),
+        self::TYPE_CAMELNAME     => array('popularTweetId' => 0, 'tweetPublicationHour' => 1, 'iframe' => 2, 'departmentCode' => 3, 'iframeQuality' => 4, ),
+        self::TYPE_COLNAME       => array(PopularTweetsTableMap::COL_POPULAR_TWEET_ID => 0, PopularTweetsTableMap::COL_TWEET_PUBLICATION_HOUR => 1, PopularTweetsTableMap::COL_IFRAME => 2, PopularTweetsTableMap::COL_DEPARTMENT_CODE => 3, PopularTweetsTableMap::COL_IFRAME_QUALITY => 4, ),
+        self::TYPE_FIELDNAME     => array('popular_tweet_id' => 0, 'tweet_publication_hour' => 1, 'iframe' => 2, 'department_code' => 3, 'iframe_quality' => 4, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
     );
 
     /**
@@ -167,14 +147,10 @@ class PopularTweetsTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('popular_tweet_id', 'PopularTweetId', 'BIGINT', true, 18, null);
-        $this->addColumn('tweet_id', 'TweetId', 'BIGINT', true, 18, null);
-        $this->addColumn('geocode_id', 'GeocodeId', 'INTEGER', true, null, null);
-        $this->addColumn('votes_quantity', 'VotesQuantity', 'INTEGER', true, null, null);
-        $this->addColumn('retweets_quantity', 'RetweetsQuantity', 'INTEGER', false, null, null);
         $this->addColumn('tweet_publication_hour', 'TweetPublicationHour', 'TIMESTAMP', true, null, null);
-        $this->addColumn('favorites_quantity', 'FavoritesQuantity', 'INTEGER', false, null, null);
-        $this->addColumn('coordinates', 'Coordinates', 'LONGVARCHAR', true, null, null);
-        $this->addColumn('location', 'Location', 'LONGVARCHAR', true, null, null);
+        $this->addColumn('iframe', 'Iframe', 'LONGVARCHAR', true, null, null);
+        $this->addColumn('department_code', 'DepartmentCode', 'INTEGER', true, null, null);
+        $this->addColumn('iframe_quality', 'IframeQuality', 'LONGVARCHAR', false, null, null);
     } // initialize()
 
     /**
@@ -182,13 +158,6 @@ class PopularTweetsTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Tweets', '\\Propel\\Propel\\Tweets', RelationMap::ONE_TO_ONE, array (
-  0 =>
-  array (
-    0 => ':tweet_id',
-    1 => ':tweet_id',
-  ),
-), null, null, null, false);
     } // buildRelations()
 
     /**
@@ -333,24 +302,16 @@ class PopularTweetsTableMap extends TableMap
     {
         if (null === $alias) {
             $criteria->addSelectColumn(PopularTweetsTableMap::COL_POPULAR_TWEET_ID);
-            $criteria->addSelectColumn(PopularTweetsTableMap::COL_TWEET_ID);
-            $criteria->addSelectColumn(PopularTweetsTableMap::COL_GEOCODE_ID);
-            $criteria->addSelectColumn(PopularTweetsTableMap::COL_VOTES_QUANTITY);
-            $criteria->addSelectColumn(PopularTweetsTableMap::COL_RETWEETS_QUANTITY);
             $criteria->addSelectColumn(PopularTweetsTableMap::COL_TWEET_PUBLICATION_HOUR);
-            $criteria->addSelectColumn(PopularTweetsTableMap::COL_FAVORITES_QUANTITY);
-            $criteria->addSelectColumn(PopularTweetsTableMap::COL_COORDINATES);
-            $criteria->addSelectColumn(PopularTweetsTableMap::COL_LOCATION);
+            $criteria->addSelectColumn(PopularTweetsTableMap::COL_IFRAME);
+            $criteria->addSelectColumn(PopularTweetsTableMap::COL_DEPARTMENT_CODE);
+            $criteria->addSelectColumn(PopularTweetsTableMap::COL_IFRAME_QUALITY);
         } else {
             $criteria->addSelectColumn($alias . '.popular_tweet_id');
-            $criteria->addSelectColumn($alias . '.tweet_id');
-            $criteria->addSelectColumn($alias . '.geocode_id');
-            $criteria->addSelectColumn($alias . '.votes_quantity');
-            $criteria->addSelectColumn($alias . '.retweets_quantity');
             $criteria->addSelectColumn($alias . '.tweet_publication_hour');
-            $criteria->addSelectColumn($alias . '.favorites_quantity');
-            $criteria->addSelectColumn($alias . '.coordinates');
-            $criteria->addSelectColumn($alias . '.location');
+            $criteria->addSelectColumn($alias . '.iframe');
+            $criteria->addSelectColumn($alias . '.department_code');
+            $criteria->addSelectColumn($alias . '.iframe_quality');
         }
     }
 

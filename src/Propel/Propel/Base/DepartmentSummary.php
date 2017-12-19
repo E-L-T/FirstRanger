@@ -5,18 +5,13 @@ namespace Propel\Propel\Base;
 use \DateTime;
 use \Exception;
 use \PDO;
-use Propel\Propel\DepartmentSummary as ChildDepartmentSummary;
 use Propel\Propel\DepartmentSummaryQuery as ChildDepartmentSummaryQuery;
-use Propel\Propel\Departments as ChildDepartments;
-use Propel\Propel\DepartmentsQuery as ChildDepartmentsQuery;
 use Propel\Propel\Map\DepartmentSummaryTableMap;
-use Propel\Propel\Map\DepartmentsTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
 use Propel\Runtime\ActiveRecord\ActiveRecordInterface;
 use Propel\Runtime\Collection\Collection;
-use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\BadMethodCallException;
 use Propel\Runtime\Exception\LogicException;
@@ -111,14 +106,14 @@ abstract class DepartmentSummary implements ActiveRecordInterface
     /**
      * The value for the positive_popular_tweet_id field.
      *
-     * @var        int
+     * @var        string
      */
     protected $positive_popular_tweet_id;
 
     /**
      * The value for the negative_popular_tweet_id field.
      *
-     * @var        int
+     * @var        string
      */
     protected $negative_popular_tweet_id;
 
@@ -137,10 +132,18 @@ abstract class DepartmentSummary implements ActiveRecordInterface
     protected $department_facebook_shares_quantity;
 
     /**
-     * @var        ObjectCollection|ChildDepartments[] Collection to store aggregation of ChildDepartments objects.
+     * The value for the positive_twitter_account field.
+     *
+     * @var        string
      */
-    protected $collDepartmentss;
-    protected $collDepartmentssPartial;
+    protected $positive_twitter_account;
+
+    /**
+     * The value for the negative_twitter_account field.
+     *
+     * @var        string
+     */
+    protected $negative_twitter_account;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -149,12 +152,6 @@ abstract class DepartmentSummary implements ActiveRecordInterface
      * @var boolean
      */
     protected $alreadyInSave = false;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var ObjectCollection|ChildDepartments[]
-     */
-    protected $departmentssScheduledForDeletion = null;
 
     /**
      * Initializes internal state of Propel\Propel\Base\DepartmentSummary object.
@@ -454,7 +451,7 @@ abstract class DepartmentSummary implements ActiveRecordInterface
     /**
      * Get the [positive_popular_tweet_id] column value.
      *
-     * @return int
+     * @return string
      */
     public function getPositivePopularTweetId()
     {
@@ -464,7 +461,7 @@ abstract class DepartmentSummary implements ActiveRecordInterface
     /**
      * Get the [negative_popular_tweet_id] column value.
      *
-     * @return int
+     * @return string
      */
     public function getNegativePopularTweetId()
     {
@@ -489,6 +486,26 @@ abstract class DepartmentSummary implements ActiveRecordInterface
     public function getDepartmentFacebookSharesQuantity()
     {
         return $this->department_facebook_shares_quantity;
+    }
+
+    /**
+     * Get the [positive_twitter_account] column value.
+     *
+     * @return string
+     */
+    public function getPositiveTwitterAccount()
+    {
+        return $this->positive_twitter_account;
+    }
+
+    /**
+     * Get the [negative_twitter_account] column value.
+     *
+     * @return string
+     */
+    public function getNegativeTwitterAccount()
+    {
+        return $this->negative_twitter_account;
     }
 
     /**
@@ -614,13 +631,13 @@ abstract class DepartmentSummary implements ActiveRecordInterface
     /**
      * Set the value of [positive_popular_tweet_id] column.
      *
-     * @param int $v new value
+     * @param string $v new value
      * @return $this|\Propel\Propel\DepartmentSummary The current object (for fluent API support)
      */
     public function setPositivePopularTweetId($v)
     {
         if ($v !== null) {
-            $v = (int) $v;
+            $v = (string) $v;
         }
 
         if ($this->positive_popular_tweet_id !== $v) {
@@ -634,13 +651,13 @@ abstract class DepartmentSummary implements ActiveRecordInterface
     /**
      * Set the value of [negative_popular_tweet_id] column.
      *
-     * @param int $v new value
+     * @param string $v new value
      * @return $this|\Propel\Propel\DepartmentSummary The current object (for fluent API support)
      */
     public function setNegativePopularTweetId($v)
     {
         if ($v !== null) {
-            $v = (int) $v;
+            $v = (string) $v;
         }
 
         if ($this->negative_popular_tweet_id !== $v) {
@@ -690,6 +707,46 @@ abstract class DepartmentSummary implements ActiveRecordInterface
 
         return $this;
     } // setDepartmentFacebookSharesQuantity()
+
+    /**
+     * Set the value of [positive_twitter_account] column.
+     *
+     * @param string $v new value
+     * @return $this|\Propel\Propel\DepartmentSummary The current object (for fluent API support)
+     */
+    public function setPositiveTwitterAccount($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->positive_twitter_account !== $v) {
+            $this->positive_twitter_account = $v;
+            $this->modifiedColumns[DepartmentSummaryTableMap::COL_POSITIVE_TWITTER_ACCOUNT] = true;
+        }
+
+        return $this;
+    } // setPositiveTwitterAccount()
+
+    /**
+     * Set the value of [negative_twitter_account] column.
+     *
+     * @param string $v new value
+     * @return $this|\Propel\Propel\DepartmentSummary The current object (for fluent API support)
+     */
+    public function setNegativeTwitterAccount($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->negative_twitter_account !== $v) {
+            $this->negative_twitter_account = $v;
+            $this->modifiedColumns[DepartmentSummaryTableMap::COL_NEGATIVE_TWITTER_ACCOUNT] = true;
+        }
+
+        return $this;
+    } // setNegativeTwitterAccount()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -749,16 +806,22 @@ abstract class DepartmentSummary implements ActiveRecordInterface
             $this->department_neutral_tweets_quantity = (null !== $col) ? (int) $col : null;
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : DepartmentSummaryTableMap::translateFieldName('PositivePopularTweetId', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->positive_popular_tweet_id = (null !== $col) ? (int) $col : null;
+            $this->positive_popular_tweet_id = (null !== $col) ? (string) $col : null;
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : DepartmentSummaryTableMap::translateFieldName('NegativePopularTweetId', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->negative_popular_tweet_id = (null !== $col) ? (int) $col : null;
+            $this->negative_popular_tweet_id = (null !== $col) ? (string) $col : null;
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : DepartmentSummaryTableMap::translateFieldName('DepartmentTwitterSharesQuantity', TableMap::TYPE_PHPNAME, $indexType)];
             $this->department_twitter_shares_quantity = (null !== $col) ? (int) $col : null;
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 9 + $startcol : DepartmentSummaryTableMap::translateFieldName('DepartmentFacebookSharesQuantity', TableMap::TYPE_PHPNAME, $indexType)];
             $this->department_facebook_shares_quantity = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 10 + $startcol : DepartmentSummaryTableMap::translateFieldName('PositiveTwitterAccount', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->positive_twitter_account = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 11 + $startcol : DepartmentSummaryTableMap::translateFieldName('NegativeTwitterAccount', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->negative_twitter_account = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -767,7 +830,7 @@ abstract class DepartmentSummary implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 10; // 10 = DepartmentSummaryTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 12; // 12 = DepartmentSummaryTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\Propel\\Propel\\DepartmentSummary'), 0, $e);
@@ -827,8 +890,6 @@ abstract class DepartmentSummary implements ActiveRecordInterface
         $this->hydrate($row, 0, true, $dataFetcher->getIndexType()); // rehydrate
 
         if ($deep) {  // also de-associate any related objects?
-
-            $this->collDepartmentss = null;
 
         } // if (deep)
     }
@@ -944,23 +1005,6 @@ abstract class DepartmentSummary implements ActiveRecordInterface
                 $this->resetModified();
             }
 
-            if ($this->departmentssScheduledForDeletion !== null) {
-                if (!$this->departmentssScheduledForDeletion->isEmpty()) {
-                    \Propel\Propel\DepartmentsQuery::create()
-                        ->filterByPrimaryKeys($this->departmentssScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->departmentssScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collDepartmentss !== null) {
-                foreach ($this->collDepartmentss as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
-            }
-
             $this->alreadyInSave = false;
 
         }
@@ -1017,6 +1061,12 @@ abstract class DepartmentSummary implements ActiveRecordInterface
         if ($this->isColumnModified(DepartmentSummaryTableMap::COL_DEPARTMENT_FACEBOOK_SHARES_QUANTITY)) {
             $modifiedColumns[':p' . $index++]  = 'department_facebook_shares_quantity';
         }
+        if ($this->isColumnModified(DepartmentSummaryTableMap::COL_POSITIVE_TWITTER_ACCOUNT)) {
+            $modifiedColumns[':p' . $index++]  = 'positive_twitter_account';
+        }
+        if ($this->isColumnModified(DepartmentSummaryTableMap::COL_NEGATIVE_TWITTER_ACCOUNT)) {
+            $modifiedColumns[':p' . $index++]  = 'negative_twitter_account';
+        }
 
         $sql = sprintf(
             'INSERT INTO department_summary (%s) VALUES (%s)',
@@ -1057,6 +1107,12 @@ abstract class DepartmentSummary implements ActiveRecordInterface
                         break;
                     case 'department_facebook_shares_quantity':
                         $stmt->bindValue($identifier, $this->department_facebook_shares_quantity, PDO::PARAM_INT);
+                        break;
+                    case 'positive_twitter_account':
+                        $stmt->bindValue($identifier, $this->positive_twitter_account, PDO::PARAM_STR);
+                        break;
+                    case 'negative_twitter_account':
+                        $stmt->bindValue($identifier, $this->negative_twitter_account, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -1150,6 +1206,12 @@ abstract class DepartmentSummary implements ActiveRecordInterface
             case 9:
                 return $this->getDepartmentFacebookSharesQuantity();
                 break;
+            case 10:
+                return $this->getPositiveTwitterAccount();
+                break;
+            case 11:
+                return $this->getNegativeTwitterAccount();
+                break;
             default:
                 return null;
                 break;
@@ -1167,11 +1229,10 @@ abstract class DepartmentSummary implements ActiveRecordInterface
      *                    Defaults to TableMap::TYPE_PHPNAME.
      * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
-     * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
      * @return array an associative array containing the field names (as keys) and field values
      */
-    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
+    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
     {
 
         if (isset($alreadyDumpedObjects['DepartmentSummary'][$this->hashCode()])) {
@@ -1190,6 +1251,8 @@ abstract class DepartmentSummary implements ActiveRecordInterface
             $keys[7] => $this->getNegativePopularTweetId(),
             $keys[8] => $this->getDepartmentTwitterSharesQuantity(),
             $keys[9] => $this->getDepartmentFacebookSharesQuantity(),
+            $keys[10] => $this->getPositiveTwitterAccount(),
+            $keys[11] => $this->getNegativeTwitterAccount(),
         );
         if ($result[$keys[1]] instanceof \DateTimeInterface) {
             $result[$keys[1]] = $result[$keys[1]]->format('c');
@@ -1200,23 +1263,6 @@ abstract class DepartmentSummary implements ActiveRecordInterface
             $result[$key] = $virtualColumn;
         }
 
-        if ($includeForeignObjects) {
-            if (null !== $this->collDepartmentss) {
-
-                switch ($keyType) {
-                    case TableMap::TYPE_CAMELNAME:
-                        $key = 'departmentss';
-                        break;
-                    case TableMap::TYPE_FIELDNAME:
-                        $key = 'departmentss';
-                        break;
-                    default:
-                        $key = 'Departmentss';
-                }
-
-                $result[$key] = $this->collDepartmentss->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
-        }
 
         return $result;
     }
@@ -1280,6 +1326,12 @@ abstract class DepartmentSummary implements ActiveRecordInterface
             case 9:
                 $this->setDepartmentFacebookSharesQuantity($value);
                 break;
+            case 10:
+                $this->setPositiveTwitterAccount($value);
+                break;
+            case 11:
+                $this->setNegativeTwitterAccount($value);
+                break;
         } // switch()
 
         return $this;
@@ -1335,6 +1387,12 @@ abstract class DepartmentSummary implements ActiveRecordInterface
         }
         if (array_key_exists($keys[9], $arr)) {
             $this->setDepartmentFacebookSharesQuantity($arr[$keys[9]]);
+        }
+        if (array_key_exists($keys[10], $arr)) {
+            $this->setPositiveTwitterAccount($arr[$keys[10]]);
+        }
+        if (array_key_exists($keys[11], $arr)) {
+            $this->setNegativeTwitterAccount($arr[$keys[11]]);
         }
     }
 
@@ -1406,6 +1464,12 @@ abstract class DepartmentSummary implements ActiveRecordInterface
         }
         if ($this->isColumnModified(DepartmentSummaryTableMap::COL_DEPARTMENT_FACEBOOK_SHARES_QUANTITY)) {
             $criteria->add(DepartmentSummaryTableMap::COL_DEPARTMENT_FACEBOOK_SHARES_QUANTITY, $this->department_facebook_shares_quantity);
+        }
+        if ($this->isColumnModified(DepartmentSummaryTableMap::COL_POSITIVE_TWITTER_ACCOUNT)) {
+            $criteria->add(DepartmentSummaryTableMap::COL_POSITIVE_TWITTER_ACCOUNT, $this->positive_twitter_account);
+        }
+        if ($this->isColumnModified(DepartmentSummaryTableMap::COL_NEGATIVE_TWITTER_ACCOUNT)) {
+            $criteria->add(DepartmentSummaryTableMap::COL_NEGATIVE_TWITTER_ACCOUNT, $this->negative_twitter_account);
         }
 
         return $criteria;
@@ -1502,20 +1566,8 @@ abstract class DepartmentSummary implements ActiveRecordInterface
         $copyObj->setNegativePopularTweetId($this->getNegativePopularTweetId());
         $copyObj->setDepartmentTwitterSharesQuantity($this->getDepartmentTwitterSharesQuantity());
         $copyObj->setDepartmentFacebookSharesQuantity($this->getDepartmentFacebookSharesQuantity());
-
-        if ($deepCopy) {
-            // important: temporarily setNew(false) because this affects the behavior of
-            // the getter/setter methods for fkey referrer objects.
-            $copyObj->setNew(false);
-
-            foreach ($this->getDepartmentss() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addDepartments($relObj->copy($deepCopy));
-                }
-            }
-
-        } // if ($deepCopy)
-
+        $copyObj->setPositiveTwitterAccount($this->getPositiveTwitterAccount());
+        $copyObj->setNegativeTwitterAccount($this->getNegativeTwitterAccount());
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setDepartmentSummaryId(NULL); // this is a auto-increment column, so set to default value
@@ -1544,248 +1596,6 @@ abstract class DepartmentSummary implements ActiveRecordInterface
         return $copyObj;
     }
 
-
-    /**
-     * Initializes a collection based on the name of a relation.
-     * Avoids crafting an 'init[$relationName]s' method name
-     * that wouldn't work when StandardEnglishPluralizer is used.
-     *
-     * @param      string $relationName The name of the relation to initialize
-     * @return void
-     */
-    public function initRelation($relationName)
-    {
-        if ('Departments' == $relationName) {
-            $this->initDepartmentss();
-            return;
-        }
-    }
-
-    /**
-     * Clears out the collDepartmentss collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return void
-     * @see        addDepartmentss()
-     */
-    public function clearDepartmentss()
-    {
-        $this->collDepartmentss = null; // important to set this to NULL since that means it is uninitialized
-    }
-
-    /**
-     * Reset is the collDepartmentss collection loaded partially.
-     */
-    public function resetPartialDepartmentss($v = true)
-    {
-        $this->collDepartmentssPartial = $v;
-    }
-
-    /**
-     * Initializes the collDepartmentss collection.
-     *
-     * By default this just sets the collDepartmentss collection to an empty array (like clearcollDepartmentss());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param      boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initDepartmentss($overrideExisting = true)
-    {
-        if (null !== $this->collDepartmentss && !$overrideExisting) {
-            return;
-        }
-
-        $collectionClassName = DepartmentsTableMap::getTableMap()->getCollectionClassName();
-
-        $this->collDepartmentss = new $collectionClassName;
-        $this->collDepartmentss->setModel('\Propel\Propel\Departments');
-    }
-
-    /**
-     * Gets an array of ChildDepartments objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this ChildDepartmentSummary is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      ConnectionInterface $con optional connection object
-     * @return ObjectCollection|ChildDepartments[] List of ChildDepartments objects
-     * @throws PropelException
-     */
-    public function getDepartmentss(Criteria $criteria = null, ConnectionInterface $con = null)
-    {
-        $partial = $this->collDepartmentssPartial && !$this->isNew();
-        if (null === $this->collDepartmentss || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collDepartmentss) {
-                // return empty collection
-                $this->initDepartmentss();
-            } else {
-                $collDepartmentss = ChildDepartmentsQuery::create(null, $criteria)
-                    ->filterByDepartmentSummary($this)
-                    ->find($con);
-
-                if (null !== $criteria) {
-                    if (false !== $this->collDepartmentssPartial && count($collDepartmentss)) {
-                        $this->initDepartmentss(false);
-
-                        foreach ($collDepartmentss as $obj) {
-                            if (false == $this->collDepartmentss->contains($obj)) {
-                                $this->collDepartmentss->append($obj);
-                            }
-                        }
-
-                        $this->collDepartmentssPartial = true;
-                    }
-
-                    return $collDepartmentss;
-                }
-
-                if ($partial && $this->collDepartmentss) {
-                    foreach ($this->collDepartmentss as $obj) {
-                        if ($obj->isNew()) {
-                            $collDepartmentss[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collDepartmentss = $collDepartmentss;
-                $this->collDepartmentssPartial = false;
-            }
-        }
-
-        return $this->collDepartmentss;
-    }
-
-    /**
-     * Sets a collection of ChildDepartments objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param      Collection $departmentss A Propel collection.
-     * @param      ConnectionInterface $con Optional connection object
-     * @return $this|ChildDepartmentSummary The current object (for fluent API support)
-     */
-    public function setDepartmentss(Collection $departmentss, ConnectionInterface $con = null)
-    {
-        /** @var ChildDepartments[] $departmentssToDelete */
-        $departmentssToDelete = $this->getDepartmentss(new Criteria(), $con)->diff($departmentss);
-
-
-        $this->departmentssScheduledForDeletion = $departmentssToDelete;
-
-        foreach ($departmentssToDelete as $departmentsRemoved) {
-            $departmentsRemoved->setDepartmentSummary(null);
-        }
-
-        $this->collDepartmentss = null;
-        foreach ($departmentss as $departments) {
-            $this->addDepartments($departments);
-        }
-
-        $this->collDepartmentss = $departmentss;
-        $this->collDepartmentssPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related Departments objects.
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct
-     * @param      ConnectionInterface $con
-     * @return int             Count of related Departments objects.
-     * @throws PropelException
-     */
-    public function countDepartmentss(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
-    {
-        $partial = $this->collDepartmentssPartial && !$this->isNew();
-        if (null === $this->collDepartmentss || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collDepartmentss) {
-                return 0;
-            }
-
-            if ($partial && !$criteria) {
-                return count($this->getDepartmentss());
-            }
-
-            $query = ChildDepartmentsQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByDepartmentSummary($this)
-                ->count($con);
-        }
-
-        return count($this->collDepartmentss);
-    }
-
-    /**
-     * Method called to associate a ChildDepartments object to this object
-     * through the ChildDepartments foreign key attribute.
-     *
-     * @param  ChildDepartments $l ChildDepartments
-     * @return $this|\Propel\Propel\DepartmentSummary The current object (for fluent API support)
-     */
-    public function addDepartments(ChildDepartments $l)
-    {
-        if ($this->collDepartmentss === null) {
-            $this->initDepartmentss();
-            $this->collDepartmentssPartial = true;
-        }
-
-        if (!$this->collDepartmentss->contains($l)) {
-            $this->doAddDepartments($l);
-
-            if ($this->departmentssScheduledForDeletion and $this->departmentssScheduledForDeletion->contains($l)) {
-                $this->departmentssScheduledForDeletion->remove($this->departmentssScheduledForDeletion->search($l));
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param ChildDepartments $departments The ChildDepartments object to add.
-     */
-    protected function doAddDepartments(ChildDepartments $departments)
-    {
-        $this->collDepartmentss[]= $departments;
-        $departments->setDepartmentSummary($this);
-    }
-
-    /**
-     * @param  ChildDepartments $departments The ChildDepartments object to remove.
-     * @return $this|ChildDepartmentSummary The current object (for fluent API support)
-     */
-    public function removeDepartments(ChildDepartments $departments)
-    {
-        if ($this->getDepartmentss()->contains($departments)) {
-            $pos = $this->collDepartmentss->search($departments);
-            $this->collDepartmentss->remove($pos);
-            if (null === $this->departmentssScheduledForDeletion) {
-                $this->departmentssScheduledForDeletion = clone $this->collDepartmentss;
-                $this->departmentssScheduledForDeletion->clear();
-            }
-            $this->departmentssScheduledForDeletion[]= clone $departments;
-            $departments->setDepartmentSummary(null);
-        }
-
-        return $this;
-    }
-
     /**
      * Clears the current object, sets all attributes to their default values and removes
      * outgoing references as well as back-references (from other objects to this one. Results probably in a database
@@ -1803,6 +1613,8 @@ abstract class DepartmentSummary implements ActiveRecordInterface
         $this->negative_popular_tweet_id = null;
         $this->department_twitter_shares_quantity = null;
         $this->department_facebook_shares_quantity = null;
+        $this->positive_twitter_account = null;
+        $this->negative_twitter_account = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();
@@ -1821,14 +1633,8 @@ abstract class DepartmentSummary implements ActiveRecordInterface
     public function clearAllReferences($deep = false)
     {
         if ($deep) {
-            if ($this->collDepartmentss) {
-                foreach ($this->collDepartmentss as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
         } // if ($deep)
 
-        $this->collDepartmentss = null;
     }
 
     /**

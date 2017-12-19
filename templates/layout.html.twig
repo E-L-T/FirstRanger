@@ -114,56 +114,57 @@
         <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB5iJbVedHQV26Dr_HlIx8dhm8_mQbm5Fk&callback=initMap"
         type="text/javascript"></script>
         <script type="text/javascript">
-            var parisMood = {{ map.parisMood }};
-            var HDSMood = {{ map.HDSMood }};
-            var SSDMood = {{ map.SSDMood }};
-            var VDMMood = {{ map.VDMMood }};
-            
+                   {# var iframeParisPositif = unescape({{ map.iframeParisPositif }});
+            console.log(iframeParisPositif);  #}  
+    
+                    var parisMood = {{ map.parisMood }};
+                    var HDSMood = {{ map.HDSMood }};
+                    var SSDMood = {{ map.SSDMood }};
+                    var VDMMood = {{ map.VDMMood }};
+
             var parisPositiveQuantity = {{ map.parisPositiveQuantity }};
-            var parisNegativeQuantity = {{ map.parisNegativeQuantity }};
-            var parisNeutralQuantity = {{ map.parisNeutralQuantity }};
-            var parisTotalQuantity = {{ map.parisTotalQuantity }};
-            
+                    var parisNegativeQuantity = {{ map.parisNegativeQuantity }};
+                    var parisNeutralQuantity = {{ map.parisNeutralQuantity }};
+                    var parisTotalQuantity = {{ map.parisTotalQuantity }};
+
             var HDSPositiveQuantity = {{ map.HDSPositiveQuantity }};
-            var HDSNegativeQuantity = {{ map.HDSNegativeQuantity }};
-            var HDSNeutralQuantity = {{ map.HDSNeutralQuantity }};
-            var HDSTotalQuantity = {{ map.HDSTotalQuantity }};
-            
+                    var HDSNegativeQuantity = {{ map.HDSNegativeQuantity }};
+                    var HDSNeutralQuantity = {{ map.HDSNeutralQuantity }};
+                    var HDSTotalQuantity = {{ map.HDSTotalQuantity }};
+
             var SSDPositiveQuantity = {{ map.SSDPositiveQuantity }};
-            var SSDNegativeQuantity = {{ map.SSDNegativeQuantity }};
-            var SSDNeutralQuantity = {{ map.SSDNeutralQuantity }};
-            var SSDTotalQuantity = {{ map.SSDTotalQuantity }};
-            
+                    var SSDNegativeQuantity = {{ map.SSDNegativeQuantity }};
+                    var SSDNeutralQuantity = {{ map.SSDNeutralQuantity }};
+                    var SSDTotalQuantity = {{ map.SSDTotalQuantity }};
+
             var VDMPositiveQuantity = {{ map.VDMPositiveQuantity }};
-            var VDMNegativeQuantity = {{ map.VDMNegativeQuantity }};
-            var VDMNeutralQuantity = {{ map.VDMNeutralQuantity }};
-            var VDMTotalQuantity = {{ map.VDMTotalQuantity }};
-            
+                    var VDMNegativeQuantity = {{ map.VDMNegativeQuantity }};
+                    var VDMNeutralQuantity = {{ map.VDMNeutralQuantity }};
+                    var VDMTotalQuantity = {{ map.VDMTotalQuantity }};
+
             var districtMood = {{ map.districtMood }};
-            var parisPositivePercentage = {{ map.ParisPositivePercentage }};
-            var parisNegativePercentage = {{ map.ParisNegativePercentage }};
-            var parisNeutralPercentage = {{ map.ParisNeutralPercentage }};
-            
+                    var parisPositivePercentage = {{ map.ParisPositivePercentage }};
+                    var parisNegativePercentage = {{ map.ParisNegativePercentage }};
+                    var parisNeutralPercentage = {{ map.ParisNeutralPercentage }};
+
             var HDSPositivePercentage = {{ map.HDSPositivePercentage }};
-            var HDSNegativePercentage = {{ map.HDSNegativePercentage }};
-            var HDSNeutralPercentage = {{ map.HDSNeutralPercentage }};
-            
+                    var HDSNegativePercentage = {{ map.HDSNegativePercentage }};
+                    var HDSNeutralPercentage = {{ map.HDSNeutralPercentage }};
+
             var SSDPositivePercentage = {{ map.SSDPositivePercentage }};
-            var SSDNegativePercentage = {{ map.SSDNegativePercentage }};
-            var SSDNeutralPercentage = {{ map.SSDNeutralPercentage }};
-            
+                    var SSDNegativePercentage = {{ map.SSDNegativePercentage }};
+                    var SSDNeutralPercentage = {{ map.SSDNeutralPercentage }};
+
             var VDMPositivePercentage = {{ map.VDMPositivePercentage }};
-            var VDMNegativePercentage = {{ map.VDMNegativePercentage }};
-            var VDMNeutralPercentage = {{ map.VDMNeutralPercentage }};
-            
+                    var VDMNegativePercentage = {{ map.VDMNegativePercentage }};
+                    var VDMNeutralPercentage = {{ map.VDMNeutralPercentage }};
+
             var bestMood = {{ map.bestMood }};
-            var worstMood = {{ map.worstMood }};
-            var bestMoodDepartment = {{ map.bestMoodDepartment }};
-            var worstMoodDepartment = {{ map.worstMoodDepartment }};
+                    var worstMood = {{ map.worstMood }};
+                    var bestMoodDepartment = {{ map.bestMoodDepartment }};
+                    var worstMoodDepartment = {{ map.worstMoodDepartment }};
 
-
-
-
+           
         </script>
         <script src="{{asset('js/script.js')}}"></script>
     </body>

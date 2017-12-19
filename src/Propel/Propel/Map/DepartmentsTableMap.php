@@ -137,7 +137,7 @@ class DepartmentsTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('department_id', 'DepartmentId', 'INTEGER', true, null, null);
-        $this->addForeignKey('department_code', 'DepartmentCode', 'VARCHAR', 'department_summary', 'department_code', true, 5, null);
+        $this->addColumn('department_code', 'DepartmentCode', 'VARCHAR', true, 5, null);
         $this->addColumn('department_name', 'DepartmentName', 'VARCHAR', true, 70, null);
     } // initialize()
 
@@ -146,13 +146,6 @@ class DepartmentsTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('DepartmentSummary', '\\Propel\\Propel\\DepartmentSummary', RelationMap::MANY_TO_ONE, array (
-  0 =>
-  array (
-    0 => ':department_code',
-    1 => ':department_code',
-  ),
-), null, null, null, false);
         $this->addRelation('Geocodes', '\\Propel\\Propel\\Geocodes', RelationMap::ONE_TO_MANY, array (
   0 =>
   array (

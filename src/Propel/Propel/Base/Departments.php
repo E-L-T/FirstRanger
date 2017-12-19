@@ -4,8 +4,6 @@ namespace Propel\Propel\Base;
 
 use \Exception;
 use \PDO;
-use Propel\Propel\DepartmentSummary as ChildDepartmentSummary;
-use Propel\Propel\DepartmentSummaryQuery as ChildDepartmentSummaryQuery;
 use Propel\Propel\Departments as ChildDepartments;
 use Propel\Propel\DepartmentsQuery as ChildDepartmentsQuery;
 use Propel\Propel\Geocodes as ChildGeocodes;
@@ -86,11 +84,6 @@ abstract class Departments implements ActiveRecordInterface
      * @var        string
      */
     protected $department_name;
-
-    /**
-     * @var        ChildDepartmentSummary
-     */
-    protected $aDepartmentSummary;
 
     /**
      * @var        ObjectCollection|ChildGeocodes[] Collection to store aggregation of ChildGeocodes objects.
@@ -404,10 +397,6 @@ abstract class Departments implements ActiveRecordInterface
             $this->modifiedColumns[DepartmentsTableMap::COL_DEPARTMENT_CODE] = true;
         }
 
-        if ($this->aDepartmentSummary !== null && $this->aDepartmentSummary->getDepartmentCode() !== $v) {
-            $this->aDepartmentSummary = null;
-        }
-
         return $this;
     } // setDepartmentCode()
 
@@ -505,9 +494,6 @@ abstract class Departments implements ActiveRecordInterface
      */
     public function ensureConsistency()
     {
-        if ($this->aDepartmentSummary !== null && $this->department_code !== $this->aDepartmentSummary->getDepartmentCode()) {
-            $this->aDepartmentSummary = null;
-        }
     } // ensureConsistency
 
     /**
@@ -547,7 +533,6 @@ abstract class Departments implements ActiveRecordInterface
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->aDepartmentSummary = null;
             $this->collGeocodess = null;
 
         } // if (deep)
@@ -652,18 +637,6 @@ abstract class Departments implements ActiveRecordInterface
         $affectedRows = 0; // initialize var to track total num of affected rows
         if (!$this->alreadyInSave) {
             $this->alreadyInSave = true;
-
-            // We call the save method on the following object(s) if they
-            // were passed to this object by their corresponding set
-            // method.  This object relates to these object(s) by a
-            // foreign key reference.
-
-            if ($this->aDepartmentSummary !== null) {
-                if ($this->aDepartmentSummary->isModified() || $this->aDepartmentSummary->isNew()) {
-                    $affectedRows += $this->aDepartmentSummary->save($con);
-                }
-                $this->setDepartmentSummary($this->aDepartmentSummary);
-            }
 
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
@@ -859,21 +832,6 @@ abstract class Departments implements ActiveRecordInterface
         }
 
         if ($includeForeignObjects) {
-            if (null !== $this->aDepartmentSummary) {
-
-                switch ($keyType) {
-                    case TableMap::TYPE_CAMELNAME:
-                        $key = 'departmentSummary';
-                        break;
-                    case TableMap::TYPE_FIELDNAME:
-                        $key = 'department_summary';
-                        break;
-                    default:
-                        $key = 'DepartmentSummary';
-                }
-
-                $result[$key] = $this->aDepartmentSummary->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
             if (null !== $this->collGeocodess) {
 
                 switch ($keyType) {
@@ -1147,59 +1105,6 @@ abstract class Departments implements ActiveRecordInterface
         return $copyObj;
     }
 
-    /**
-     * Declares an association between this object and a ChildDepartmentSummary object.
-     *
-     * @param  ChildDepartmentSummary $v
-     * @return $this|\Propel\Propel\Departments The current object (for fluent API support)
-     * @throws PropelException
-     */
-    public function setDepartmentSummary(ChildDepartmentSummary $v = null)
-    {
-        if ($v === null) {
-            $this->setDepartmentCode(NULL);
-        } else {
-            $this->setDepartmentCode($v->getDepartmentCode());
-        }
-
-        $this->aDepartmentSummary = $v;
-
-        // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the ChildDepartmentSummary object, it will not be re-added.
-        if ($v !== null) {
-            $v->addDepartments($this);
-        }
-
-
-        return $this;
-    }
-
-
-    /**
-     * Get the associated ChildDepartmentSummary object
-     *
-     * @param  ConnectionInterface $con Optional Connection object.
-     * @return ChildDepartmentSummary The associated ChildDepartmentSummary object.
-     * @throws PropelException
-     */
-    public function getDepartmentSummary(ConnectionInterface $con = null)
-    {
-        if ($this->aDepartmentSummary === null && (($this->department_code !== "" && $this->department_code !== null))) {
-            $this->aDepartmentSummary = ChildDepartmentSummaryQuery::create()
-                ->filterByDepartments($this) // here
-                ->findOne($con);
-            /* The following can be used additionally to
-                guarantee the related object contains a reference
-                to this object.  This level of coupling may, however, be
-                undesirable since it could result in an only partially populated collection
-                in the referenced object.
-                $this->aDepartmentSummary->addDepartmentss($this);
-             */
-        }
-
-        return $this->aDepartmentSummary;
-    }
-
 
     /**
      * Initializes a collection based on the name of a relation.
@@ -1449,9 +1354,6 @@ abstract class Departments implements ActiveRecordInterface
      */
     public function clear()
     {
-        if (null !== $this->aDepartmentSummary) {
-            $this->aDepartmentSummary->removeDepartments($this);
-        }
         $this->department_id = null;
         $this->department_code = null;
         $this->department_name = null;
@@ -1481,7 +1383,6 @@ abstract class Departments implements ActiveRecordInterface
         } // if ($deep)
 
         $this->collGeocodess = null;
-        $this->aDepartmentSummary = null;
     }
 
     /**

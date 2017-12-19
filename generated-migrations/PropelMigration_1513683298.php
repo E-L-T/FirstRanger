@@ -4,10 +4,10 @@ use Propel\Generator\Manager\MigrationManager;
 
 /**
  * Data object containing the SQL and PHP code to migrate the database
- * up to version 1513588048.
- * Generated on 2017-12-18 10:07:28 by eric
+ * up to version 1513683298.
+ * Generated on 2017-12-19 12:34:58 by eric
  */
-class PropelMigration_1513588048
+class PropelMigration_1513683298
 {
     public $comment = '';
 
@@ -37,7 +37,7 @@ class PropelMigration_1513588048
      * @return array list of the SQL strings to execute for the Up migration
      *               the keys being the datasources
      */
-    public function getDownSQL()
+    public function getUpSQL()
     {
         return array (
   'default' => '
@@ -45,15 +45,17 @@ class PropelMigration_1513588048
 # It "suspends judgement" for fkey relationships until are tables are set.
 SET FOREIGN_KEY_CHECKS = 0;
 
-ALTER TABLE `geocodes`
+ALTER TABLE `department_summary`
 
-  DROP `nom`;
+  CHANGE `twitter_account` `positive_twitter_account` TEXT NOT NULL,
 
-CREATE UNIQUE INDEX `popular_tweets_u_e3b5bb` ON `popular_tweets` (`tweet_id`(18));
+  ADD `negative_twitter_account` TEXT NOT NULL AFTER `positive_twitter_account`;
 
-ALTER TABLE `tweets` ADD CONSTRAINT `tweets_ibfk_2`
-    FOREIGN KEY (`tweet_id`)
-    REFERENCES `popular_tweets` (`tweet_id`);
+ALTER TABLE `tweets`
+
+  CHANGE `positive_twitter_account` `twitter_account` TEXT NOT NULL,
+
+  DROP `negative_twitter_account`;
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;
@@ -67,7 +69,7 @@ SET FOREIGN_KEY_CHECKS = 1;
      * @return array list of the SQL strings to execute for the Down migration
      *               the keys being the datasources
      */
-    public function getUpSQL()
+    public function getDownSQL()
     {
         return array (
   'default' => '
@@ -75,13 +77,17 @@ SET FOREIGN_KEY_CHECKS = 1;
 # It "suspends judgement" for fkey relationships until are tables are set.
 SET FOREIGN_KEY_CHECKS = 0;
 
-ALTER TABLE `geocodes`
+ALTER TABLE `department_summary`
 
-  ADD `nom` VARCHAR(100) NOT NULL AFTER `geocode`;
+  CHANGE `positive_twitter_account` `twitter_account` TEXT NOT NULL,
 
-DROP INDEX `popular_tweets_u_e3b5bb` ON `popular_tweets`;
+  DROP `negative_twitter_account`;
 
-ALTER TABLE `tweets` DROP FOREIGN KEY `tweets_ibfk_2`;
+ALTER TABLE `tweets`
+
+  CHANGE `twitter_account` `positive_twitter_account` TEXT NOT NULL,
+
+  ADD `negative_twitter_account` INTEGER NOT NULL AFTER `quality_tweet`;
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;

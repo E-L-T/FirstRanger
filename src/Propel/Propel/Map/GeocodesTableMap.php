@@ -59,7 +59,7 @@ class GeocodesTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 4;
+    const NUM_COLUMNS = 5;
 
     /**
      * The number of lazy-loaded columns
@@ -69,7 +69,7 @@ class GeocodesTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 4;
+    const NUM_HYDRATE_COLUMNS = 5;
 
     /**
      * the column name for the geocode_id field
@@ -92,6 +92,11 @@ class GeocodesTableMap extends TableMap
     const COL_GEOCODE = 'geocodes.geocode';
 
     /**
+     * the column name for the nom field
+     */
+    const COL_NOM = 'geocodes.nom';
+
+    /**
      * The default string format for model objects of the related table
      */
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -103,11 +108,11 @@ class GeocodesTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('GeocodeId', 'GeocodeName', 'DepartmentId', 'Geocode', ),
-        self::TYPE_CAMELNAME     => array('geocodeId', 'geocodeName', 'departmentId', 'geocode', ),
-        self::TYPE_COLNAME       => array(GeocodesTableMap::COL_GEOCODE_ID, GeocodesTableMap::COL_GEOCODE_NAME, GeocodesTableMap::COL_DEPARTMENT_ID, GeocodesTableMap::COL_GEOCODE, ),
-        self::TYPE_FIELDNAME     => array('geocode_id', 'geocode_name', 'department_id', 'geocode', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, )
+        self::TYPE_PHPNAME       => array('GeocodeId', 'GeocodeName', 'DepartmentId', 'Geocode', 'Nom', ),
+        self::TYPE_CAMELNAME     => array('geocodeId', 'geocodeName', 'departmentId', 'geocode', 'nom', ),
+        self::TYPE_COLNAME       => array(GeocodesTableMap::COL_GEOCODE_ID, GeocodesTableMap::COL_GEOCODE_NAME, GeocodesTableMap::COL_DEPARTMENT_ID, GeocodesTableMap::COL_GEOCODE, GeocodesTableMap::COL_NOM, ),
+        self::TYPE_FIELDNAME     => array('geocode_id', 'geocode_name', 'department_id', 'geocode', 'nom', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
     );
 
     /**
@@ -117,11 +122,11 @@ class GeocodesTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('GeocodeId' => 0, 'GeocodeName' => 1, 'DepartmentId' => 2, 'Geocode' => 3, ),
-        self::TYPE_CAMELNAME     => array('geocodeId' => 0, 'geocodeName' => 1, 'departmentId' => 2, 'geocode' => 3, ),
-        self::TYPE_COLNAME       => array(GeocodesTableMap::COL_GEOCODE_ID => 0, GeocodesTableMap::COL_GEOCODE_NAME => 1, GeocodesTableMap::COL_DEPARTMENT_ID => 2, GeocodesTableMap::COL_GEOCODE => 3, ),
-        self::TYPE_FIELDNAME     => array('geocode_id' => 0, 'geocode_name' => 1, 'department_id' => 2, 'geocode' => 3, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, )
+        self::TYPE_PHPNAME       => array('GeocodeId' => 0, 'GeocodeName' => 1, 'DepartmentId' => 2, 'Geocode' => 3, 'Nom' => 4, ),
+        self::TYPE_CAMELNAME     => array('geocodeId' => 0, 'geocodeName' => 1, 'departmentId' => 2, 'geocode' => 3, 'nom' => 4, ),
+        self::TYPE_COLNAME       => array(GeocodesTableMap::COL_GEOCODE_ID => 0, GeocodesTableMap::COL_GEOCODE_NAME => 1, GeocodesTableMap::COL_DEPARTMENT_ID => 2, GeocodesTableMap::COL_GEOCODE => 3, GeocodesTableMap::COL_NOM => 4, ),
+        self::TYPE_FIELDNAME     => array('geocode_id' => 0, 'geocode_name' => 1, 'department_id' => 2, 'geocode' => 3, 'nom' => 4, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
     );
 
     /**
@@ -145,6 +150,7 @@ class GeocodesTableMap extends TableMap
         $this->addColumn('geocode_name', 'GeocodeName', 'VARCHAR', true, 20, null);
         $this->addForeignKey('department_id', 'DepartmentId', 'INTEGER', 'departments', 'department_id', true, null, null);
         $this->addColumn('geocode', 'Geocode', 'VARCHAR', true, 100, null);
+        $this->addColumn('nom', 'Nom', 'VARCHAR', true, 100, null);
     } // initialize()
 
     /**
@@ -313,11 +319,13 @@ class GeocodesTableMap extends TableMap
             $criteria->addSelectColumn(GeocodesTableMap::COL_GEOCODE_NAME);
             $criteria->addSelectColumn(GeocodesTableMap::COL_DEPARTMENT_ID);
             $criteria->addSelectColumn(GeocodesTableMap::COL_GEOCODE);
+            $criteria->addSelectColumn(GeocodesTableMap::COL_NOM);
         } else {
             $criteria->addSelectColumn($alias . '.geocode_id');
             $criteria->addSelectColumn($alias . '.geocode_name');
             $criteria->addSelectColumn($alias . '.department_id');
             $criteria->addSelectColumn($alias . '.geocode');
+            $criteria->addSelectColumn($alias . '.nom');
         }
     }
 

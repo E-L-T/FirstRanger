@@ -95,6 +95,13 @@ abstract class Geocodes implements ActiveRecordInterface
     protected $geocode;
 
     /**
+     * The value for the nom field.
+     *
+     * @var        string
+     */
+    protected $nom;
+
+    /**
      * @var        ChildDepartments
      */
     protected $aDepartments;
@@ -385,6 +392,16 @@ abstract class Geocodes implements ActiveRecordInterface
     }
 
     /**
+     * Get the [nom] column value.
+     *
+     * @return string
+     */
+    public function getNom()
+    {
+        return $this->nom;
+    }
+
+    /**
      * Set the value of [geocode_id] column.
      *
      * @param int $v new value
@@ -469,6 +486,26 @@ abstract class Geocodes implements ActiveRecordInterface
     } // setGeocode()
 
     /**
+     * Set the value of [nom] column.
+     *
+     * @param string $v new value
+     * @return $this|\Propel\Propel\Geocodes The current object (for fluent API support)
+     */
+    public function setNom($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->nom !== $v) {
+            $this->nom = $v;
+            $this->modifiedColumns[GeocodesTableMap::COL_NOM] = true;
+        }
+
+        return $this;
+    } // setNom()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -515,6 +552,9 @@ abstract class Geocodes implements ActiveRecordInterface
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : GeocodesTableMap::translateFieldName('Geocode', TableMap::TYPE_PHPNAME, $indexType)];
             $this->geocode = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : GeocodesTableMap::translateFieldName('Nom', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->nom = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -523,7 +563,7 @@ abstract class Geocodes implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 4; // 4 = GeocodesTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 5; // 5 = GeocodesTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\Propel\\Propel\\Geocodes'), 0, $e);
@@ -772,6 +812,9 @@ abstract class Geocodes implements ActiveRecordInterface
         if ($this->isColumnModified(GeocodesTableMap::COL_GEOCODE)) {
             $modifiedColumns[':p' . $index++]  = 'geocode';
         }
+        if ($this->isColumnModified(GeocodesTableMap::COL_NOM)) {
+            $modifiedColumns[':p' . $index++]  = 'nom';
+        }
 
         $sql = sprintf(
             'INSERT INTO geocodes (%s) VALUES (%s)',
@@ -794,6 +837,9 @@ abstract class Geocodes implements ActiveRecordInterface
                         break;
                     case 'geocode':
                         $stmt->bindValue($identifier, $this->geocode, PDO::PARAM_STR);
+                        break;
+                    case 'nom':
+                        $stmt->bindValue($identifier, $this->nom, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -869,6 +915,9 @@ abstract class Geocodes implements ActiveRecordInterface
             case 3:
                 return $this->getGeocode();
                 break;
+            case 4:
+                return $this->getNom();
+                break;
             default:
                 return null;
                 break;
@@ -903,6 +952,7 @@ abstract class Geocodes implements ActiveRecordInterface
             $keys[1] => $this->getGeocodeName(),
             $keys[2] => $this->getDepartmentId(),
             $keys[3] => $this->getGeocode(),
+            $keys[4] => $this->getNom(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -986,6 +1036,9 @@ abstract class Geocodes implements ActiveRecordInterface
             case 3:
                 $this->setGeocode($value);
                 break;
+            case 4:
+                $this->setNom($value);
+                break;
         } // switch()
 
         return $this;
@@ -1023,6 +1076,9 @@ abstract class Geocodes implements ActiveRecordInterface
         }
         if (array_key_exists($keys[3], $arr)) {
             $this->setGeocode($arr[$keys[3]]);
+        }
+        if (array_key_exists($keys[4], $arr)) {
+            $this->setNom($arr[$keys[4]]);
         }
     }
 
@@ -1076,6 +1132,9 @@ abstract class Geocodes implements ActiveRecordInterface
         }
         if ($this->isColumnModified(GeocodesTableMap::COL_GEOCODE)) {
             $criteria->add(GeocodesTableMap::COL_GEOCODE, $this->geocode);
+        }
+        if ($this->isColumnModified(GeocodesTableMap::COL_NOM)) {
+            $criteria->add(GeocodesTableMap::COL_NOM, $this->nom);
         }
 
         return $criteria;
@@ -1166,6 +1225,7 @@ abstract class Geocodes implements ActiveRecordInterface
         $copyObj->setGeocodeName($this->getGeocodeName());
         $copyObj->setDepartmentId($this->getDepartmentId());
         $copyObj->setGeocode($this->getGeocode());
+        $copyObj->setNom($this->getNom());
 
         if ($deepCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1501,31 +1561,6 @@ abstract class Geocodes implements ActiveRecordInterface
         return $this;
     }
 
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Geocodes is new, it will return
-     * an empty collection; or if this Geocodes has previously
-     * been saved, it will retrieve related Tweetss from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Geocodes.
-     *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      ConnectionInterface $con optional connection object
-     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return ObjectCollection|ChildTweets[] List of ChildTweets objects
-     */
-    public function getTweetssJoinPopularTweets(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
-    {
-        $query = ChildTweetsQuery::create(null, $criteria);
-        $query->joinWith('PopularTweets', $joinBehavior);
-
-        return $this->getTweetss($query, $con);
-    }
-
     /**
      * Clears the current object, sets all attributes to their default values and removes
      * outgoing references as well as back-references (from other objects to this one. Results probably in a database
@@ -1540,6 +1575,7 @@ abstract class Geocodes implements ActiveRecordInterface
         $this->geocode_name = null;
         $this->department_id = null;
         $this->geocode = null;
+        $this->nom = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();

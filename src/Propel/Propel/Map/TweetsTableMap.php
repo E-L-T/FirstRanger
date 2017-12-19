@@ -176,7 +176,7 @@ class TweetsTableMap extends TableMap
         $this->setPackage('Propel.Propel');
         $this->setUseIdGenerator(true);
         // columns
-        $this->addForeignPrimaryKey('tweet_id', 'TweetId', 'BIGINT' , 'popular_tweets', 'tweet_id', true, 18, null);
+        $this->addPrimaryKey('tweet_id', 'TweetId', 'BIGINT', true, 18, null);
         $this->addColumn('api_tweet_id', 'ApiTweetId', 'BIGINT', true, 18, null);
         $this->addColumn('tweet_text', 'TweetText', 'LONGVARCHAR', true, null, null);
         $this->addColumn('tweet_publication_hour', 'TweetPublicationHour', 'TIMESTAMP', true, null, null);
@@ -199,13 +199,6 @@ class TweetsTableMap extends TableMap
   array (
     0 => ':geocode_id',
     1 => ':geocode_id',
-  ),
-), null, null, null, false);
-        $this->addRelation('PopularTweets', '\\Propel\\Propel\\PopularTweets', RelationMap::MANY_TO_ONE, array (
-  0 =>
-  array (
-    0 => ':tweet_id',
-    1 => ':tweet_id',
   ),
 ), null, null, null, false);
     } // buildRelations()

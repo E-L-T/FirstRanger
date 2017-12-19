@@ -7,8 +7,6 @@ use \Exception;
 use \PDO;
 use Propel\Propel\Geocodes as ChildGeocodes;
 use Propel\Propel\GeocodesQuery as ChildGeocodesQuery;
-use Propel\Propel\PopularTweets as ChildPopularTweets;
-use Propel\Propel\PopularTweetsQuery as ChildPopularTweetsQuery;
 use Propel\Propel\TweetsQuery as ChildTweetsQuery;
 use Propel\Propel\Map\TweetsTableMap;
 use Propel\Runtime\Propel;
@@ -146,11 +144,6 @@ abstract class Tweets implements ActiveRecordInterface
      * @var        ChildGeocodes
      */
     protected $aGeocodes;
-
-    /**
-     * @var        ChildPopularTweets
-     */
-    protected $aPopularTweets;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -522,10 +515,6 @@ abstract class Tweets implements ActiveRecordInterface
             $this->modifiedColumns[TweetsTableMap::COL_TWEET_ID] = true;
         }
 
-        if ($this->aPopularTweets !== null && $this->aPopularTweets->getTweetId() !== $v) {
-            $this->aPopularTweets = null;
-        }
-
         return $this;
     } // setTweetId()
 
@@ -834,9 +823,6 @@ abstract class Tweets implements ActiveRecordInterface
      */
     public function ensureConsistency()
     {
-        if ($this->aPopularTweets !== null && $this->tweet_id !== $this->aPopularTweets->getTweetId()) {
-            $this->aPopularTweets = null;
-        }
         if ($this->aGeocodes !== null && $this->geocode_id !== $this->aGeocodes->getGeocodeId()) {
             $this->aGeocodes = null;
         }
@@ -880,7 +866,6 @@ abstract class Tweets implements ActiveRecordInterface
         if ($deep) {  // also de-associate any related objects?
 
             $this->aGeocodes = null;
-            $this->aPopularTweets = null;
         } // if (deep)
     }
 
@@ -994,13 +979,6 @@ abstract class Tweets implements ActiveRecordInterface
                     $affectedRows += $this->aGeocodes->save($con);
                 }
                 $this->setGeocodes($this->aGeocodes);
-            }
-
-            if ($this->aPopularTweets !== null) {
-                if ($this->aPopularTweets->isModified() || $this->aPopularTweets->isNew()) {
-                    $affectedRows += $this->aPopularTweets->save($con);
-                }
-                $this->setPopularTweets($this->aPopularTweets);
             }
 
             if ($this->isNew() || $this->isModified()) {
@@ -1279,21 +1257,6 @@ abstract class Tweets implements ActiveRecordInterface
 
                 $result[$key] = $this->aGeocodes->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
-            if (null !== $this->aPopularTweets) {
-
-                switch ($keyType) {
-                    case TableMap::TYPE_CAMELNAME:
-                        $key = 'popularTweets';
-                        break;
-                    case TableMap::TYPE_FIELDNAME:
-                        $key = 'popular_tweets';
-                        break;
-                    default:
-                        $key = 'PopularTweets';
-                }
-
-                $result[$key] = $this->aPopularTweets->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
         }
 
         return $result;
@@ -1526,15 +1489,8 @@ abstract class Tweets implements ActiveRecordInterface
     {
         $validPk = null !== $this->getTweetId();
 
-        $validPrimaryKeyFKs = 1;
+        $validPrimaryKeyFKs = 0;
         $primaryKeyFKs = [];
-
-        //relation tweets_ibfk_2 to table popular_tweets
-        if ($this->aPopularTweets && $hash = spl_object_hash($this->aPopularTweets)) {
-            $primaryKeyFKs[] = $hash;
-        } else {
-            $validPrimaryKeyFKs = false;
-        }
 
         if ($validPk) {
             return crc32(json_encode($this->getPrimaryKey(), JSON_UNESCAPED_UNICODE));
@@ -1677,53 +1633,6 @@ abstract class Tweets implements ActiveRecordInterface
     }
 
     /**
-     * Declares an association between this object and a ChildPopularTweets object.
-     *
-     * @param  ChildPopularTweets $v
-     * @return $this|\Propel\Propel\Tweets The current object (for fluent API support)
-     * @throws PropelException
-     */
-    public function setPopularTweets(ChildPopularTweets $v = null)
-    {
-        if ($v === null) {
-            $this->setTweetId(NULL);
-        } else {
-            $this->setTweetId($v->getTweetId());
-        }
-
-        $this->aPopularTweets = $v;
-
-        // Add binding for other direction of this 1:1 relationship.
-        if ($v !== null) {
-            $v->setTweets($this);
-        }
-
-
-        return $this;
-    }
-
-
-    /**
-     * Get the associated ChildPopularTweets object
-     *
-     * @param  ConnectionInterface $con Optional Connection object.
-     * @return ChildPopularTweets The associated ChildPopularTweets object.
-     * @throws PropelException
-     */
-    public function getPopularTweets(ConnectionInterface $con = null)
-    {
-        if ($this->aPopularTweets === null && (($this->tweet_id !== "" && $this->tweet_id !== null))) {
-            $this->aPopularTweets = ChildPopularTweetsQuery::create()
-                ->filterByTweets($this) // here
-                ->findOne($con);
-            // Because this foreign key represents a one-to-one relationship, we will create a bi-directional association.
-            $this->aPopularTweets->setTweets($this);
-        }
-
-        return $this->aPopularTweets;
-    }
-
-    /**
      * Clears the current object, sets all attributes to their default values and removes
      * outgoing references as well as back-references (from other objects to this one. Results probably in a database
      * change of those foreign objects when you call `save` there).
@@ -1732,9 +1641,6 @@ abstract class Tweets implements ActiveRecordInterface
     {
         if (null !== $this->aGeocodes) {
             $this->aGeocodes->removeTweets($this);
-        }
-        if (null !== $this->aPopularTweets) {
-            $this->aPopularTweets->removeTweets($this);
         }
         $this->tweet_id = null;
         $this->api_tweet_id = null;
@@ -1768,7 +1674,6 @@ abstract class Tweets implements ActiveRecordInterface
         } // if ($deep)
 
         $this->aGeocodes = null;
-        $this->aPopularTweets = null;
     }
 
     /**

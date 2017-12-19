@@ -584,3 +584,4 @@ function init() {
 $('.datepicker').datepicker({
     autoclose: true,
 });
+

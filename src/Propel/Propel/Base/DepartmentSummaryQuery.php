@@ -10,7 +10,6 @@ use Propel\Propel\Map\DepartmentSummaryTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
-use Propel\Runtime\ActiveQuery\ModelJoin;
 use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
@@ -30,6 +29,8 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildDepartmentSummaryQuery orderByNegativePopularTweetId($order = Criteria::ASC) Order by the negative_popular_tweet_id column
  * @method     ChildDepartmentSummaryQuery orderByDepartmentTwitterSharesQuantity($order = Criteria::ASC) Order by the department_twitter_shares_quantity column
  * @method     ChildDepartmentSummaryQuery orderByDepartmentFacebookSharesQuantity($order = Criteria::ASC) Order by the department_facebook_shares_quantity column
+ * @method     ChildDepartmentSummaryQuery orderByPositiveTwitterAccount($order = Criteria::ASC) Order by the positive_twitter_account column
+ * @method     ChildDepartmentSummaryQuery orderByNegativeTwitterAccount($order = Criteria::ASC) Order by the negative_twitter_account column
  *
  * @method     ChildDepartmentSummaryQuery groupByDepartmentSummaryId() Group by the department_summary_id column
  * @method     ChildDepartmentSummaryQuery groupByMapPublicationHour() Group by the map_publication_hour column
@@ -41,6 +42,8 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildDepartmentSummaryQuery groupByNegativePopularTweetId() Group by the negative_popular_tweet_id column
  * @method     ChildDepartmentSummaryQuery groupByDepartmentTwitterSharesQuantity() Group by the department_twitter_shares_quantity column
  * @method     ChildDepartmentSummaryQuery groupByDepartmentFacebookSharesQuantity() Group by the department_facebook_shares_quantity column
+ * @method     ChildDepartmentSummaryQuery groupByPositiveTwitterAccount() Group by the positive_twitter_account column
+ * @method     ChildDepartmentSummaryQuery groupByNegativeTwitterAccount() Group by the negative_twitter_account column
  *
  * @method     ChildDepartmentSummaryQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildDepartmentSummaryQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -49,18 +52,6 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildDepartmentSummaryQuery leftJoinWith($relation) Adds a LEFT JOIN clause and with to the query
  * @method     ChildDepartmentSummaryQuery rightJoinWith($relation) Adds a RIGHT JOIN clause and with to the query
  * @method     ChildDepartmentSummaryQuery innerJoinWith($relation) Adds a INNER JOIN clause and with to the query
- *
- * @method     ChildDepartmentSummaryQuery leftJoinDepartments($relationAlias = null) Adds a LEFT JOIN clause to the query using the Departments relation
- * @method     ChildDepartmentSummaryQuery rightJoinDepartments($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Departments relation
- * @method     ChildDepartmentSummaryQuery innerJoinDepartments($relationAlias = null) Adds a INNER JOIN clause to the query using the Departments relation
- *
- * @method     ChildDepartmentSummaryQuery joinWithDepartments($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Departments relation
- *
- * @method     ChildDepartmentSummaryQuery leftJoinWithDepartments() Adds a LEFT JOIN clause and with to the query using the Departments relation
- * @method     ChildDepartmentSummaryQuery rightJoinWithDepartments() Adds a RIGHT JOIN clause and with to the query using the Departments relation
- * @method     ChildDepartmentSummaryQuery innerJoinWithDepartments() Adds a INNER JOIN clause and with to the query using the Departments relation
- *
- * @method     \Propel\Propel\DepartmentsQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
  * @method     ChildDepartmentSummary findOne(ConnectionInterface $con = null) Return the first ChildDepartmentSummary matching the query
  * @method     ChildDepartmentSummary findOneOrCreate(ConnectionInterface $con = null) Return the first ChildDepartmentSummary matching the query, or a new ChildDepartmentSummary object populated from the query conditions when no match is found
@@ -71,10 +62,12 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildDepartmentSummary findOneByDepartmentPositiveTweetsQuantity(int $department_positive_tweets_quantity) Return the first ChildDepartmentSummary filtered by the department_positive_tweets_quantity column
  * @method     ChildDepartmentSummary findOneByDepartmentNegativeTweetsQuantity(int $department_negative_tweets_quantity) Return the first ChildDepartmentSummary filtered by the department_negative_tweets_quantity column
  * @method     ChildDepartmentSummary findOneByDepartmentNeutralTweetsQuantity(int $department_neutral_tweets_quantity) Return the first ChildDepartmentSummary filtered by the department_neutral_tweets_quantity column
- * @method     ChildDepartmentSummary findOneByPositivePopularTweetId(int $positive_popular_tweet_id) Return the first ChildDepartmentSummary filtered by the positive_popular_tweet_id column
- * @method     ChildDepartmentSummary findOneByNegativePopularTweetId(int $negative_popular_tweet_id) Return the first ChildDepartmentSummary filtered by the negative_popular_tweet_id column
+ * @method     ChildDepartmentSummary findOneByPositivePopularTweetId(string $positive_popular_tweet_id) Return the first ChildDepartmentSummary filtered by the positive_popular_tweet_id column
+ * @method     ChildDepartmentSummary findOneByNegativePopularTweetId(string $negative_popular_tweet_id) Return the first ChildDepartmentSummary filtered by the negative_popular_tweet_id column
  * @method     ChildDepartmentSummary findOneByDepartmentTwitterSharesQuantity(int $department_twitter_shares_quantity) Return the first ChildDepartmentSummary filtered by the department_twitter_shares_quantity column
- * @method     ChildDepartmentSummary findOneByDepartmentFacebookSharesQuantity(int $department_facebook_shares_quantity) Return the first ChildDepartmentSummary filtered by the department_facebook_shares_quantity column *
+ * @method     ChildDepartmentSummary findOneByDepartmentFacebookSharesQuantity(int $department_facebook_shares_quantity) Return the first ChildDepartmentSummary filtered by the department_facebook_shares_quantity column
+ * @method     ChildDepartmentSummary findOneByPositiveTwitterAccount(string $positive_twitter_account) Return the first ChildDepartmentSummary filtered by the positive_twitter_account column
+ * @method     ChildDepartmentSummary findOneByNegativeTwitterAccount(string $negative_twitter_account) Return the first ChildDepartmentSummary filtered by the negative_twitter_account column *
 
  * @method     ChildDepartmentSummary requirePk($key, ConnectionInterface $con = null) Return the ChildDepartmentSummary by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildDepartmentSummary requireOne(ConnectionInterface $con = null) Return the first ChildDepartmentSummary matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -85,10 +78,12 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildDepartmentSummary requireOneByDepartmentPositiveTweetsQuantity(int $department_positive_tweets_quantity) Return the first ChildDepartmentSummary filtered by the department_positive_tweets_quantity column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildDepartmentSummary requireOneByDepartmentNegativeTweetsQuantity(int $department_negative_tweets_quantity) Return the first ChildDepartmentSummary filtered by the department_negative_tweets_quantity column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildDepartmentSummary requireOneByDepartmentNeutralTweetsQuantity(int $department_neutral_tweets_quantity) Return the first ChildDepartmentSummary filtered by the department_neutral_tweets_quantity column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildDepartmentSummary requireOneByPositivePopularTweetId(int $positive_popular_tweet_id) Return the first ChildDepartmentSummary filtered by the positive_popular_tweet_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildDepartmentSummary requireOneByNegativePopularTweetId(int $negative_popular_tweet_id) Return the first ChildDepartmentSummary filtered by the negative_popular_tweet_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildDepartmentSummary requireOneByPositivePopularTweetId(string $positive_popular_tweet_id) Return the first ChildDepartmentSummary filtered by the positive_popular_tweet_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildDepartmentSummary requireOneByNegativePopularTweetId(string $negative_popular_tweet_id) Return the first ChildDepartmentSummary filtered by the negative_popular_tweet_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildDepartmentSummary requireOneByDepartmentTwitterSharesQuantity(int $department_twitter_shares_quantity) Return the first ChildDepartmentSummary filtered by the department_twitter_shares_quantity column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildDepartmentSummary requireOneByDepartmentFacebookSharesQuantity(int $department_facebook_shares_quantity) Return the first ChildDepartmentSummary filtered by the department_facebook_shares_quantity column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildDepartmentSummary requireOneByPositiveTwitterAccount(string $positive_twitter_account) Return the first ChildDepartmentSummary filtered by the positive_twitter_account column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildDepartmentSummary requireOneByNegativeTwitterAccount(string $negative_twitter_account) Return the first ChildDepartmentSummary filtered by the negative_twitter_account column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildDepartmentSummary[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildDepartmentSummary objects based on current ModelCriteria
  * @method     ChildDepartmentSummary[]|ObjectCollection findByDepartmentSummaryId(int $department_summary_id) Return ChildDepartmentSummary objects filtered by the department_summary_id column
@@ -97,10 +92,12 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildDepartmentSummary[]|ObjectCollection findByDepartmentPositiveTweetsQuantity(int $department_positive_tweets_quantity) Return ChildDepartmentSummary objects filtered by the department_positive_tweets_quantity column
  * @method     ChildDepartmentSummary[]|ObjectCollection findByDepartmentNegativeTweetsQuantity(int $department_negative_tweets_quantity) Return ChildDepartmentSummary objects filtered by the department_negative_tweets_quantity column
  * @method     ChildDepartmentSummary[]|ObjectCollection findByDepartmentNeutralTweetsQuantity(int $department_neutral_tweets_quantity) Return ChildDepartmentSummary objects filtered by the department_neutral_tweets_quantity column
- * @method     ChildDepartmentSummary[]|ObjectCollection findByPositivePopularTweetId(int $positive_popular_tweet_id) Return ChildDepartmentSummary objects filtered by the positive_popular_tweet_id column
- * @method     ChildDepartmentSummary[]|ObjectCollection findByNegativePopularTweetId(int $negative_popular_tweet_id) Return ChildDepartmentSummary objects filtered by the negative_popular_tweet_id column
+ * @method     ChildDepartmentSummary[]|ObjectCollection findByPositivePopularTweetId(string $positive_popular_tweet_id) Return ChildDepartmentSummary objects filtered by the positive_popular_tweet_id column
+ * @method     ChildDepartmentSummary[]|ObjectCollection findByNegativePopularTweetId(string $negative_popular_tweet_id) Return ChildDepartmentSummary objects filtered by the negative_popular_tweet_id column
  * @method     ChildDepartmentSummary[]|ObjectCollection findByDepartmentTwitterSharesQuantity(int $department_twitter_shares_quantity) Return ChildDepartmentSummary objects filtered by the department_twitter_shares_quantity column
  * @method     ChildDepartmentSummary[]|ObjectCollection findByDepartmentFacebookSharesQuantity(int $department_facebook_shares_quantity) Return ChildDepartmentSummary objects filtered by the department_facebook_shares_quantity column
+ * @method     ChildDepartmentSummary[]|ObjectCollection findByPositiveTwitterAccount(string $positive_twitter_account) Return ChildDepartmentSummary objects filtered by the positive_twitter_account column
+ * @method     ChildDepartmentSummary[]|ObjectCollection findByNegativeTwitterAccount(string $negative_twitter_account) Return ChildDepartmentSummary objects filtered by the negative_twitter_account column
  * @method     ChildDepartmentSummary[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
@@ -199,7 +196,7 @@ abstract class DepartmentSummaryQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT department_summary_id, map_publication_hour, department_code, department_positive_tweets_quantity, department_negative_tweets_quantity, department_neutral_tweets_quantity, positive_popular_tweet_id, negative_popular_tweet_id, department_twitter_shares_quantity, department_facebook_shares_quantity FROM department_summary WHERE department_summary_id = :p0';
+        $sql = 'SELECT department_summary_id, map_publication_hour, department_code, department_positive_tweets_quantity, department_negative_tweets_quantity, department_neutral_tweets_quantity, positive_popular_tweet_id, negative_popular_tweet_id, department_twitter_shares_quantity, department_facebook_shares_quantity, positive_twitter_account, negative_twitter_account FROM department_summary WHERE department_summary_id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -686,76 +683,53 @@ abstract class DepartmentSummaryQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related \Propel\Propel\Departments object
+     * Filter the query on the positive_twitter_account column
      *
-     * @param \Propel\Propel\Departments|ObjectCollection $departments the related object to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * Example usage:
+     * <code>
+     * $query->filterByPositiveTwitterAccount('fooValue');   // WHERE positive_twitter_account = 'fooValue'
+     * $query->filterByPositiveTwitterAccount('%fooValue%', Criteria::LIKE); // WHERE positive_twitter_account LIKE '%fooValue%'
+     * </code>
      *
-     * @return ChildDepartmentSummaryQuery The current query, for fluid interface
-     */
-    public function filterByDepartments($departments, $comparison = null)
-    {
-        if ($departments instanceof \Propel\Propel\Departments) {
-            return $this
-                ->addUsingAlias(DepartmentSummaryTableMap::COL_DEPARTMENT_CODE, $departments->getDepartmentCode(), $comparison);
-        } elseif ($departments instanceof ObjectCollection) {
-            return $this
-                ->useDepartmentsQuery()
-                ->filterByPrimaryKeys($departments->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByDepartments() only accepts arguments of type \Propel\Propel\Departments or Collection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the Departments relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param     string $positiveTwitterAccount The value to use as filter.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return $this|ChildDepartmentSummaryQuery The current query, for fluid interface
      */
-    public function joinDepartments($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function filterByPositiveTwitterAccount($positiveTwitterAccount = null, $comparison = null)
     {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Departments');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
+        if (null === $comparison) {
+            if (is_array($positiveTwitterAccount)) {
+                $comparison = Criteria::IN;
+            }
         }
 
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'Departments');
-        }
-
-        return $this;
+        return $this->addUsingAlias(DepartmentSummaryTableMap::COL_POSITIVE_TWITTER_ACCOUNT, $positiveTwitterAccount, $comparison);
     }
 
     /**
-     * Use the Departments relation Departments object
+     * Filter the query on the negative_twitter_account column
      *
-     * @see useQuery()
+     * Example usage:
+     * <code>
+     * $query->filterByNegativeTwitterAccount('fooValue');   // WHERE negative_twitter_account = 'fooValue'
+     * $query->filterByNegativeTwitterAccount('%fooValue%', Criteria::LIKE); // WHERE negative_twitter_account LIKE '%fooValue%'
+     * </code>
      *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param     string $negativeTwitterAccount The value to use as filter.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return \Propel\Propel\DepartmentsQuery A secondary query class using the current class as primary query
+     * @return $this|ChildDepartmentSummaryQuery The current query, for fluid interface
      */
-    public function useDepartmentsQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function filterByNegativeTwitterAccount($negativeTwitterAccount = null, $comparison = null)
     {
-        return $this
-            ->joinDepartments($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Departments', '\Propel\Propel\DepartmentsQuery');
+        if (null === $comparison) {
+            if (is_array($negativeTwitterAccount)) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(DepartmentSummaryTableMap::COL_NEGATIVE_TWITTER_ACCOUNT, $negativeTwitterAccount, $comparison);
     }
 
     /**
