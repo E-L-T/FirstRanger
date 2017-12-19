@@ -128,6 +128,8 @@ foreach ($tweetsArray as $tweet) {
             $negativeVDMCount ++;
         }
     }
+    //$resultat = $pdo->query("SELECT 
+    
 }
 //echo 'nb de tw + a paris : ';
 //echo $positiveParisCount;

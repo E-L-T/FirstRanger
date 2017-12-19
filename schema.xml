@@ -26,6 +26,7 @@
     <column name="negative_popular_tweet_id" phpName="NegativePopularTweetId" type="INTEGER" required="true"/>
     <column name="department_twitter_shares_quantity" phpName="DepartmentTwitterSharesQuantity" type="INTEGER"/>
     <column name="department_facebook_shares_quantity" phpName="DepartmentFacebookSharesQuantity" type="INTEGER"/>
+    <column name="twitter_account" phpName="TwitterAccount" type="LONGVARCHAR" required="true"/>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>

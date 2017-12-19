@@ -1,127 +1,172 @@
 <!DOCTYPE html>
 
 <html>
-<head>
+    <head>
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
 
-    <title>Moody land</title>
+        <title>Moody land</title>
 
-    <!-- Bootstrap core CSS -->
-    <link href="{{asset('bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
+        <!-- Bootstrap core CSS -->
+        <link href="{{asset('bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
 
-    <link href="{{asset('css/bootstrap-datepicker3.min.css')}}" rel="stylesheet">
+        <link href="{{asset('css/bootstrap-datepicker3.min.css')}}" rel="stylesheet">
 
-    <!-- Custom fonts for this template -->
-    <link href="{{asset('font-awesome/css/font-awesome.min.css')}}" rel="stylesheet" type="text/css">
-    <link href="http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
-    <link href="http://'fonts.googleapis.com/css?family=Cabin:700" rel='stylesheet' type='text/css'>
+        <!-- Custom fonts for this template -->
+        <link href="{{asset('font-awesome/css/font-awesome.min.css')}}" rel="stylesheet" type="text/css">
+        <link href="http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+        <link href="http://'fonts.googleapis.com/css?family=Cabin:700" rel='stylesheet' type='text/css'>
 
-    <!-- Custom styles for this template -->
-    <link href="{{asset('css/main.css')}}" rel="stylesheet" />
-
-
-</head>
+        <!-- Custom styles for this template -->
+        <link href="{{asset('css/main.css')}}" rel="stylesheet" />
 
 
-<body>
-<!-- Navigation -->
-<header>
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
-        <div class="container">
-            <a class="navbar-brand js-scroll-trigger" href="{{ path('homepage') }}">
-                <img class="logo" src="{{asset('img/logo.png')}}" alt="Moody Land"/>
-                <span>Moody land</span>
-            </a>
+    </head>
+
+
+    <body>
+        <!-- Navigation -->
+        <header>
+            <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+                <div class="container">
+                    <a class="navbar-brand js-scroll-trigger" href="{{ path('homepage') }}">
+                        <img class="logo" src="{{asset('img/logo.png')}}" alt="Moody Land"/>
+                        <span>Moody land</span>
+                    </a>
+
+                    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                        Menu
+                        <i class="fa fa-bars"></i>
+
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarResponsive">
+                        <ul class="navbar-nav ml-auto">
+                            <li class="nav-item">
+                                <a class="nav-link js-scroll-trigger" href="{{ path('about') }}">A propos</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" data-toggle="modal" data-target="#contactModal">Contact</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <div style="text-align:center;">L'humeur des Franciliens en temps réels</div>
+        <!-- Intro Header -->
+        {% block content %} {% endblock %}
+
+        <div class="modal fade" id="contactModal" tabindex="-1" role="dialog" aria-labelledby="contactModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="contactModalLabel">Contact</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="email-name" class="form-control-label">Email:</label>
+                                <input type="text" class="form-control" id="email-name">
+                            </div>
+                            <div class="form-group">
+                                <label for="objet-name" class="form-control-label">Objet:</label>
+                                <input type="text" class="form-control" id="objet-name">
+                            </div>
+                            <div class="form-group">
+                                <label for="message-text" class="form-control-label">Message:</label>
+                                <textarea class="form-control" id="message-text"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Send message</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Footer -->
+        <footer>
+            <div class="container text-center">
+                <p>Copyright &copy; Your Website 2017</p>
+            </div>
+        </footer>
+
+        <!-- Bootstrap core JavaScript -->
+        <script src="{{asset('jquery/jquery.min.js')}}"></script>
+        <script src="{{asset('bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+
+        <!-- Plugin JavaScript -->
+        <script src="{{asset('jquery-easing/jquery.easing.min.js')}}"></script>
+
+        <!-- Date Picker -->
+        <script src="{{asset('js/bootstrap-datepicker.min.js')}}"></script>
+
+        <!-- Google Maps API Key - Use your own API key to enable the map feature. More information on the Google Maps API can be found at https://developers.google.com/maps/ -->
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRngKslUGJTlibkQ3FkfTxj3Xss1UlZDA"></script>
+
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB5iJbVedHQV26Dr_HlIx8dhm8_mQbm5Fk&callback=initMap"
+        type="text/javascript"></script>
+        <script type="text/javascript">
+            var parisMood = {{ map.parisMood }};
+            var HDSMood = {{ map.HDSMood }};
+            var SSDMood = {{ map.SSDMood }};
+            var VDMMood = {{ map.VDMMood }};
             
-            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                Menu
-                <i class="fa fa-bars"></i>
+            var parisPositiveQuantity = {{ map.parisPositiveQuantity }};
+            var parisNegativeQuantity = {{ map.parisNegativeQuantity }};
+            var parisNeutralQuantity = {{ map.parisNeutralQuantity }};
+            var parisTotalQuantity = {{ map.parisTotalQuantity }};
+            
+            var HDSPositiveQuantity = {{ map.HDSPositiveQuantity }};
+            var HDSNegativeQuantity = {{ map.HDSNegativeQuantity }};
+            var HDSNeutralQuantity = {{ map.HDSNeutralQuantity }};
+            var HDSTotalQuantity = {{ map.HDSTotalQuantity }};
+            
+            var SSDPositiveQuantity = {{ map.SSDPositiveQuantity }};
+            var SSDNegativeQuantity = {{ map.SSDNegativeQuantity }};
+            var SSDNeutralQuantity = {{ map.SSDNeutralQuantity }};
+            var SSDTotalQuantity = {{ map.SSDTotalQuantity }};
+            
+            var VDMPositiveQuantity = {{ map.VDMPositiveQuantity }};
+            var VDMNegativeQuantity = {{ map.VDMNegativeQuantity }};
+            var VDMNeutralQuantity = {{ map.VDMNeutralQuantity }};
+            var VDMTotalQuantity = {{ map.VDMTotalQuantity }};
+            
+            var districtMood = {{ map.districtMood }};
+            var parisPositivePercentage = {{ map.ParisPositivePercentage }};
+            var parisNegativePercentage = {{ map.ParisNegativePercentage }};
+            var parisNeutralPercentage = {{ map.ParisNeutralPercentage }};
+            
+            var HDSPositivePercentage = {{ map.HDSPositivePercentage }};
+            var HDSNegativePercentage = {{ map.HDSNegativePercentage }};
+            var HDSNeutralPercentage = {{ map.HDSNeutralPercentage }};
+            
+            var SSDPositivePercentage = {{ map.SSDPositivePercentage }};
+            var SSDNegativePercentage = {{ map.SSDNegativePercentage }};
+            var SSDNeutralPercentage = {{ map.SSDNeutralPercentage }};
+            
+            var VDMPositivePercentage = {{ map.VDMPositivePercentage }};
+            var VDMNegativePercentage = {{ map.VDMNegativePercentage }};
+            var VDMNeutralPercentage = {{ map.VDMNeutralPercentage }};
+            
+            var bestMood = {{ map.bestMood }};
+            var worstMood = {{ map.worstMood }};
+            var bestMoodDepartment = {{ map.bestMoodDepartment }};
+            var worstMoodDepartment = {{ map.worstMoodDepartment }};
 
-            </button>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link js-scroll-trigger" href="{{ path('about') }}">A propos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" data-toggle="modal" data-target="#contactModal">Contact</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-</header>
-<div style="text-align:center;">L'humeur des Franciliens en temps réels</div>
-<!-- Intro Header -->
-{% block content %} {% endblock %}
 
-    <div class="modal fade" id="contactModal" tabindex="-1" role="dialog" aria-labelledby="contactModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="contactModalLabel">Contact</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form>
-                <div class="form-group">
-                    <label for="email-name" class="form-control-label">Email:</label>
-                    <input type="text" class="form-control" id="email-name">
-                </div>
-                <div class="form-group">
-                    <label for="objet-name" class="form-control-label">Objet:</label>
-                    <input type="text" class="form-control" id="objet-name">
-                </div>
-                <div class="form-group">
-                    <label for="message-text" class="form-control-label">Message:</label>
-                    <textarea class="form-control" id="message-text"></textarea>
-                </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Send message</button>
-            </div>
-            </div>
-        </div>
-    </div>
-<!-- Footer -->
-<footer>
-    <div class="container text-center">
-        <p>Copyright &copy; Your Website 2017</p>
-    </div>
-</footer>
 
-<!-- Bootstrap core JavaScript -->
-<script src="{{asset('jquery/jquery.min.js')}}"></script>
-<script src="{{asset('bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 
-<!-- Plugin JavaScript -->
-<script src="{{asset('jquery-easing/jquery.easing.min.js')}}"></script>
-
-<!-- Date Picker -->
-<script src="{{asset('js/bootstrap-datepicker.min.js')}}"></script>
-
-<!-- Google Maps API Key - Use your own API key to enable the map feature. More information on the Google Maps API can be found at https://developers.google.com/maps/ -->
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRngKslUGJTlibkQ3FkfTxj3Xss1UlZDA"></script>
-
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB5iJbVedHQV26Dr_HlIx8dhm8_mQbm5Fk&callback=initMap"
-type="text/javascript"></script>
-<script type="text/javascript">
-                var parisMood = {{ map.parisMood }};
-                console.log(parisMood);
-                var HDSMood = {{ map.HDSMood }};
-                var SSDMood = {{ map.SSDMood }};
-                var VDMMood = {{ map.VDMMood }};
-</script>
-<script src="{{asset('js/script.js')}}"></script>
-</body>
+        </script>
+        <script src="{{asset('js/script.js')}}"></script>
+    </body>
 </html>
 
 

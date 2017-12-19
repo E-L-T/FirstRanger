@@ -51,7 +51,7 @@ function init() {
 
         // How you would like to style the map. 
         // This is where you would paste any style found on Snazzy Maps.
-        styles: [{"featureType": "administrative", "elementType": "geometry", "stylers": [{"visibility": "on"}]}, {"featureType": "administrative", "elementType": "labels", "stylers": [{"visibility": "off"}]}, {"featureType": "administrative.country", "elementType": "geometry", "stylers": [{"visibility": "on"}]}, {"featureType": "administrative.province", "elementType": "geometry", "stylers": [{"visibility": "on"}]}, {"featureType": "administrative.locality", "elementType": "geometry", "stylers": [{"visibility": "on"}]}, {"featureType": "administrative.neighborhood", "elementType": "all", "stylers": [{"visibility": "off"}]}, {"featureType": "landscape", "elementType": "all", "stylers": [{"visibility": "off"}]}, {"featureType": "poi", "elementType": "all", "stylers": [{"visibility": "off"}]}, {"featureType": "road", "elementType": "all", "stylers": [{"visibility": "off"}]}, {"featureType": "transit", "elementType": "all", "stylers": [{"visibility": "off"}]}, {"featureType": "water", "elementType": "all", "stylers": [{"visibility": "off"}]}]
+        styles: [ { "featureType": "all", "elementType": "geometry", "stylers": [ { "color": "#63b5e5" } ] }, { "featureType": "all", "elementType": "labels.text.fill", "stylers": [ { "gamma": 0.01 }, { "lightness": 20 } ] }, { "featureType": "all", "elementType": "labels.text.stroke", "stylers": [ { "saturation": -31 }, { "lightness": -33 }, { "weight": 2 }, { "gamma": 0.8 } ] }, { "featureType": "all", "elementType": "labels.icon", "stylers": [ { "visibility": "off" } ] }, { "featureType": "administrative", "elementType": "geometry", "stylers": [ { "visibility": "on" }, { "color": "#756a6a" }, { "weight": "1.34" } ] }, { "featureType": "administrative", "elementType": "geometry.fill", "stylers": [ { "color": "#8c4040" }, { "visibility": "on" } ] }, { "featureType": "administrative", "elementType": "labels", "stylers": [ { "visibility": "off" } ] }, { "featureType": "landscape", "elementType": "all", "stylers": [ { "color": "#e6ecf0" } ] }, { "featureType": "landscape", "elementType": "geometry", "stylers": [ { "lightness": 30 }, { "saturation": 30 } ] }, { "featureType": "poi", "elementType": "all", "stylers": [ { "visibility": "off" } ] }, { "featureType": "poi", "elementType": "geometry", "stylers": [ { "saturation": 20 } ] }, { "featureType": "poi.park", "elementType": "geometry", "stylers": [ { "lightness": 20 }, { "saturation": -20 } ] }, { "featureType": "road", "elementType": "all", "stylers": [ { "visibility": "off" } ] }, { "featureType": "road", "elementType": "geometry", "stylers": [ { "lightness": 10 }, { "saturation": -30 } ] }, { "featureType": "road", "elementType": "geometry.stroke", "stylers": [ { "saturation": 25 }, { "lightness": 25 } ] }, { "featureType": "transit", "elementType": "all", "stylers": [ { "visibility": "off" } ] }, { "featureType": "water", "elementType": "all", "stylers": [ { "lightness": -20 }, { "visibility": "off" } ] } ]
     };
 
     // Get the HTML DOM element that will contain your map 
@@ -541,24 +541,17 @@ function init() {
 
     poly92.setMap(map);
     google.maps.event.addListener(poly92, 'click', function (event) {
-        console.log('test');
-        param = '&dpt=' + 92;
-        monAjax(param);
+               document.getElementById('resume').innerHTML = "Hauts-de-Seine<br>Humeur du département : " + HDSMood +" / 20<br>Nombre total de tweets : " + HDSTotalQuantity + "<br>Proportion de tweets positifs : " + (HDSPositivePercentage*100).toFixed(2) + " %<br>Proportion de tweets négatifs : " + (HDSNegativePercentage*100).toFixed(2) + " %<br>Proportion de tweets neutres : " + (HDSNeutralPercentage*100).toFixed(2) + " %<br>" ;
     });
     google.maps.event.addListener(poly94, 'click', function (event) {
-        console.log('test');
-        param = '&dpt=' + 94;
-        monAjax(param);
+        document.getElementById('resume').innerHTML = "Val-de-Marne<br>Humeur du département : " + VDMMood +" / 20<br>Nombre total de tweets : " + VDMTotalQuantity + "<br>Proportion de tweets positifs : " + (VDMPositivePercentage*100).toFixed(2) + " %<br>Proportion de tweets négatifs : " + (VDMNegativePercentage*100).toFixed(2) + " %<br>Proportion de tweets neutres : " + (VDMNeutralPercentage*100).toFixed(2) + " %<br>" ;
     });
     google.maps.event.addListener(poly93, 'click', function (event) {
-        console.log('test');
-        param = '&dpt=' + 93;
-        monAjax(param);
+        document.getElementById('resume').innerHTML = "Seine-Saint-Denis<br>Humeur du département : " + SSDMood +" / 20<br>Nombre total de tweets : " + SSDTotalQuantity + "<br>Proportion de tweets positifs : " + (SSDPositivePercentage*100).toFixed(2) + " %<br>Proportion de tweets négatifs : " + (SSDNegativePercentage*100).toFixed(2) + " %<br>Proportion de tweets neutres : " + (SSDNeutralPercentage*100).toFixed(2) + " %<br>" ;
     });
     google.maps.event.addListener(poly75, 'click', function (event) {
-        console.log('test');
-        param = '&dpt=' + 75;
-        monAjax(param);
+       document.getElementById('resume').innerHTML = "Paris<br>Humeur du département : " + parisMood +" / 20<br>Nombre total de tweets : " + parisTotalQuantity + "<br>Proportion de tweets positifs : " + (parisPositivePercentage*100).toFixed(2) + " %<br>Proportion de tweets négatifs : " + (parisNegativePercentage*100).toFixed(2) + " %<br>Proportion de tweets neutres : " + (parisNeutralPercentage*100).toFixed(2) + " %<br>" ;
+        
     });
 
     function monAjax(arg) {
