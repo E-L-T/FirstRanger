@@ -2,16 +2,6 @@
 
 
 {% block content %} 
-    <div class="calendar-body">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 mx-auto">
-                    <label for="datepicker">Calendrier</label>
-                    <input id="datepicker" class="datepicker" data-date-format="mm/dd/yyyy">
-                </div>
-            </div>
-        </div>
-    </div>
 
     <div class="intro-body">
         <div class="container">
@@ -29,16 +19,82 @@
 
     <!-- Map Section -->
     <div class="container">
+        <div id="tweet">
         <div class="row">
-            <div id="resume" class="col-md-12" style="text-align: center; margin-bottom: 50px;">
-                Statistiques régionales des six dernières heures<br>
+            <div class="col-md-4 titlehome">Tweet de fou malade<br>
+                <div  id= "popularTweetPositif"></div>
+                
+
+            </div>
+            <div id="resume" class="col-md-4 pull-right">
+                <div class="titlehome">Statistiques des six dernières heures</div><br>
                 L'humeur régionale est de {{ map.districtMood }} / 20<br>
                 Département de meilleure humeur : {{ map.bestMoodDepartment }}<br>
                 Département de moins bonne humeur : {{map.worstMoodDepartment}}<br><br>
-                Cliquez sur un département pour lire le détail
+                <p><strong>Cliquez sur un département pour lire le détail</strong></p>
+            </div>
+                <div class="col-md-4 titlehome">Tweet bidon sa mère<br>
+                   <div  id= "popularTweetNegatif"></div>
+
+                </div>
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        {#{{ dump(map.iframeParisPositif) }}#}
+            
+                var iframeParisPositif = '{{ map.iframeParisPositif | raw | replace({'<script':'<gertrude', '/script>': '/gertrude>','\n':''}) | raw}}';
+{#                    console.log(iframeParisPositif);    
+#}    
+                var parisMood = {{ map.parisMood }};
+                var HDSMood = {{ map.HDSMood }};
+                var SSDMood = {{ map.SSDMood }};
+                var VDMMood = {{ map.VDMMood }};
+
+        var parisPositiveQuantity = {{ map.parisPositiveQuantity }};
+                var parisNegativeQuantity = {{ map.parisNegativeQuantity }};
+                var parisNeutralQuantity = {{ map.parisNeutralQuantity }};
+                var parisTotalQuantity = {{ map.parisTotalQuantity }};
+
+        var HDSPositiveQuantity = {{ map.HDSPositiveQuantity }};
+                var HDSNegativeQuantity = {{ map.HDSNegativeQuantity }};
+                var HDSNeutralQuantity = {{ map.HDSNeutralQuantity }};
+                var HDSTotalQuantity = {{ map.HDSTotalQuantity }};
+
+        var SSDPositiveQuantity = {{ map.SSDPositiveQuantity }};
+                var SSDNegativeQuantity = {{ map.SSDNegativeQuantity }};
+                var SSDNeutralQuantity = {{ map.SSDNeutralQuantity }};
+                var SSDTotalQuantity = {{ map.SSDTotalQuantity }};
+
+        var VDMPositiveQuantity = {{ map.VDMPositiveQuantity }};
+                var VDMNegativeQuantity = {{ map.VDMNegativeQuantity }};
+                var VDMNeutralQuantity = {{ map.VDMNeutralQuantity }};
+                var VDMTotalQuantity = {{ map.VDMTotalQuantity }};
+
+        var districtMood = {{ map.districtMood }};
+                var parisPositivePercentage = {{ map.ParisPositivePercentage }};
+                var parisNegativePercentage = {{ map.ParisNegativePercentage }};
+                var parisNeutralPercentage = {{ map.ParisNeutralPercentage }};
+
+        var HDSPositivePercentage = {{ map.HDSPositivePercentage }};
+                var HDSNegativePercentage = {{ map.HDSNegativePercentage }};
+                var HDSNeutralPercentage = {{ map.HDSNeutralPercentage }};
+
+        var SSDPositivePercentage = {{ map.SSDPositivePercentage }};
+                var SSDNegativePercentage = {{ map.SSDNegativePercentage }};
+                var SSDNeutralPercentage = {{ map.SSDNeutralPercentage }};
+
+        var VDMPositivePercentage = {{ map.VDMPositivePercentage }};
+                var VDMNegativePercentage = {{ map.VDMNegativePercentage }};
+                var VDMNeutralPercentage = {{ map.VDMNeutralPercentage }};
+
+        var bestMood = {{ map.bestMood }};
+                var worstMood = {{ map.worstMood }};
+                var bestMoodDepartment = {{ map.bestMoodDepartment }};
+                var worstMoodDepartment = {{ map.worstMoodDepartment }};
+
+       
+    </script>
      
             
     

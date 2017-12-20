@@ -165,7 +165,7 @@ foreach ($geocodesArray as $geocodeRow) {
             $queryTweets = TweetsQuery::create();
 
             $tweet = NULL;
-            
+
             if (isset($tweetsDbIds[$status->id])) {
                 $tweet = $tweetsDbIds[$status->id];
             }
@@ -183,24 +183,25 @@ foreach ($geocodesArray as $geocodeRow) {
             if (!$tweet) {
                 $tweet = new Tweets();
                 $tweet->setQualityTweet($sentimentType);
+                $tweet->setGeocodeId($geocodeId);
+                $tweet->setApiTweetId($status->id);
+                $tweet->setTweetText($status->text);
+                $tweet->setTweetPublicationHour($status->created_at);
+                //            if (isset($status->favorite_count)) {
+                //                $tweet->setFavoritesQuantity($status->favorite_count);
+                //            }
+                $tweet->setTwitterAccount($status->user->screen_name);
+                //            if (isset($status->coordinates->coordinates)) {
+                //                $tweet->setCoordinates(json_encode($status->coordinates->coordinates));
+                //            }
+                if (isset($status->user->location)) {
+                    $tweet->setLocation($status->user->location);
+                }
             }
 
-            $tweet->setApiTweetId($status->id);
-            $tweet->setTweetText($status->text);
-            $tweet->setTweetPublicationHour($status->created_at);
-            $tweet->setGeocodeId($geocodeId);
+
             if (isset($status->retweet_count)) {
                 $tweet->setRetweetsQuantity($status->retweet_count);
-            }
-//            if (isset($status->favorite_count)) {
-//                $tweet->setFavoritesQuantity($status->favorite_count);
-//            }
-            $tweet->setTwitterAccount($status->user->screen_name);
-//            if (isset($status->coordinates->coordinates)) {
-//                $tweet->setCoordinates(json_encode($status->coordinates->coordinates));
-//            }
-            if (isset($status->user->location)) {
-                $tweet->setLocation($status->user->location);
             }
 
             $collection->append($tweet);

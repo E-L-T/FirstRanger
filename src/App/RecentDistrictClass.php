@@ -279,7 +279,7 @@ class RecentDistrictClass
     $resultat = $pdo->query("SELECT iframe FROM popular_tweets WHERE department_code = '75' AND iframe_quality = 'positive' AND tweet_publication_hour < '$date' ORDER BY tweet_publication_hour DESC LIMIT 1");
     
     $iframeParisPositifArray = $resultat->fetch();
-    $this->iframeParisPositif = htmlspecialchars($iframeParisPositifArray['iframe'], ENT_HTML5);
+    $this->iframeParisPositif = $iframeParisPositifArray['iframe'];
         
     }
 

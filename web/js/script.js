@@ -552,7 +552,12 @@ function init() {
     google.maps.event.addListener(poly75, 'click', function (event) {
        document.getElementById('resume').innerHTML = "Paris<br>Humeur du département : " + parisMood +" / 20<br>Nombre total de tweets : " + parisTotalQuantity + "<br>Proportion de tweets positifs : " + (parisPositivePercentage*100).toFixed(2) + " %<br>Proportion de tweets négatifs : " + (parisNegativePercentage*100).toFixed(2) + " %<br>Proportion de tweets neutres : " + (parisNeutralPercentage*100).toFixed(2) + " %<br>" ;
         
+       iframeParisPositif = iframeParisPositif.replace("<gertrude", "<script").replace("/gertrude>","/script>");
+        console.log(iframeParisPositif);
+        $('#popularTweetPositif').html(iframeParisPositif);  
     });
+    
+    
 
     function monAjax(arg) {
         //e.preventDefault();
@@ -584,4 +589,3 @@ function init() {
 $('.datepicker').datepicker({
     autoclose: true,
 });
-
