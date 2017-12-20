@@ -21,20 +21,21 @@
     <div class="container">
         <div id="tweet">
         <div class="row">
-            <div class="col-md-4 titlehome">Tweet de fou malade<br>
+            <div class="col-md-4 titlehome">Mood <img src="{{asset ('img/thumbPlus.png') }}"/><br>
                 <div  id= "popularTweetPositif"></div>
                 
 
             </div>
-            <div id="resume" class="col-md-4 pull-right">
-                <div class="titlehome">Statistiques des six dernières heures</div><br>
+            <div id="resume" class="col-md-4 pull-right ">
+              
+                <div id="statsJour" class="titlehome">Statistiques du <span id="jourCarte"></span> à <span id="heureCarte"></span></div><br>
                 L'humeur régionale est de {{ map.districtMood }} / 20<br>
                 Département de meilleure humeur : {{ map.bestMoodDepartment }}<br>
                 Département de moins bonne humeur : {{map.worstMoodDepartment}}<br><br>
                 <p><strong>Cliquez sur un département pour lire le détail</strong></p>
             </div>
-                <div class="col-md-4 titlehome">Tweet bidon sa mère<br>
-                   <div  id= "popularTweetNegatif"></div>
+                <div class="col-md-4 titlehome">Mood <img src="{{asset ('img/thumbMinus.png') }}"/> <br>
+                   <div  id="popularTweetNegatif"></div>
 
                 </div>
             </div>
@@ -44,8 +45,13 @@
         {#{{ dump(map.iframeParisPositif) }}#}
             
                 var iframeParisPositif = '{{ map.iframeParisPositif | raw | replace({'<script':'<gertrude', '/script>': '/gertrude>','\n':''}) | raw}}';
-{#                    console.log(iframeParisPositif);    
-#}    
+                var iframeParisNegatif = '{{ map.iframeParisNegatif| raw | replace({'<script':'<gertrude', '/script>': '/gertrude>','\n':''}) | raw}}';
+                var iframeHDSPositif = '{{ map.iframeHDSPositif | raw | replace({'<script':'<gertrude', '/script>': '/gertrude>','\n':''}) | raw}}';
+                var iframeHDSNegatif = '{{ map.iframeHDSNegatif | raw | replace({'<script':'<gertrude', '/script>': '/gertrude>','\n':''}) | raw}}';
+                var iframeSSDPositif = '{{ map.iframeSSDPositif | raw | replace({'<script':'<gertrude', '/script>': '/gertrude>','\n':''}) | raw}}';
+                var iframeSSDNegatif = '{{ map.iframeSSDNegatif | raw | replace({'<script':'<gertrude', '/script>': '/gertrude>','\n':''}) | raw}}';
+                var iframeVDMPositif = '{{ map.iframeVDMPositif | raw | replace({'<script':'<gertrude', '/script>': '/gertrude>','\n':''}) | raw}}';
+                var iframeVDMNegatif = '{{ map.iframeVDMNegatif | raw | replace({'<script':'<gertrude', '/script>': '/gertrude>','\n':''}) | raw}}';
                 var parisMood = {{ map.parisMood }};
                 var HDSMood = {{ map.HDSMood }};
                 var SSDMood = {{ map.SSDMood }};

@@ -1,43 +1,107 @@
+//affichage de tweets au hasard pour résumé régional
+
+//var datetime = new Date().toLocaleString();
+//console.log(datetime);
+//
+//document.getElementById('jourCarte').innerHTML = jour + " " + mois;
+
+
+
+if((window.location.href).length < 50 ){
+document.getElementById('statsJour').innerHTML = "Dernières statistiques";
+} else {
+    var urlDate = window.location.href;
+var datetime = urlDate.substr(-21);
+console.log(datetime);
+var time = datetime.substr(-8, 2 );
+console.log(time);
+var year = datetime.substr(0, 4);
+console.log(year);
+var month = datetime.substr(5, 2);
+var day = datetime.substr(8, 2);
+
+
+document.getElementById('jourCarte').innerHTML = day + "/" + month + "/" + year;
+document.getElementById('heureCarte').innerHTML = time + "h";
+}
+
+
+
+
+//var annee = urlDate.substr()
+//
+//window.location.href
+//2017-12-20%2012:00:00
+
+var random = Math.random();
+console.log(random);
+if (random < 0.25) {
+    iframeHDSPositif = iframeHDSPositif.replace("<gertrude", "<script").replace("/gertrude>", "/script>");
+    $('#popularTweetPositif').html(iframeHDSPositif);
+
+    iframeHDSNegatif = iframeHDSNegatif.replace("<gertrude", "<script").replace("/gertrude>", "/script>");
+    $('#popularTweetNegatif').html(iframeHDSNegatif);
+} else if (random >= 0.25 && random < 0.5) {
+    iframeVDMPositif = iframeVDMPositif.replace("<gertrude", "<script").replace("/gertrude>", "/script>");
+    $('#popularTweetPositif').html(iframeVDMPositif);
+
+    iframeVDMNegatif = iframeVDMNegatif.replace("<gertrude", "<script").replace("/gertrude>", "/script>");
+    $('#popularTweetNegatif').html(iframeVDMNegatif);
+} else if (random >= 0.5 && random > 0.75) {
+    iframeSSDPositif = iframeSSDPositif.replace("<gertrude", "<script").replace("/gertrude>", "/script>");
+    $('#popularTweetPositif').html(iframeSSDPositif);
+
+    iframeSSDNegatif = iframeSSDNegatif.replace("<gertrude", "<script").replace("/gertrude>", "/script>");
+    $('#popularTweetNegatif').html(iframeSSDNegatif);
+} else if (random >= 0.75) {
+    iframeParisPositif = iframeParisPositif.replace("<gertrude", "<script").replace("/gertrude>", "/script>");
+    $('#popularTweetPositif').html(iframeParisPositif);
+
+    iframeParisNegatif = iframeParisNegatif.replace("<gertrude", "<script").replace("/gertrude>", "/script>");
+    $('#popularTweetNegatif').html(iframeParisNegatif);
+}
+
+
 google.maps.event.addDomListener(window, 'load', init);
 
 function getColor(note) {
-        if (note <= 5) {
-            return '#A4A4A4';
-        }
-        if (note <= 10) {
-            return '#D8D8D8';
-        }
-        if (note <= 11) {
-            return '#EFF8FB';
-        }
-        if (note <= 12) {
-            return '#E0F2F7';
-        }
-        if (note <= 13) {
-            return '#CEECF5';
-        }
-        if (note <= 14) {
-            return '#A9E2F3';
-        }
-        if (note <= 15) {
-            return '#81DAF5';
-        }
-        if (note <= 16) {
-            return '#58D3F7';
-        }
-        if (note <= 17) {
-            return '#2ECCFA';
-        }
-        if (note <= 18) {
-            return '#00BFFF';
-        }
-        if (note <= 19) {
-            return '#01A9DB';
-        }
-        if (note <= 20) {
-            return '#0489B1';
-        }
+    if (note <= 5) {
+        return '#A4A4A4';
     }
+    if (note <= 10) {
+        return '#D8D8D8';
+    }
+    if (note <= 11) {
+        return '#EFF8FB';
+    }
+    if (note <= 12) {
+        return '#E0F2F7';
+    }
+    if (note <= 13) {
+        return '#CEECF5';
+    }
+    if (note <= 14) {
+        return '#A9E2F3';
+    }
+    if (note <= 15) {
+        return '#81DAF5';
+    }
+    if (note <= 16) {
+        return '#58D3F7';
+    }
+    if (note <= 17) {
+        return '#2ECCFA';
+    }
+    if (note <= 18) {
+        return '#00BFFF';
+    }
+    if (note <= 19) {
+        return '#01A9DB';
+    }
+    if (note <= 20) {
+        return '#0489B1';
+    }
+}
 
 function init() {
     // Basic options for a simple Google Map
@@ -48,10 +112,20 @@ function init() {
 
         // The latitude and longitude to center the map (always required)
         center: new google.maps.LatLng(48.856614, 2.3522219000000177),
+        
+        scrollwheel : false,
+        
+        zoomControl : false,
+        
+        streetViewControl : false,
+        
+        mapTypeControl : false,
+        
+        fullScreenControl : false,
 
         // How you would like to style the map. 
         // This is where you would paste any style found on Snazzy Maps.
-        styles: [ { "featureType": "all", "elementType": "geometry", "stylers": [ { "color": "#63b5e5" } ] }, { "featureType": "all", "elementType": "labels.text.fill", "stylers": [ { "gamma": 0.01 }, { "lightness": 20 } ] }, { "featureType": "all", "elementType": "labels.text.stroke", "stylers": [ { "saturation": -31 }, { "lightness": -33 }, { "weight": 2 }, { "gamma": 0.8 } ] }, { "featureType": "all", "elementType": "labels.icon", "stylers": [ { "visibility": "off" } ] }, { "featureType": "administrative", "elementType": "geometry", "stylers": [ { "visibility": "on" }, { "color": "#756a6a" }, { "weight": "1.34" } ] }, { "featureType": "administrative", "elementType": "geometry.fill", "stylers": [ { "color": "#8c4040" }, { "visibility": "on" } ] }, { "featureType": "administrative", "elementType": "labels", "stylers": [ { "visibility": "off" } ] }, { "featureType": "landscape", "elementType": "all", "stylers": [ { "color": "#e6ecf0" } ] }, { "featureType": "landscape", "elementType": "geometry", "stylers": [ { "lightness": 30 }, { "saturation": 30 } ] }, { "featureType": "poi", "elementType": "all", "stylers": [ { "visibility": "off" } ] }, { "featureType": "poi", "elementType": "geometry", "stylers": [ { "saturation": 20 } ] }, { "featureType": "poi.park", "elementType": "geometry", "stylers": [ { "lightness": 20 }, { "saturation": -20 } ] }, { "featureType": "road", "elementType": "all", "stylers": [ { "visibility": "off" } ] }, { "featureType": "road", "elementType": "geometry", "stylers": [ { "lightness": 10 }, { "saturation": -30 } ] }, { "featureType": "road", "elementType": "geometry.stroke", "stylers": [ { "saturation": 25 }, { "lightness": 25 } ] }, { "featureType": "transit", "elementType": "all", "stylers": [ { "visibility": "off" } ] }, { "featureType": "water", "elementType": "all", "stylers": [ { "lightness": -20 }, { "visibility": "off" } ] } ]
+        styles: [{"featureType": "all", "elementType": "geometry", "stylers": [{"color": "#63b5e5"}]}, {"featureType": "all", "elementType": "labels.text.fill", "stylers": [{"gamma": 0.01}, {"lightness": 20}]}, {"featureType": "all", "elementType": "labels.text.stroke", "stylers": [{"saturation": -31}, {"lightness": -33}, {"weight": 2}, {"gamma": 0.8}]}, {"featureType": "all", "elementType": "labels.icon", "stylers": [{"visibility": "off"}]}, {"featureType": "administrative", "elementType": "geometry", "stylers": [{"visibility": "on"}, {"color": "#756a6a"}, {"weight": "1.34"}]}, {"featureType": "administrative", "elementType": "geometry.fill", "stylers": [{"color": "#8c4040"}, {"visibility": "on"}]}, {"featureType": "administrative", "elementType": "labels", "stylers": [{"visibility": "off"}]}, {"featureType": "landscape", "elementType": "all", "stylers": [{"color": "#e6ecf0"}]}, {"featureType": "landscape", "elementType": "geometry", "stylers": [{"lightness": 30}, {"saturation": 30}]}, {"featureType": "poi", "elementType": "all", "stylers": [{"visibility": "off"}]}, {"featureType": "poi", "elementType": "geometry", "stylers": [{"saturation": 20}]}, {"featureType": "poi.park", "elementType": "geometry", "stylers": [{"lightness": 20}, {"saturation": -20}]}, {"featureType": "road", "elementType": "all", "stylers": [{"visibility": "off"}]}, {"featureType": "road", "elementType": "geometry", "stylers": [{"lightness": 10}, {"saturation": -30}]}, {"featureType": "road", "elementType": "geometry.stroke", "stylers": [{"saturation": 25}, {"lightness": 25}]}, {"featureType": "transit", "elementType": "all", "stylers": [{"visibility": "off"}]}, {"featureType": "water", "elementType": "all", "stylers": [{"lightness": -20}, {"visibility": "off"}]}]
     };
 
     // Get the HTML DOM element that will contain your map 
@@ -62,7 +136,7 @@ function init() {
     var map = new google.maps.Map(mapElement, mapOptions);
 
     var geocoder = new google.maps.Geocoder();
-    
+
     google.maps.event.addListener(map, 'click', function (event) {
         geocoder.geocode({
             'latLng': event.latLng
@@ -109,7 +183,7 @@ function init() {
             }
         });
     });
-    
+
 
     var polyCoords94 = [
 
@@ -539,53 +613,66 @@ function init() {
         fillOpacity: 1
     });
 
+
+
+
+
+
+
     poly92.setMap(map);
     google.maps.event.addListener(poly92, 'click', function (event) {
-               document.getElementById('resume').innerHTML = "Hauts-de-Seine<br>Humeur du département : " + HDSMood +" / 20<br>Nombre total de tweets : " + HDSTotalQuantity + "<br>Proportion de tweets positifs : " + (HDSPositivePercentage*100).toFixed(2) + " %<br>Proportion de tweets négatifs : " + (HDSNegativePercentage*100).toFixed(2) + " %<br>Proportion de tweets neutres : " + (HDSNeutralPercentage*100).toFixed(2) + " %<br>" ;
+        document.getElementById('resume').innerHTML = "<strong>Hauts-de-Seine</strong><br><br>Humeur du département : " + HDSMood + " / 20<br>Nombre total de tweets : " + HDSTotalQuantity + "<br>Proportion de tweets positifs : " + (HDSPositivePercentage * 100).toFixed(2) + " %<br>Proportion de tweets négatifs : " + (HDSNegativePercentage * 100).toFixed(2) + " %<br>Proportion de tweets neutres : " + (HDSNeutralPercentage * 100).toFixed(2) + " %<br>";
+
+        iframeHDSPositif = iframeHDSPositif.replace("<gertrude", "<script").replace("/gertrude>", "/script>");
+        $('#popularTweetPositif').html(iframeHDSPositif);
+
+        iframeHDSNegatif = iframeHDSNegatif.replace("<gertrude", "<script").replace("/gertrude>", "/script>");
+        $('#popularTweetNegatif').html(iframeHDSNegatif);
+
     });
     google.maps.event.addListener(poly94, 'click', function (event) {
-        document.getElementById('resume').innerHTML = "Val-de-Marne<br>Humeur du département : " + VDMMood +" / 20<br>Nombre total de tweets : " + VDMTotalQuantity + "<br>Proportion de tweets positifs : " + (VDMPositivePercentage*100).toFixed(2) + " %<br>Proportion de tweets négatifs : " + (VDMNegativePercentage*100).toFixed(2) + " %<br>Proportion de tweets neutres : " + (VDMNeutralPercentage*100).toFixed(2) + " %<br>" ;
+        document.getElementById('resume').innerHTML = "<strong>Val-de-Marne</strong><br><br>Humeur du département : " + VDMMood + " / 20<br>Nombre total de tweets : " + VDMTotalQuantity + "<br>Proportion de tweets positifs : " + (VDMPositivePercentage * 100).toFixed(2) + " %<br>Proportion de tweets négatifs : " + (VDMNegativePercentage * 100).toFixed(2) + " %<br>Proportion de tweets neutres : " + (VDMNeutralPercentage * 100).toFixed(2) + " %<br>";
+        iframeVDMPositif = iframeVDMPositif.replace("<gertrude", "<script").replace("/gertrude>", "/script>");
+        $('#popularTweetPositif').html(iframeVDMPositif);
+
+        iframeVDMNegatif = iframeVDMNegatif.replace("<gertrude", "<script").replace("/gertrude>", "/script>");
+        $('#popularTweetNegatif').html(iframeVDMNegatif);
     });
     google.maps.event.addListener(poly93, 'click', function (event) {
-        document.getElementById('resume').innerHTML = "Seine-Saint-Denis<br>Humeur du département : " + SSDMood +" / 20<br>Nombre total de tweets : " + SSDTotalQuantity + "<br>Proportion de tweets positifs : " + (SSDPositivePercentage*100).toFixed(2) + " %<br>Proportion de tweets négatifs : " + (SSDNegativePercentage*100).toFixed(2) + " %<br>Proportion de tweets neutres : " + (SSDNeutralPercentage*100).toFixed(2) + " %<br>" ;
+        document.getElementById('resume').innerHTML = "<strong>Seine-Saint-Denis</strong><br><br>Humeur du département : " + SSDMood + " / 20<br>Nombre total de tweets : " + SSDTotalQuantity + "<br>Proportion de tweets positifs : " + (SSDPositivePercentage * 100).toFixed(2) + " %<br>Proportion de tweets négatifs : " + (SSDNegativePercentage * 100).toFixed(2) + " %<br>Proportion de tweets neutres : " + (SSDNeutralPercentage * 100).toFixed(2) + " %<br>";
+        iframeSSDPositif = iframeSSDPositif.replace("<gertrude", "<script").replace("/gertrude>", "/script>");
+        $('#popularTweetPositif').html(iframeSSDPositif);
+
+        iframeSSDNegatif = iframeSSDNegatif.replace("<gertrude", "<script").replace("/gertrude>", "/script>");
+        $('#popularTweetNegatif').html(iframeSSDNegatif);
     });
     google.maps.event.addListener(poly75, 'click', function (event) {
-       document.getElementById('resume').innerHTML = "Paris<br>Humeur du département : " + parisMood +" / 20<br>Nombre total de tweets : " + parisTotalQuantity + "<br>Proportion de tweets positifs : " + (parisPositivePercentage*100).toFixed(2) + " %<br>Proportion de tweets négatifs : " + (parisNegativePercentage*100).toFixed(2) + " %<br>Proportion de tweets neutres : " + (parisNeutralPercentage*100).toFixed(2) + " %<br>" ;
-        
-       iframeParisPositif = iframeParisPositif.replace("<gertrude", "<script").replace("/gertrude>","/script>");
-        console.log(iframeParisPositif);
-        $('#popularTweetPositif').html(iframeParisPositif);  
+        document.getElementById('resume').innerHTML = "<strong>Paris</strong><br><br>Humeur du département : " + parisMood + " / 20<br>Nombre total de tweets : " + parisTotalQuantity + "<br>Proportion de tweets positifs : " + (parisPositivePercentage * 100).toFixed(2) + " %<br>Proportion de tweets négatifs : " + (parisNegativePercentage * 100).toFixed(2) + " %<br>Proportion de tweets neutres : " + (parisNeutralPercentage * 100).toFixed(2) + " %<br>";
+
+        iframeParisPositif = iframeParisPositif.replace("<gertrude", "<script").replace("/gertrude>", "/script>");
+        $('#popularTweetPositif').html(iframeParisPositif);
+
+        iframeParisNegatif = iframeParisNegatif.replace("<gertrude", "<script").replace("/gertrude>", "/script>");
+        $('#popularTweetNegatif').html(iframeParisNegatif);
+
     });
-    
-    
 
-    function monAjax(arg) {
-        //e.preventDefault();
-        var file = '../recentDistrictMap.php';
 
-        if (window.XMLHttpRequest) //car certains nav comme IE n'ont pas ça.
-            var xhttp = new XMLHttpRequest();
-        else // pour IE
-            var xhttp = new ActiveXObject("Microsoft.XMLHTTP");
 
-        console.log(arg);
+}
 
-        xhttp.open("POST", file, true); // on écrit la demande envoyée au serveur, ie envoie de la variable file (fichier.php)
-        //la ligne suivante est obligatoire en methode POST
-        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
-        xhttp.onreadystatechange = function () {
-            if (xhttp.status == 200 && xhttp.readyState == 4) {
-                console.log(xhttp.responseText);
-                var result = xhttp.responseText;//je stocke le résultat de la requête dans une variable
-                document.getElementById('message').innerHTML = result;
-                console.log(result);
-            }
-        }
-        xhttp.send(param);
-    }
-}    
+   
+   document.getElementById('formulaire').addEventListener('submit', function(e){
+       e.preventDefault();
+       var annee = document.getElementById('annee').value;
+       var mois = document.getElementById('mois').value;
+       var jour = document.getElementById('jour').value;
+       var heure = document.getElementById('heure').value;
+       var hour = annee + "-" + mois + "-" + jour + " " + heure +":00";
+       console.log(hour);
+       window.location = URL + hour;
+       
+       
 
-$('.datepicker').datepicker({
-    autoclose: true,
-});
+   });

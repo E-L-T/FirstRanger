@@ -28,12 +28,13 @@ $app->before(function() use ($app) {
     $app['user'] = $user;
 });
 
-$app->get('/', function () use ($app) {
+$app->get('/{hour}', function ($hour) use ($app) {
             $map = $app['recentDistrictMap'];
-            $map->generateDistrictMap();
+            $map->generateDistrictMap($hour);
             return $app['twig']->render('homepage.html.twig', ['map'=>$map]);
         })
         ->bind('homepage')
+        ->value('hour', null)
 ;
 $app->get('/about', function () use ($app) {
 

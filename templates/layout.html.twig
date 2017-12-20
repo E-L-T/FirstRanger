@@ -24,7 +24,9 @@
 
         <!-- Custom styles for this template -->
         <link href="{{asset('css/main.css')}}" rel="stylesheet" />
-
+        <script type="text/javascript" >
+            var URL = '{{ path('homepage') }}';
+        </script>
 
     </head>
 
@@ -38,66 +40,109 @@
                         <img class="logo" src="{{asset('img/logo.png')}}" alt="Moody Land"/>
                         <span class="logo2">Moody land</span>
                     </a>
-                    <div class="slogan col-md-4">L'humeur des Franciliens en temps réel</div>
                     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                         Menu
                         <i class="fa fa-bars"></i>
-
                     </button>
+                    <div class="slogan col-md-4">L'humeur des Franciliens en temps réel</div>
                     <div class="collapse navbar-collapse" id="navbarResponsive">
                         <ul class="navbar-nav ml-auto">
                             <li class="nav-item">
                                 <a class="nav-link js-scroll-trigger" href="{{ path('about') }}">A propos</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#" data-toggle="modal" data-target="#contactModal">Contact</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link form_datetime" type="text" value="2012-06-15 14:45" readonly >Archive</a>
-                            </li>
+                            <div class="dropdown">
+ <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+   Archives
+   <span class="caret"></span>
+ </button>
+ <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+     <li>
+         <form method="get" action="" id="formulaire">
+
+                                <label >Sélectionnez une date</label>
+                                <select id="annee"class="form-control">
+                                    <option>2018</option>
+                                    <option>2017</option>
+                                </select>
+                                <select id="mois" name="mois" class="form-control">
+
+                                    <option value="01">Janvier</option>
+                                    <option value="02">Février</option>
+                                    <option value="03">Mars</option>
+                                    <option value="04">Avril</option>
+                                    <option value="05">Mai</option>
+                                    <option value="06">Juin</option>
+                                    <option value="07">Juillet</option>
+                                    <option value="08">Août</option>
+                                    <option value="09">Septembre</option>
+                                    <option value="10">Octobre</option>
+                                    <option value="11">Novembre</option>
+                                    <option value="12">Décembre</option>
+
+                                </select>
+
+                                <select id="jour" class="form-control">
+                                    <option>01</option>
+                                    <option>02</option>
+                                    <option>03</option>
+                                    <option>04</option>
+                                    <option>05</option>
+                                    <option>06</option>
+                                    <option>07</option>
+                                    <option>08</option>
+                                    <option>09</option>
+                                    <option>10</option>
+                                    <option>11</option>
+                                    <option>12</option>
+                                    <option>13</option>
+                                    <option>14</option>
+                                    <option>15</option>
+                                    <option>16</option>
+                                    <option>17</option>
+                                    <option>18</option>
+                                    <option>19</option>
+                                    <option>20</option>
+                                    <option>21</option>
+                                    <option>22</option>
+                                    <option>23</option>
+                                    <option>24</option>
+                                    <option>25</option>
+                                    <option>26</option>
+                                    <option>27</option>
+                                    <option>28</option>
+                                    <option>29</option>
+                                    <option>30</option>
+                                    <option>31</option>
+                                </select>
+
+                                <select class="form-control" id="heure" name="heure">
+                                    <option>00:00</option>
+                                    <option>06:00</option>
+                                    <option>12:00</option>
+                                    <option>18:00</option>
+                                </select>
+
+                                <button type="submit" class="btn btn-primary btn-sm">Envoyer</button> 
+                            </form>
+         
+     </li>
+   
+ </ul>
+</div>
+                            
+                                
                         </ul>
                     </div>
                 </div>
             </nav>
         </header>
-        
+
         <!-- Intro Header -->
         {% block content %} {% endblock %}
-        
-        
 
-        <div class="modal fade" id="contactModal" tabindex="-1" role="dialog" aria-labelledby="contactModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="contactModalLabel">Contact</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form>
-                            <div class="form-group">
-                                <label for="email-name" class="form-control-label">Email:</label>
-                                <input type="text" class="form-control" id="email-name">
-                            </div>
-                            <div class="form-group">
-                                <label for="objet-name" class="form-control-label">Objet:</label>
-                                <input type="text" class="form-control" id="objet-name">
-                            </div>
-                            <div class="form-group">
-                                <label for="message-text" class="form-control-label">Message:</label>
-                                <textarea class="form-control" id="message-text"></textarea>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Send message</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+
+
+
         <!-- Footer -->
         <footer>
             <div class="container text-center">
@@ -113,8 +158,7 @@
         <script src="{{asset('jquery-easing/jquery.easing.min.js')}}"></script>
 
         <!-- Date Picker -->
-        <script src="{{asset('js/bootstrap-datepicker.min.js')}}"></script> 
-        
+
         <script src="{{asset('js/bootstrap-datetimepicker.min.js')}}"></script>  
 
         <!-- Google Maps API Key - Use your own API key to enable the map feature. More information on the Google Maps API can be found at https://developers.google.com/maps/ -->
@@ -122,8 +166,11 @@
 
         <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB5iJbVedHQV26Dr_HlIx8dhm8_mQbm5Fk&callback=initMap"
         type="text/javascript"></script>
+
         
+
         <script src="{{asset('js/script.js')}}"></script>
+        
     </body>
 </html>
 

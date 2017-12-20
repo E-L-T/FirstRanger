@@ -67,6 +67,7 @@ class RecentDistrictClass
     private $iframeSSDNegatif;
     private $iframeVDMPositif;
     private $iframeVDMNegatif;
+    private $mapPublicationHour;
 
 
     public function generateDistrictMap($hour = null)
@@ -81,8 +82,7 @@ class RecentDistrictClass
         ));
 
         if (is_null($hour)) {
-            $hour = date('Y-m-d h:i:s');
-            echo $hour;
+            $hour = date('Y-m-d H:i:s');
         }
 
 //
@@ -92,6 +92,7 @@ class RecentDistrictClass
         $resultat = $pdo->query("SELECT department_positive_tweets_quantity, department_negative_tweets_quantity, department_neutral_tweets_quantity FROM department_summary WHERE department_code = '75' AND map_publication_hour < '$hour' ORDER BY map_publication_hour DESC LIMIT 1");
 
         $resultatParis = $resultat->fetchAll();
+        
 
 //var_dump($resultatParis);
 
@@ -275,11 +276,51 @@ class RecentDistrictClass
     //    private $iframeSSDNegatif;
     //    private $iframeVDMPositif;
     //    private $iframeVDMNegatif;
-    $date = date('Y-m-d H:i:s');
+    $date = $hour;
+    //Paris
     $resultat = $pdo->query("SELECT iframe FROM popular_tweets WHERE department_code = '75' AND iframe_quality = 'positive' AND tweet_publication_hour < '$date' ORDER BY tweet_publication_hour DESC LIMIT 1");
     
     $iframeParisPositifArray = $resultat->fetch();
     $this->iframeParisPositif = $iframeParisPositifArray['iframe'];
+    
+    $resultat = $pdo->query("SELECT iframe FROM popular_tweets WHERE department_code = '75' AND iframe_quality = 'negative' AND tweet_publication_hour < '$date' ORDER BY tweet_publication_hour DESC LIMIT 1");
+
+$iframeParisNegatifArray = $resultat->fetch();
+$this->iframeParisNegatif = $iframeParisNegatifArray['iframe'];
+//HDS
+$resultat = $pdo->query("SELECT iframe FROM popular_tweets WHERE department_code = '92' AND iframe_quality = 'positive' AND tweet_publication_hour < '$date' ORDER BY tweet_publication_hour DESC LIMIT 1");
+
+$iframeHDSPositifArray = $resultat->fetch();
+$this->iframeHDSPositif = $iframeHDSPositifArray['iframe'];
+
+$resultat = $pdo->query("SELECT iframe FROM popular_tweets WHERE department_code = '92' AND iframe_quality = 'negative' AND tweet_publication_hour < '$date' ORDER BY tweet_publication_hour DESC LIMIT 1");
+
+$iframeHDSNegatifArray = $resultat->fetch();
+$this->iframeHDSNegatif = $iframeHDSNegatifArray['iframe'];
+//SSD
+$resultat = $pdo->query("SELECT iframe FROM popular_tweets WHERE department_code = '93' AND iframe_quality = 'positive' AND tweet_publication_hour < '$date' ORDER BY tweet_publication_hour DESC LIMIT 1");
+
+$iframeSSDPositifArray = $resultat->fetch();
+$this->iframeSSDPositif = $iframeSSDPositifArray['iframe'];
+
+$resultat = $pdo->query("SELECT iframe FROM popular_tweets WHERE department_code = '93' AND iframe_quality = 'negative' AND tweet_publication_hour < '$date' ORDER BY tweet_publication_hour DESC LIMIT 1");
+
+$iframeSSDNegatifArray = $resultat->fetch();
+$this->iframeSSDNegatif = $iframeSSDNegatifArray['iframe'];
+
+//VDM
+$resultat = $pdo->query("SELECT iframe FROM popular_tweets WHERE department_code = '94' AND iframe_quality = 'positive' AND tweet_publication_hour < '$date' ORDER BY tweet_publication_hour DESC LIMIT 1");
+
+$iframeVDMPositifArray = $resultat->fetch();
+$this->iframeVDMPositif = $iframeVDMPositifArray['iframe'];
+
+$resultat = $pdo->query("SELECT iframe FROM popular_tweets WHERE department_code = '94' AND iframe_quality = 'negative' AND tweet_publication_hour < '$date' ORDER BY tweet_publication_hour DESC LIMIT 1");
+
+$iframeVDMNegatifArray = $resultat->fetch();
+$this->iframeVDMNegatif = $iframeVDMNegatifArray['iframe'];
+
+$resultat = $pdo->query("SELECT map_publication_hour FROM department_summary WHERE map_publication_hour < '$date' ORDER BY map_publication_hour DESC LIMIT 1");
+$this->mapPublicationHour = $resultat->fetch();
         
     }
 
@@ -506,6 +547,11 @@ class RecentDistrictClass
     public function getIframeVDMNegatif()
     {
         return $this->iframeVDMNegatif;
+    }
+
+    public function getMapPublicationHour()
+    {
+        return $this->mapPublicationHour;
     }
 
 

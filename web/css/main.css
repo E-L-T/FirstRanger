@@ -84,3 +84,29 @@ header {
 footer{
     font-size: 12px;
 }
+
+#formulaire{
+    padding: 0 10px;
+    font-size: 0.9em;
+}
+
+select{
+    margin: 8px 0;
+    
+}
+
+@media (max-width: 759px) {
+    .logo {
+        width: 55px;
+    }
+    .logo2{
+        position: initial;
+    }
+    .navbar-brand {
+        width: 70%;
+    }
+    
+    #resume {
+        order: -1;
+    }
+}

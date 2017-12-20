@@ -512,7 +512,7 @@ $popularTweetsQuery = PopularTweetsQuery::create();
 $popularTweets->setIframe($iframeSSDNegatif );
 $popularTweets->setDepartmentCode(93);
 $popularTweets->setTweetPublicationHour($date);
-$popularTweets->setIframeQuality('negaitive');
+$popularTweets->setIframeQuality('negative');
 $popularTweets->save();
 
 
