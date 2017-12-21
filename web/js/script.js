@@ -615,13 +615,19 @@ function init() {
 
 
 
+var humeur = "<img src ='../img/humeur25.png'/>";
+var humeurPlus = "<img src ='../img/humeurPlus25.png'/>";
+var humeurNeg = "<img src ='../img/humeurNeg25.png'/>";
+var humeurNeutr = "<img src ='../img/humeurNeutr25.png'/>";
+var stats = "<img src ='../img/stats25.png'/>";
+
 
 
 
 
     poly92.setMap(map);
     google.maps.event.addListener(poly92, 'click', function (event) {
-        document.getElementById('resume').innerHTML = "<strong>Hauts-de-Seine</strong><br><br>Humeur du département : " + HDSMood + " / 20<br>Nombre total de tweets : " + HDSTotalQuantity + "<br>Proportion de tweets positifs : " + (HDSPositivePercentage * 100).toFixed(2) + " %<br>Proportion de tweets négatifs : " + (HDSNegativePercentage * 100).toFixed(2) + " %<br>Proportion de tweets neutres : " + (HDSNeutralPercentage * 100).toFixed(2) + " %<br>";
+        document.getElementById('resume').innerHTML = "<div class='titlehome'><strong>Hauts-de-Seine</strong></div><br><div id='blocHumeur'>" +humeur + " Humeur du département : " + HDSMood + " / 20<br>" + stats + " Nombre total de tweets : " + HDSTotalQuantity + "<br>" +humeurPlus + " Proportion de tweets positifs : " + (HDSPositivePercentage * 100).toFixed(2) + " %<br>" +humeurNeg + " Proportion de tweets négatifs : " + (HDSNegativePercentage * 100).toFixed(2) + " %<br>" +humeurNeutr + " Proportion de tweets neutres : " + (HDSNeutralPercentage * 100).toFixed(2) + " %<br></div>";
 
         iframeHDSPositif = iframeHDSPositif.replace("<gertrude", "<script").replace("/gertrude>", "/script>");
         $('#popularTweetPositif').html(iframeHDSPositif);
@@ -631,7 +637,7 @@ function init() {
 
     });
     google.maps.event.addListener(poly94, 'click', function (event) {
-        document.getElementById('resume').innerHTML = "<strong>Val-de-Marne</strong><br><br>Humeur du département : " + VDMMood + " / 20<br>Nombre total de tweets : " + VDMTotalQuantity + "<br>Proportion de tweets positifs : " + (VDMPositivePercentage * 100).toFixed(2) + " %<br>Proportion de tweets négatifs : " + (VDMNegativePercentage * 100).toFixed(2) + " %<br>Proportion de tweets neutres : " + (VDMNeutralPercentage * 100).toFixed(2) + " %<br>";
+        document.getElementById('resume').innerHTML = "<div class='titlehome'><strong>Val-de-Marne</strong></div><br><div id='blocHumeur'>" +humeur + " Humeur du département : " + VDMMood + " / 20<br>" + stats + " Nombre total de tweets : " + VDMTotalQuantity + "<br>" +humeurPlus + " Proportion de tweets positifs : " + (VDMPositivePercentage * 100).toFixed(2) + " %<br>" +humeurNeg + " Proportion de tweets négatifs : " + (VDMNegativePercentage * 100).toFixed(2) + " %<br>" +humeurNeutr + " Proportion de tweets neutres : " + (VDMNeutralPercentage * 100).toFixed(2) + " %<br></div>";
         iframeVDMPositif = iframeVDMPositif.replace("<gertrude", "<script").replace("/gertrude>", "/script>");
         $('#popularTweetPositif').html(iframeVDMPositif);
 
@@ -639,7 +645,7 @@ function init() {
         $('#popularTweetNegatif').html(iframeVDMNegatif);
     });
     google.maps.event.addListener(poly93, 'click', function (event) {
-        document.getElementById('resume').innerHTML = "<strong>Seine-Saint-Denis</strong><br><br>Humeur du département : " + SSDMood + " / 20<br>Nombre total de tweets : " + SSDTotalQuantity + "<br>Proportion de tweets positifs : " + (SSDPositivePercentage * 100).toFixed(2) + " %<br>Proportion de tweets négatifs : " + (SSDNegativePercentage * 100).toFixed(2) + " %<br>Proportion de tweets neutres : " + (SSDNeutralPercentage * 100).toFixed(2) + " %<br>";
+        document.getElementById('resume').innerHTML = "<div class='titlehome'><strong>Seine-Saint-Denis</strong></div><br><div id='blocHumeur'>" +humeur + " Humeur du département : " + SSDMood + " / 20<br>" + stats + " Nombre total de tweets : " + SSDTotalQuantity + "<br>" +humeurPlus + " Proportion de tweets positifs : " + (SSDPositivePercentage * 100).toFixed(2) + " %<br>" +humeurNeg + " Proportion de tweets négatifs : " + (SSDNegativePercentage * 100).toFixed(2) + " %<br>" +humeurNeutr + " Proportion de tweets neutres : " + (SSDNeutralPercentage * 100).toFixed(2) + " %<br><div>";
         iframeSSDPositif = iframeSSDPositif.replace("<gertrude", "<script").replace("/gertrude>", "/script>");
         $('#popularTweetPositif').html(iframeSSDPositif);
 
@@ -647,7 +653,7 @@ function init() {
         $('#popularTweetNegatif').html(iframeSSDNegatif);
     });
     google.maps.event.addListener(poly75, 'click', function (event) {
-        document.getElementById('resume').innerHTML = "<strong>Paris</strong><br><br>Humeur du département : " + parisMood + " / 20<br>Nombre total de tweets : " + parisTotalQuantity + "<br>Proportion de tweets positifs : " + (parisPositivePercentage * 100).toFixed(2) + " %<br>Proportion de tweets négatifs : " + (parisNegativePercentage * 100).toFixed(2) + " %<br>Proportion de tweets neutres : " + (parisNeutralPercentage * 100).toFixed(2) + " %<br>";
+        document.getElementById('resume').innerHTML = "<div class='titlehome'><strong>Paris</strong></div><br><div id='blocHumeur'>" +humeur + " Humeur du département : " + parisMood + " / 20<br>" + stats + " Nombre total de tweets : " + parisTotalQuantity + "<br>" +humeurPlus + " Proportion de tweets positifs : " + (parisPositivePercentage * 100).toFixed(2) + " %<br>" +humeurNeg + " Proportion de tweets négatifs : " + (parisNegativePercentage * 100).toFixed(2) + " %<br>" +humeurNeutr + " Proportion de tweets neutres : " + (parisNeutralPercentage * 100).toFixed(2) + " %<br></div>";
 
         iframeParisPositif = iframeParisPositif.replace("<gertrude", "<script").replace("/gertrude>", "/script>");
         $('#popularTweetPositif').html(iframeParisPositif);

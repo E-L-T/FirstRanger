@@ -28,14 +28,18 @@ $app->before(function() use ($app) {
     $app['user'] = $user;
 });
 
+
+
 $app->get('/{hour}', function ($hour) use ($app) {
             $map = $app['recentDistrictMap'];
             $map->generateDistrictMap($hour);
             return $app['twig']->render('homepage.html.twig', ['map'=>$map]);
         })
+        ->assert('hour', '\d{4}\-\d{2}\-\d{2}.*')
         ->bind('homepage')
         ->value('hour', null)
 ;
+        
 $app->get('/about', function () use ($app) {
 
             return $app['twig']->render('about.html.twig');

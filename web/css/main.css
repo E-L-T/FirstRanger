@@ -95,6 +95,20 @@ select{
     
 }
 
+#resume strong{
+    text-align: center;
+}
+
+#blocHumeur{
+    border: 1px solid #E1E8ED;
+    background-color: white;
+    padding: 20px;
+    font-size: 0.9em;
+    margin-top: 12px;
+    border-radius: 5px;
+    line-height: 2;
+}
+
 @media (max-width: 759px) {
     .logo {
         width: 55px;
@@ -108,5 +122,8 @@ select{
     
     #resume {
         order: -1;
+    }
+    #blocHumeur{
+        margin-bottom: 10px;
     }
 }
