@@ -12,6 +12,7 @@ use Propel\Runtime\Connection\ConnectionManagerSingle;
 use Propel\Runtime\Propel;
 
 $sentimentType = $argv[1];
+$sector = $argv[2];
 $sentimentQuery = '';
 
 switch ($sentimentType) {
@@ -80,19 +81,22 @@ foreach ($geocodesArray as $geocodeRow) {
 
 //    echo 'la ligne de geocode est : ';
 //    var_dump($geocodeRow);
-    
+
     $geocode = $geocodeRow->getGeocode();
 //    echo 'le geocode unique est : ';
 //    echo $geocode;
     $geocodeId = $geocodeRow->getGeocodeId();
-    if($geocodeId <10){
-        //    echo 'le echo de geocodeId est : ';
+
+    if ($sector == 'Paris') {
+        //pour obtenir les résultats à Paris
+        if ($geocodeId < 10) {
+            //    echo 'le echo de geocodeId est : ';
 //    echo $geocodeId;
-    echo 'nouveau cronJob';
-    echo "\n";
-    do {
-        echo 'requete';
-        echo "\n";
+            echo 'nouveau cronJob';
+            echo "\n";
+            do {
+                echo 'requete';
+                echo "\n";
 //        $tweet = new Tweets();
 //        $queryTweets = TweetsQuery::create();
 //        $lastTweet = $queryTweets->orderByTweetId('desc')->limit(1)->findOne();
@@ -101,34 +105,34 @@ foreach ($geocodesArray as $geocodeRow) {
 //        }
 //    echo 'post vardump lastweet';
 //    echo $lastId;
-        //Get tweets
-        //
+                //Get tweets
+                //
     //création d'une boucle foreach pour récupérer tous les géocodes
-        //
+                //
     
     //
     //première requête
-        echo 'exécution requete twitter' . "\n";
-        if ($minId === 99999999999999999999999) {
-            $responseTwitter = $connection->get("search/tweets", [
-                "q" => $sentimentQuery, //on précise qu'on veut pas les RT.
-                "count" => "100",
-                "lang" => "fr",
-                "result_type" => "recent",
-                "geocode" => $geocode,
-                    //"max_id" => "$minId"
-            ]);
-        } else {
-            $responseTwitter = $connection->get("search/tweets", [
-                "q" => $sentimentQuery, //on précise qu'on veut pas les RT.
-                "geocode" => $geocode,
-                "count" => "100",
-                "lang" => "fr",
-                "result_type" => "recent",
-                "max_id" => $minId,
-            ]);
-        }
-        echo 'requete terminée. Insertion ' . "\n";
+                echo 'exécution requete twitter' . "\n";
+                if ($minId === 99999999999999999999999) {
+                    $responseTwitter = $connection->get("search/tweets", [
+                        "q" => $sentimentQuery, //on précise qu'on veut pas les RT.
+                        "count" => "100",
+                        "lang" => "fr",
+                        "result_type" => "recent",
+                        "geocode" => $geocode,
+                            //"max_id" => "$minId"
+                    ]);
+                } else {
+                    $responseTwitter = $connection->get("search/tweets", [
+                        "q" => $sentimentQuery, //on précise qu'on veut pas les RT.
+                        "geocode" => $geocode,
+                        "count" => "100",
+                        "lang" => "fr",
+                        "result_type" => "recent",
+                        "max_id" => $minId,
+                    ]);
+                }
+                echo 'requete terminée. Insertion ' . "\n";
 //        echo '2e requete.  MinID : ';
 //        echo strval($minId);
 //        echo "\n";
@@ -139,88 +143,220 @@ foreach ($geocodesArray as $geocodeRow) {
 //
 //        var_dump($responseTwitter);
 
-        $tweetIds = [];
-        
-        foreach ($responseTwitter->statuses as $status) {
-            $tweetIds[] = $status->id;
-        }
+                $tweetIds = [];
 
-        $tweetsInDb = TweetsQuery::create()->filterByApiTweetId($tweetIds)->find();
+                foreach ($responseTwitter->statuses as $status) {
+                    $tweetIds[] = $status->id;
+                }
 
-        $tweetsDbIds = [];
+                $tweetsInDb = TweetsQuery::create()->filterByApiTweetId($tweetIds)->find();
 
-        foreach ($tweetsInDb as $tweetInDb) {
-            $tweetsDbIds[$tweetInDb->getApiTweetId()] = $tweetInDb;
-        }
+                $tweetsDbIds = [];
 
-        $collection = new \Propel\Runtime\Collection\ObjectCollection();
+                foreach ($tweetsInDb as $tweetInDb) {
+                    $tweetsDbIds[$tweetInDb->getApiTweetId()] = $tweetInDb;
+                }
 
-        $collection->setModel(Tweets::class);
+                $collection = new \Propel\Runtime\Collection\ObjectCollection();
 
-        foreach ($responseTwitter->statuses as $status) {
+                $collection->setModel(Tweets::class);
 
-            if ($status->id < $minId) {
-                $minId = $status->id;
-            }
+                foreach ($responseTwitter->statuses as $status) {
 
-            $queryTweets = TweetsQuery::create();
+                    if ($status->id < $minId) {
+                        $minId = $status->id;
+                    }
 
-            $tweet = NULL;
+                    $queryTweets = TweetsQuery::create();
 
-            if (isset($tweetsDbIds[$status->id])) {
-                $tweet = $tweetsDbIds[$status->id];
-            }
+                    $tweet = NULL;
+
+                    if (isset($tweetsDbIds[$status->id])) {
+                        $tweet = $tweetsDbIds[$status->id];
+                    }
 
 //            echo "status dat twitter";
 //            echo $status->created_at;
 //            echo "\n";
-            $statusDateTime = DateTime::createFromFormat('D M j H:i:s P Y', $status->created_at);
+                    $statusDateTime = DateTime::createFromFormat('D M j H:i:s P Y', $status->created_at);
 
 //            echo 'status date : ';
 //            echo $statusDateTime->format('Y-m-d H:i:s');
 //            echo "\n";
 
 
-            if (!$tweet) {
-                $tweet = new Tweets();
-                $tweet->setQualityTweet($sentimentType);
-                $tweet->setGeocodeId($geocodeId);
-                $tweet->setApiTweetId($status->id);
-                $tweet->setTweetText($status->text);
-                $tweet->setTweetPublicationHour($status->created_at);
-                //            if (isset($status->favorite_count)) {
-                //                $tweet->setFavoritesQuantity($status->favorite_count);
-                //            }
-                $tweet->setTwitterAccount($status->user->screen_name);
-                //            if (isset($status->coordinates->coordinates)) {
-                //                $tweet->setCoordinates(json_encode($status->coordinates->coordinates));
-                //            }
-                if (isset($status->user->location)) {
-                    $tweet->setLocation($status->user->location);
+                    if (!$tweet) {
+                        $tweet = new Tweets();
+                        $tweet->setQualityTweet($sentimentType);
+                        $tweet->setGeocodeId($geocodeId);
+                        $tweet->setApiTweetId($status->id);
+                        $tweet->setTweetText($status->text);
+                        $tweet->setTweetPublicationHour($status->created_at);
+                        //            if (isset($status->favorite_count)) {
+                        //                $tweet->setFavoritesQuantity($status->favorite_count);
+                        //            }
+                        $tweet->setTwitterAccount($status->user->screen_name);
+                        //            if (isset($status->coordinates->coordinates)) {
+                        //                $tweet->setCoordinates(json_encode($status->coordinates->coordinates));
+                        //            }
+                        if (isset($status->user->location)) {
+                            $tweet->setLocation($status->user->location);
+                        }
+                    }
+
+
+                    if (isset($status->retweet_count)) {
+                        $tweet->setRetweetsQuantity($status->retweet_count);
+                    }
+
+                    $collection->append($tweet);
                 }
-            }
-
-
-            if (isset($status->retweet_count)) {
-                $tweet->setRetweetsQuantity($status->retweet_count);
-            }
-
-            $collection->append($tweet);
-        }
-        echo "saving ...\n";
-        $collection->save();
-        $now = clone $nowRef;
+                echo "saving ...\n";
+                $collection->save();
+                $now = clone $nowRef;
 //        var_dump($now);
 //        var_dump($now->sub(new DateInterval('PT6H')));
 //        var_dump($now->sub(new DateInterval('PT3M')));
 //        var_dump($statusDateTime);
 //        var_dump($now->sub(new DateInterval('PT1M')) > $statusDateTime);
-    } while ($now->sub(new DateInterval('PT6H')) < $statusDateTime);
-    } else {
-        echo $geocodeId;
-    }
+            } while ($now->sub(new DateInterval('PT6H')) < $statusDateTime);
+        } else {
+            echo $geocodeId;
+        }
+    } else if ($sector == 'couronne') {
+        if ($geocodeId >= 10) {
+            echo 'nouveau cronJob';
+            echo "\n";
+            do {
+                echo 'requete';
+                echo "\n";
+//        $tweet = new Tweets();
+//        $queryTweets = TweetsQuery::create();
+//        $lastTweet = $queryTweets->orderByTweetId('desc')->limit(1)->findOne();
+//        if ($lastTweet) {
+//            $lastId = $lastTweet->getApiTweetId();
+//        }
+//    echo 'post vardump lastweet';
+//    echo $lastId;
+                //Get tweets
+                //
+    //création d'une boucle foreach pour récupérer tous les géocodes
+                //
     
+    //
+    //première requête
+                echo 'exécution requete twitter' . "\n";
+                if ($minId === 99999999999999999999999) {
+                    $responseTwitter = $connection->get("search/tweets", [
+                        "q" => $sentimentQuery, //on précise qu'on veut pas les RT.
+                        "count" => "100",
+                        "lang" => "fr",
+                        "result_type" => "recent",
+                        "geocode" => $geocode,
+                            //"max_id" => "$minId"
+                    ]);
+                } else {
+                    $responseTwitter = $connection->get("search/tweets", [
+                        "q" => $sentimentQuery, //on précise qu'on veut pas les RT.
+                        "geocode" => $geocode,
+                        "count" => "100",
+                        "lang" => "fr",
+                        "result_type" => "recent",
+                        "max_id" => $minId,
+                    ]);
+                }
+                echo 'requete terminée. Insertion ' . "\n";
+//        echo '2e requete.  MinID : ';
+//        echo strval($minId);
+//        echo "\n";
+//
+//        echo '2e requete.  geocode : ';
+//        echo strval($geocode);
+//        echo "\n";
+//
+//        var_dump($responseTwitter);
 
+                $tweetIds = [];
+
+                foreach ($responseTwitter->statuses as $status) {
+                    $tweetIds[] = $status->id;
+                }
+
+                $tweetsInDb = TweetsQuery::create()->filterByApiTweetId($tweetIds)->find();
+
+                $tweetsDbIds = [];
+
+                foreach ($tweetsInDb as $tweetInDb) {
+                    $tweetsDbIds[$tweetInDb->getApiTweetId()] = $tweetInDb;
+                }
+
+                $collection = new \Propel\Runtime\Collection\ObjectCollection();
+
+                $collection->setModel(Tweets::class);
+
+                foreach ($responseTwitter->statuses as $status) {
+
+                    if ($status->id < $minId) {
+                        $minId = $status->id;
+                    }
+
+                    $queryTweets = TweetsQuery::create();
+
+                    $tweet = NULL;
+
+                    if (isset($tweetsDbIds[$status->id])) {
+                        $tweet = $tweetsDbIds[$status->id];
+                    }
+
+//            echo "status dat twitter";
+//            echo $status->created_at;
+//            echo "\n";
+                    $statusDateTime = DateTime::createFromFormat('D M j H:i:s P Y', $status->created_at);
+
+//            echo 'status date : ';
+//            echo $statusDateTime->format('Y-m-d H:i:s');
+//            echo "\n";
+
+
+                    if (!$tweet) {
+                        $tweet = new Tweets();
+                        $tweet->setQualityTweet($sentimentType);
+                        $tweet->setGeocodeId($geocodeId);
+                        $tweet->setApiTweetId($status->id);
+                        $tweet->setTweetText($status->text);
+                        $tweet->setTweetPublicationHour($status->created_at);
+                        //            if (isset($status->favorite_count)) {
+                        //                $tweet->setFavoritesQuantity($status->favorite_count);
+                        //            }
+                        $tweet->setTwitterAccount($status->user->screen_name);
+                        //            if (isset($status->coordinates->coordinates)) {
+                        //                $tweet->setCoordinates(json_encode($status->coordinates->coordinates));
+                        //            }
+                        if (isset($status->user->location)) {
+                            $tweet->setLocation($status->user->location);
+                        }
+                    }
+
+
+                    if (isset($status->retweet_count)) {
+                        $tweet->setRetweetsQuantity($status->retweet_count);
+                    }
+
+                    $collection->append($tweet);
+                }
+                echo "saving ...\n";
+                $collection->save();
+                $now = clone $nowRef;
+//        var_dump($now);
+//        var_dump($now->sub(new DateInterval('PT6H')));
+//        var_dump($now->sub(new DateInterval('PT3M')));
+//        var_dump($statusDateTime);
+//        var_dump($now->sub(new DateInterval('PT1M')) > $statusDateTime);
+            } while ($now->sub(new DateInterval('PT6H')) < $statusDateTime);
+        } else {
+            echo $geocodeId;
+        }
+    }
 }
 // new Datetime() create from format.
 //récupérer le dernier id inséré dans la bdd

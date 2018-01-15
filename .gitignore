@@ -2,3 +2,4 @@ vendor/
 nbproject/
 propel.php
 *.log
+config.php

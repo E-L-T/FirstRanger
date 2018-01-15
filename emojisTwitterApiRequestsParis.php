@@ -12,6 +12,7 @@ use Propel\Runtime\Connection\ConnectionManagerSingle;
 use Propel\Runtime\Propel;
 
 $sentimentType = $argv[1];
+$sector = $argv[2];
 $sentimentQuery = '';
 
 switch ($sentimentType) {

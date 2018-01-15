@@ -2,11 +2,15 @@
 
 namespace App;
 
+//require "connexion.php";
+
 use Propel\Propel\Departments;
 use Propel\Propel\DepartmentsQuery;
 use Propel\Propel\DepartmentSummary;
 use Propel\Propel\Tweets;
 use Propel\Propel\TweetsQuery;
+
+
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -75,7 +79,7 @@ class RecentDistrictClass
 
 
         //// Connexion BDD
-        $pdo = new \PDO('mysql:host=31.207.33.82;port=3306;dbname=firstranger', 'firstranger', 'SBuy1s9O3CQsE86a', array(
+        $pdo = new \PDO('mysql:host=213.246.56.10;port=3306;dbname=firstranger', 'moodyboy', 'ytjtxkBmIV2A698r', array(
             \PDO::ATTR_ERRMODE => \PDO::ERRMODE_WARNING,
             \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
             \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_BOTH

@@ -12,9 +12,9 @@ return [
             'connections' => [
                 'default' => [
                     'adapter' => 'mysql',
-                    'dsn' => 'mysql:host=31.207.33.82;port=3306;dbname=firstranger',
-                    'user' => 'firstranger',
-                    'password' => 'SBuy1s9O3CQsE86a',
+                    'dsn' => 'mysql:host=213.246.56.10;port=3306;dbname=firstranger',
+                    'user' => 'moodyboy',
+                    'password' => 'ytjtxkBmIV2A698r',
                     'settings' => [
                         'charset' => 'utf8'
                     ]
