@@ -320,6 +320,13 @@ google.maps.event.addDomListener(window, 'load', function init() {
         iframeParisNegatif = iframeParisNegatif.replace("<gertrude", "<script").replace("/gertrude>", "/script>");
         $('#popularTweetNegatif').html(iframeParisNegatif);
         $('html, body').animate({ scrollTop: $(".titlehome").offset().top }, 1000);
+        var loading = $('#popularTweetNegatif');
+loading.hide();
+
+setTimeout(function(){loading.show();
+    $('.loader').hide();
+}, 800);
+console.log('clique'); 
     });
 
 
@@ -341,3 +348,11 @@ document.getElementById('formulaire').addEventListener('submit', function (e) {
 
 
 });
+
+var loading = $('#popularTweetNegatif');
+loading.hide();
+
+setTimeout(function(){loading.show();
+    $('.loader').toggleClass();   }, 2500);
+console.log('clique');  
+  
