@@ -65,7 +65,7 @@ The Silex Skeleton is configured with the following service providers:
 Read the `Providers`_ documentation for more details about Silex Service
 Providers.
 
-Enjoy!
+Enjoy!!!
 
 .. _Composer: http://getcomposer.org/
 .. _Documentation: http://silex.sensiolabs.org/documentation
@@ -75,3 +75,4 @@ Enjoy!
 .. _WebProfilerServiceProvider: http://github.com/silexphp/Silex-WebProfiler
 .. _MonologServiceProvider: http://silex.sensiolabs.org/doc/master/providers/monolog.html
 .. _Providers: http://silex.sensiolabs.org/doc/providers.html
+
