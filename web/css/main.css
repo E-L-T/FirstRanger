@@ -109,6 +109,10 @@ select{
     line-height: 2;
 }
 
+.hide{
+    display: none;
+}
+
 @media (max-width: 759px) {
     .logo {
         width: 55px;
