@@ -3,3 +3,8 @@ nbproject/
 propel.php
 *.log
 config.php
+/src/App/RecentDistrictClass.php
+departmentSummaryImplementing.php
+emojisTwitterApiRequests.php
+recentDistrictMap.php
+connexion.php

@@ -46,10 +46,10 @@ $serviceContainer->setConnectionManager('default', $manager);
 $serviceContainer->setDefaultDatasource('default');
 
 //keys and tokens
-$consumerKey = 'wMrUwEMjfe4kCQlPHpvUJFReG';
-$consumerSecret = '3cBvcG8ZuEbbPFUnVIuhHjwoVJaU1VdQmC8PDKz9UUNx6U4k3e';
-$accessToken = '36630957-ND7GjGn55DFBGZFkjkGUXbEoJZvCzcV5tvkbRRTd7';
-$accessTokenSecret = 'uUawifFFSBK6efJk9dkrSjqPZsu6uyQZYN2LG2OM2RvuG';
+$consumerKey = '';
+$consumerSecret = '';
+$accessToken = '';
+$accessTokenSecret = '';
 
 //include library
 require "twitteroauth/autoload.php";
