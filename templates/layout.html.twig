@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="shortcut icon" href="{{asset('img/favicon.ico')}}" />
+        <title>Moody land</title>
+
+        <!-- Bootstrap core CSS -->
+        <link href="{{asset('bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
+
+        <link href="{{asset('css/bootstrap-datepicker3.min.css')}}" rel="stylesheet">
+        <link href="{{asset('css/bootstrap-datetimepicker.min.css')}}" rel="stylesheet">
+
+        <!-- Custom fonts for this template -->
+        <link href="{{asset('font-awesome/css/font-awesome.min.css')}}" rel="stylesheet" type="text/css">
+        <link href="http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+        <link href="http://'fonts.googleapis.com/css?family=Cabin:700" rel='stylesheet' type='text/css'>
+        <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">
+
+        <!-- Custom styles for this template -->
+        <link href="{{asset('css/main.css')}}" rel="stylesheet" />
+        <script type="text/javascript" >
+            var URL = '{{ path('homepage') }}';
+        </script>
+
+    </head>
+
+
+    <body>
+        <!-- Navigation -->
+        <header>
+            <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+                <div class="container">
+                    <a class="navbar-brand js-scroll-trigger col-md-4 " href="{{ path('homepage') }}">
+                        <img class="logo" src="{{asset('img/logo.png')}}" alt="Moody Land"/>
+                        <span class="logo2">Moody land</span>
+                    </a>
+                    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                        Menu
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <div class="slogan col-md-4">L'humeur des Franciliens en temps réel</div>
+                    <div class="collapse navbar-collapse" id="navbarResponsive">
+                        <ul class="navbar-nav ml-auto">
+                            <li class="nav-item">
+                                <a class="nav-link js-scroll-trigger" href="{{ path('about') }}">A propos</a>
+                            </li>
+                            <div class="dropdown">
+                                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    Archives
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                    <li>
+                                        <form method="get" action="" id="formulaire">
+
+                                            <label >Sélectionnez une date</label>
+                                            <select id="annee"class="form-control">
+                                                <option>2018</option>
+                                                <option>2017</option>
+                                            </select>
+                                            <select id="mois" name="mois" class="form-control">
+
+                                                <option value="01">Janvier</option>
+                                                <option value="02">Février</option>
+                                                <option value="03">Mars</option>
+                                                <option value="04">Avril</option>
+                                                <option value="05">Mai</option>
+                                                <option value="06">Juin</option>
+                                                <option value="07">Juillet</option>
+                                                <option value="08">Août</option>
+                                                <option value="09">Septembre</option>
+                                                <option value="10">Octobre</option>
+                                                <option value="11">Novembre</option>
+                                                <option value="12">Décembre</option>
+
+                                            </select>
+
+                                            <select id="jour" class="form-control">
+                                                <option>01</option>
+                                                <option>02</option>
+                                                <option>03</option>
+                                                <option>04</option>
+                                                <option>05</option>
+                                                <option>06</option>
+                                                <option>07</option>
+                                                <option>08</option>
+                                                <option>09</option>
+                                                <option>10</option>
+                                                <option>11</option>
+                                                <option>12</option>
+                                                <option>13</option>
+                                                <option>14</option>
+                                                <option>15</option>
+                                                <option>16</option>
+                                                <option>17</option>
+                                                <option>18</option>
+                                                <option>19</option>
+                                                <option>20</option>
+                                                <option>21</option>
+                                                <option>22</option>
+                                                <option>23</option>
+                                                <option>24</option>
+                                                <option>25</option>
+                                                <option>26</option>
+                                                <option>27</option>
+                                                <option>28</option>
+                                                <option>29</option>
+                                                <option>30</option>
+                                                <option>31</option>
+                                            </select>
+
+                                            <select class="form-control" id="heure" name="heure">
+                                                <option>00:00</option>
+                                                <option>06:00</option>
+                                                <option>12:00</option>
+                                                <option>18:00</option>
+                                            </select>
+
+                                            <button type="submit" class="btn btn-primary btn-sm">Envoyer</button> 
+                                        </form>
+
+                                    </li>
+
+                                </ul>
+                            </div>
+
+
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <!-- Intro Header -->
+        {% block content %} {% endblock %}
+
+
+
+
+        <!-- Footer -->
+        <footer>
+            <div class="container text-center">
+                <p>Copyright &copy; First Ranger 2017</p>
+            </div>
+        </footer>
+
+        <!-- Bootstrap core JavaScript -->
+        <script src="{{asset('jquery/jquery.min.js')}}"></script>
+        <script src="{{asset('bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+
+        <!-- Plugin JavaScript -->
+        <script src="{{asset('jquery-easing/jquery.easing.min.js')}}"></script>
+
+        <!-- Date Picker -->
+
+        <script src="{{asset('js/bootstrap-datetimepicker.min.js')}}"></script>  
+
+        <!-- Google Maps API Key - Use your own API key to enable the map feature. More information on the Google Maps API can be found at https://developers.google.com/maps/ -->
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRngKslUGJTlibkQ3FkfTxj3Xss1UlZDA&key=AIzaSyB5iJbVedHQV26Dr_HlIx8dhm8_mQbm5Fk"></script>
+
+        <script src="{{asset('js/departmentsCoordinates.js')}}"></script>
+        <script src="{{asset('js/script.js')}}"></script>
+
+    </body>
+</html>
+
+
+
+

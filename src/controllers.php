@@ -5,10 +5,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use App\RecentDistrictClass;
 
 //Request::setTrustedProxies(array('127.0.0.1'));
 
 require __DIR__ . '/controllers_admin.php';
+
 
 $app->before(function() use ($app) {
     $token = $app['security.token_storage']->getToken();
@@ -26,11 +28,23 @@ $app->before(function() use ($app) {
     $app['user'] = $user;
 });
 
-$app->get('/', function () use ($app) {
 
-            return $app['twig']->render('index.html.twig');
+
+$app->get('/{hour}', function ($hour) use ($app) {
+            $map = $app['recentDistrictMap'];
+            $map->generateDistrictMap($hour);
+            return $app['twig']->render('homepage.html.twig', ['map'=>$map]);
         })
+        ->assert('hour', '\d{4}\-\d{2}\-\d{2}.*')
         ->bind('homepage')
+        ->value('hour', null)
+;
+        
+$app->get('/about', function () use ($app) {
+
+            return $app['twig']->render('about.html.twig');
+        })
+        ->bind('about')
 ;
 
 $app->get('/login', function(Request $request) use ($app) {

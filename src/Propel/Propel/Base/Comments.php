@@ -64,18 +64,18 @@ abstract class Comments implements ActiveRecordInterface
     protected $virtualColumns = array();
 
     /**
-     * The value for the id_comment field.
+     * The value for the comment_id field.
      *
      * @var        int
      */
-    protected $id_comment;
+    protected $comment_id;
 
     /**
-     * The value for the id_user field.
+     * The value for the user_id field.
      *
      * @var        int
      */
-    protected $id_user;
+    protected $user_id;
 
     /**
      * The value for the comment_publication_hour field.
@@ -330,23 +330,23 @@ abstract class Comments implements ActiveRecordInterface
     }
 
     /**
-     * Get the [id_comment] column value.
+     * Get the [comment_id] column value.
      *
      * @return int
      */
-    public function getIdComment()
+    public function getCommentId()
     {
-        return $this->id_comment;
+        return $this->comment_id;
     }
 
     /**
-     * Get the [id_user] column value.
+     * Get the [user_id] column value.
      *
      * @return int
      */
-    public function getIdUser()
+    public function getUserId()
     {
-        return $this->id_user;
+        return $this->user_id;
     }
 
     /**
@@ -380,40 +380,40 @@ abstract class Comments implements ActiveRecordInterface
     }
 
     /**
-     * Set the value of [id_comment] column.
+     * Set the value of [comment_id] column.
      *
      * @param int $v new value
      * @return $this|\Propel\Propel\Comments The current object (for fluent API support)
      */
-    public function setIdComment($v)
+    public function setCommentId($v)
     {
         if ($v !== null) {
             $v = (int) $v;
         }
 
-        if ($this->id_comment !== $v) {
-            $this->id_comment = $v;
-            $this->modifiedColumns[CommentsTableMap::COL_ID_COMMENT] = true;
+        if ($this->comment_id !== $v) {
+            $this->comment_id = $v;
+            $this->modifiedColumns[CommentsTableMap::COL_COMMENT_ID] = true;
         }
 
         return $this;
-    } // setIdComment()
+    } // setCommentId()
 
     /**
-     * Set the value of [id_user] column.
+     * Set the value of [user_id] column.
      *
      * @param int $v new value
      * @return $this|\Propel\Propel\Comments The current object (for fluent API support)
      */
-    public function setIdUser($v)
+    public function setUserId($v)
     {
         if ($v !== null) {
             $v = (int) $v;
         }
 
-        if ($this->id_user !== $v) {
-            $this->id_user = $v;
-            $this->modifiedColumns[CommentsTableMap::COL_ID_USER] = true;
+        if ($this->user_id !== $v) {
+            $this->user_id = $v;
+            $this->modifiedColumns[CommentsTableMap::COL_USER_ID] = true;
         }
 
         if ($this->aUsers !== null && $this->aUsers->getUserId() !== $v) {
@@ -421,7 +421,7 @@ abstract class Comments implements ActiveRecordInterface
         }
 
         return $this;
-    } // setIdUser()
+    } // setUserId()
 
     /**
      * Sets the value of [comment_publication_hour] column to a normalized version of the date/time value specified.
@@ -499,11 +499,11 @@ abstract class Comments implements ActiveRecordInterface
     {
         try {
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : CommentsTableMap::translateFieldName('IdComment', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->id_comment = (null !== $col) ? (int) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : CommentsTableMap::translateFieldName('CommentId', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->comment_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : CommentsTableMap::translateFieldName('IdUser', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->id_user = (null !== $col) ? (int) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : CommentsTableMap::translateFieldName('UserId', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->user_id = (null !== $col) ? (int) $col : null;
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : CommentsTableMap::translateFieldName('CommentPublicationHour', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
@@ -543,7 +543,7 @@ abstract class Comments implements ActiveRecordInterface
      */
     public function ensureConsistency()
     {
-        if ($this->aUsers !== null && $this->id_user !== $this->aUsers->getUserId()) {
+        if ($this->aUsers !== null && $this->user_id !== $this->aUsers->getUserId()) {
             $this->aUsers = null;
         }
     } // ensureConsistency
@@ -732,17 +732,17 @@ abstract class Comments implements ActiveRecordInterface
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[CommentsTableMap::COL_ID_COMMENT] = true;
-        if (null !== $this->id_comment) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . CommentsTableMap::COL_ID_COMMENT . ')');
+        $this->modifiedColumns[CommentsTableMap::COL_COMMENT_ID] = true;
+        if (null !== $this->comment_id) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . CommentsTableMap::COL_COMMENT_ID . ')');
         }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(CommentsTableMap::COL_ID_COMMENT)) {
-            $modifiedColumns[':p' . $index++]  = 'id_comment';
+        if ($this->isColumnModified(CommentsTableMap::COL_COMMENT_ID)) {
+            $modifiedColumns[':p' . $index++]  = 'comment_id';
         }
-        if ($this->isColumnModified(CommentsTableMap::COL_ID_USER)) {
-            $modifiedColumns[':p' . $index++]  = 'id_user';
+        if ($this->isColumnModified(CommentsTableMap::COL_USER_ID)) {
+            $modifiedColumns[':p' . $index++]  = 'user_id';
         }
         if ($this->isColumnModified(CommentsTableMap::COL_COMMENT_PUBLICATION_HOUR)) {
             $modifiedColumns[':p' . $index++]  = 'comment_publication_hour';
@@ -761,11 +761,11 @@ abstract class Comments implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'id_comment':
-                        $stmt->bindValue($identifier, $this->id_comment, PDO::PARAM_INT);
+                    case 'comment_id':
+                        $stmt->bindValue($identifier, $this->comment_id, PDO::PARAM_INT);
                         break;
-                    case 'id_user':
-                        $stmt->bindValue($identifier, $this->id_user, PDO::PARAM_INT);
+                    case 'user_id':
+                        $stmt->bindValue($identifier, $this->user_id, PDO::PARAM_INT);
                         break;
                     case 'comment_publication_hour':
                         $stmt->bindValue($identifier, $this->comment_publication_hour ? $this->comment_publication_hour->format("Y-m-d H:i:s.u") : null, PDO::PARAM_STR);
@@ -786,7 +786,7 @@ abstract class Comments implements ActiveRecordInterface
         } catch (Exception $e) {
             throw new PropelException('Unable to get autoincrement id.', 0, $e);
         }
-        $this->setIdComment($pk);
+        $this->setCommentId($pk);
 
         $this->setNew(false);
     }
@@ -836,10 +836,10 @@ abstract class Comments implements ActiveRecordInterface
     {
         switch ($pos) {
             case 0:
-                return $this->getIdComment();
+                return $this->getCommentId();
                 break;
             case 1:
-                return $this->getIdUser();
+                return $this->getUserId();
                 break;
             case 2:
                 return $this->getCommentPublicationHour();
@@ -877,8 +877,8 @@ abstract class Comments implements ActiveRecordInterface
         $alreadyDumpedObjects['Comments'][$this->hashCode()] = true;
         $keys = CommentsTableMap::getFieldNames($keyType);
         $result = array(
-            $keys[0] => $this->getIdComment(),
-            $keys[1] => $this->getIdUser(),
+            $keys[0] => $this->getCommentId(),
+            $keys[1] => $this->getUserId(),
             $keys[2] => $this->getCommentPublicationHour(),
             $keys[3] => $this->getLikesCount(),
         );
@@ -942,10 +942,10 @@ abstract class Comments implements ActiveRecordInterface
     {
         switch ($pos) {
             case 0:
-                $this->setIdComment($value);
+                $this->setCommentId($value);
                 break;
             case 1:
-                $this->setIdUser($value);
+                $this->setUserId($value);
                 break;
             case 2:
                 $this->setCommentPublicationHour($value);
@@ -980,10 +980,10 @@ abstract class Comments implements ActiveRecordInterface
         $keys = CommentsTableMap::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) {
-            $this->setIdComment($arr[$keys[0]]);
+            $this->setCommentId($arr[$keys[0]]);
         }
         if (array_key_exists($keys[1], $arr)) {
-            $this->setIdUser($arr[$keys[1]]);
+            $this->setUserId($arr[$keys[1]]);
         }
         if (array_key_exists($keys[2], $arr)) {
             $this->setCommentPublicationHour($arr[$keys[2]]);
@@ -1032,11 +1032,11 @@ abstract class Comments implements ActiveRecordInterface
     {
         $criteria = new Criteria(CommentsTableMap::DATABASE_NAME);
 
-        if ($this->isColumnModified(CommentsTableMap::COL_ID_COMMENT)) {
-            $criteria->add(CommentsTableMap::COL_ID_COMMENT, $this->id_comment);
+        if ($this->isColumnModified(CommentsTableMap::COL_COMMENT_ID)) {
+            $criteria->add(CommentsTableMap::COL_COMMENT_ID, $this->comment_id);
         }
-        if ($this->isColumnModified(CommentsTableMap::COL_ID_USER)) {
-            $criteria->add(CommentsTableMap::COL_ID_USER, $this->id_user);
+        if ($this->isColumnModified(CommentsTableMap::COL_USER_ID)) {
+            $criteria->add(CommentsTableMap::COL_USER_ID, $this->user_id);
         }
         if ($this->isColumnModified(CommentsTableMap::COL_COMMENT_PUBLICATION_HOUR)) {
             $criteria->add(CommentsTableMap::COL_COMMENT_PUBLICATION_HOUR, $this->comment_publication_hour);
@@ -1061,7 +1061,7 @@ abstract class Comments implements ActiveRecordInterface
     public function buildPkeyCriteria()
     {
         $criteria = ChildCommentsQuery::create();
-        $criteria->add(CommentsTableMap::COL_ID_COMMENT, $this->id_comment);
+        $criteria->add(CommentsTableMap::COL_COMMENT_ID, $this->comment_id);
 
         return $criteria;
     }
@@ -1074,7 +1074,7 @@ abstract class Comments implements ActiveRecordInterface
      */
     public function hashCode()
     {
-        $validPk = null !== $this->getIdComment();
+        $validPk = null !== $this->getCommentId();
 
         $validPrimaryKeyFKs = 0;
         $primaryKeyFKs = [];
@@ -1094,18 +1094,18 @@ abstract class Comments implements ActiveRecordInterface
      */
     public function getPrimaryKey()
     {
-        return $this->getIdComment();
+        return $this->getCommentId();
     }
 
     /**
-     * Generic method to set the primary key (id_comment column).
+     * Generic method to set the primary key (comment_id column).
      *
      * @param       int $key Primary key.
      * @return void
      */
     public function setPrimaryKey($key)
     {
-        $this->setIdComment($key);
+        $this->setCommentId($key);
     }
 
     /**
@@ -1114,7 +1114,7 @@ abstract class Comments implements ActiveRecordInterface
      */
     public function isPrimaryKeyNull()
     {
-        return null === $this->getIdComment();
+        return null === $this->getCommentId();
     }
 
     /**
@@ -1130,12 +1130,12 @@ abstract class Comments implements ActiveRecordInterface
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setIdUser($this->getIdUser());
+        $copyObj->setUserId($this->getUserId());
         $copyObj->setCommentPublicationHour($this->getCommentPublicationHour());
         $copyObj->setLikesCount($this->getLikesCount());
         if ($makeNew) {
             $copyObj->setNew(true);
-            $copyObj->setIdComment(NULL); // this is a auto-increment column, so set to default value
+            $copyObj->setCommentId(NULL); // this is a auto-increment column, so set to default value
         }
     }
 
@@ -1171,9 +1171,9 @@ abstract class Comments implements ActiveRecordInterface
     public function setUsers(ChildUsers $v = null)
     {
         if ($v === null) {
-            $this->setIdUser(NULL);
+            $this->setUserId(NULL);
         } else {
-            $this->setIdUser($v->getUserId());
+            $this->setUserId($v->getUserId());
         }
 
         $this->aUsers = $v;
@@ -1198,8 +1198,8 @@ abstract class Comments implements ActiveRecordInterface
      */
     public function getUsers(ConnectionInterface $con = null)
     {
-        if ($this->aUsers === null && ($this->id_user != 0)) {
-            $this->aUsers = ChildUsersQuery::create()->findPk($this->id_user, $con);
+        if ($this->aUsers === null && ($this->user_id != 0)) {
+            $this->aUsers = ChildUsersQuery::create()->findPk($this->user_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
                 to this object.  This level of coupling may, however, be
@@ -1222,8 +1222,8 @@ abstract class Comments implements ActiveRecordInterface
         if (null !== $this->aUsers) {
             $this->aUsers->removeComments($this);
         }
-        $this->id_comment = null;
-        $this->id_user = null;
+        $this->comment_id = null;
+        $this->user_id = null;
         $this->comment_publication_hour = null;
         $this->likes_count = null;
         $this->alreadyInSave = false;

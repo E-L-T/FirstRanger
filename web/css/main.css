@@ -1,0 +1,129 @@
+#map {
+    height: 500px;
+    margin: 20px 0 20px 0;
+}
+/* Optional: Makes the sample page fill the window. */
+html, body {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #e6ecf0;
+    color: #14171a;
+}
+
+header {
+    height : 140px;
+}
+
+#mainNav {
+    
+    background-color: #fff;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+#mainNav.navbar-shrink {
+    height: 100px;
+    background-color: #fff;
+}
+
+#mainNav .navbar-toggler {
+    font-size: 14px;
+   
+    padding: 11px;
+    color: #14171a;;
+    border: 1px solid #14171a;
+}
+
+#mainNav a {
+   
+    color: #14171a;
+}
+
+#mainNav a:hover {
+    color: #2DB1FF;
+}
+.navbar-brand {
+    font-weight: bolder;
+}
+
+.logo {
+    width: 100px;
+}
+.logo2{
+    position: absolute;
+    top: 75px;
+    left:65px; 
+    font-family: 'Lobster', cursive;
+    color: #2DB1FF;
+}
+
+.slogan{
+    font-size: 15px;
+    text-align:center;
+    font-style: italic;
+}
+
+
+#apropos {
+    margin-top: 40px;
+}
+
+#tweet{
+    
+    padding : 20px;
+    border-radius: 10px;
+    background: #F3F3F3;
+    margin-bottom: 20px;
+}
+.titlehome{
+    font-weight: bold;
+    text-align: center;
+}
+
+footer{
+    font-size: 12px;
+}
+
+#formulaire{
+    padding: 0 10px;
+    font-size: 0.9em;
+}
+
+select{
+    margin: 8px 0;
+    
+}
+
+#resume strong{
+    text-align: center;
+}
+
+#blocHumeur{
+    border: 1px solid #E1E8ED;
+    background-color: white;
+    padding: 20px;
+    font-size: 0.9em;
+    margin-top: 12px;
+    border-radius: 5px;
+    line-height: 2;
+}
+
+@media (max-width: 759px) {
+    .logo {
+        width: 55px;
+    }
+    .logo2{
+        position: initial;
+    }
+    .navbar-brand {
+        width: 70%;
+    }
+    
+    #resume {
+        order: -1;
+    }
+    #blocHumeur{
+        margin-bottom: 10px;
+    }
+}

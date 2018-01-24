@@ -23,10 +23,14 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildGeocodesQuery orderByGeocodeId($order = Criteria::ASC) Order by the geocode_id column
  * @method     ChildGeocodesQuery orderByGeocodeName($order = Criteria::ASC) Order by the geocode_name column
  * @method     ChildGeocodesQuery orderByDepartmentId($order = Criteria::ASC) Order by the department_id column
+ * @method     ChildGeocodesQuery orderByGeocode($order = Criteria::ASC) Order by the geocode column
+ * @method     ChildGeocodesQuery orderByNom($order = Criteria::ASC) Order by the nom column
  *
  * @method     ChildGeocodesQuery groupByGeocodeId() Group by the geocode_id column
  * @method     ChildGeocodesQuery groupByGeocodeName() Group by the geocode_name column
  * @method     ChildGeocodesQuery groupByDepartmentId() Group by the department_id column
+ * @method     ChildGeocodesQuery groupByGeocode() Group by the geocode column
+ * @method     ChildGeocodesQuery groupByNom() Group by the nom column
  *
  * @method     ChildGeocodesQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildGeocodesQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -63,7 +67,9 @@ use Propel\Runtime\Exception\PropelException;
  *
  * @method     ChildGeocodes findOneByGeocodeId(int $geocode_id) Return the first ChildGeocodes filtered by the geocode_id column
  * @method     ChildGeocodes findOneByGeocodeName(string $geocode_name) Return the first ChildGeocodes filtered by the geocode_name column
- * @method     ChildGeocodes findOneByDepartmentId(int $department_id) Return the first ChildGeocodes filtered by the department_id column *
+ * @method     ChildGeocodes findOneByDepartmentId(int $department_id) Return the first ChildGeocodes filtered by the department_id column
+ * @method     ChildGeocodes findOneByGeocode(string $geocode) Return the first ChildGeocodes filtered by the geocode column
+ * @method     ChildGeocodes findOneByNom(string $nom) Return the first ChildGeocodes filtered by the nom column *
 
  * @method     ChildGeocodes requirePk($key, ConnectionInterface $con = null) Return the ChildGeocodes by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildGeocodes requireOne(ConnectionInterface $con = null) Return the first ChildGeocodes matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -71,11 +77,15 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildGeocodes requireOneByGeocodeId(int $geocode_id) Return the first ChildGeocodes filtered by the geocode_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildGeocodes requireOneByGeocodeName(string $geocode_name) Return the first ChildGeocodes filtered by the geocode_name column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildGeocodes requireOneByDepartmentId(int $department_id) Return the first ChildGeocodes filtered by the department_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildGeocodes requireOneByGeocode(string $geocode) Return the first ChildGeocodes filtered by the geocode column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildGeocodes requireOneByNom(string $nom) Return the first ChildGeocodes filtered by the nom column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildGeocodes[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildGeocodes objects based on current ModelCriteria
  * @method     ChildGeocodes[]|ObjectCollection findByGeocodeId(int $geocode_id) Return ChildGeocodes objects filtered by the geocode_id column
  * @method     ChildGeocodes[]|ObjectCollection findByGeocodeName(string $geocode_name) Return ChildGeocodes objects filtered by the geocode_name column
  * @method     ChildGeocodes[]|ObjectCollection findByDepartmentId(int $department_id) Return ChildGeocodes objects filtered by the department_id column
+ * @method     ChildGeocodes[]|ObjectCollection findByGeocode(string $geocode) Return ChildGeocodes objects filtered by the geocode column
+ * @method     ChildGeocodes[]|ObjectCollection findByNom(string $nom) Return ChildGeocodes objects filtered by the nom column
  * @method     ChildGeocodes[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
@@ -174,7 +184,7 @@ abstract class GeocodesQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT geocode_id, geocode_name, department_id FROM geocodes WHERE geocode_id = :p0';
+        $sql = 'SELECT geocode_id, geocode_name, department_id, geocode, nom FROM geocodes WHERE geocode_id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -374,6 +384,56 @@ abstract class GeocodesQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the geocode column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByGeocode('fooValue');   // WHERE geocode = 'fooValue'
+     * $query->filterByGeocode('%fooValue%', Criteria::LIKE); // WHERE geocode LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $geocode The value to use as filter.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildGeocodesQuery The current query, for fluid interface
+     */
+    public function filterByGeocode($geocode = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($geocode)) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(GeocodesTableMap::COL_GEOCODE, $geocode, $comparison);
+    }
+
+    /**
+     * Filter the query on the nom column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByNom('fooValue');   // WHERE nom = 'fooValue'
+     * $query->filterByNom('%fooValue%', Criteria::LIKE); // WHERE nom LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $nom The value to use as filter.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildGeocodesQuery The current query, for fluid interface
+     */
+    public function filterByNom($nom = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($nom)) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(GeocodesTableMap::COL_NOM, $nom, $comparison);
+    }
+
+    /**
      * Filter the query by a related \Propel\Propel\Departments object
      *
      * @param \Propel\Propel\Departments|ObjectCollection $departments The related object(s) to use as filter
@@ -462,7 +522,7 @@ abstract class GeocodesQuery extends ModelCriteria
     {
         if ($tweets instanceof \Propel\Propel\Tweets) {
             return $this
-                ->addUsingAlias(GeocodesTableMap::COL_GEOCODE_ID, $tweets->getIdGeocode(), $comparison);
+                ->addUsingAlias(GeocodesTableMap::COL_GEOCODE_ID, $tweets->getGeocodeId(), $comparison);
         } elseif ($tweets instanceof ObjectCollection) {
             return $this
                 ->useTweetsQuery()

@@ -24,25 +24,25 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildTweetsQuery orderByApiTweetId($order = Criteria::ASC) Order by the api_tweet_id column
  * @method     ChildTweetsQuery orderByTweetText($order = Criteria::ASC) Order by the tweet_text column
  * @method     ChildTweetsQuery orderByTweetPublicationHour($order = Criteria::ASC) Order by the tweet_publication_hour column
- * @method     ChildTweetsQuery orderByUrlTweet($order = Criteria::ASC) Order by the url_tweet column
- * @method     ChildTweetsQuery orderByIdGeocode($order = Criteria::ASC) Order by the id_geocode column
+ * @method     ChildTweetsQuery orderByGeocodeId($order = Criteria::ASC) Order by the geocode_id column
  * @method     ChildTweetsQuery orderByRetweetsQuantity($order = Criteria::ASC) Order by the retweets_quantity column
  * @method     ChildTweetsQuery orderByFavoritesQuantity($order = Criteria::ASC) Order by the favorites_quantity column
  * @method     ChildTweetsQuery orderByTwitterAccount($order = Criteria::ASC) Order by the twitter_account column
  * @method     ChildTweetsQuery orderByCoordinates($order = Criteria::ASC) Order by the coordinates column
  * @method     ChildTweetsQuery orderByLocation($order = Criteria::ASC) Order by the location column
+ * @method     ChildTweetsQuery orderByQualityTweet($order = Criteria::ASC) Order by the quality_tweet column
  *
  * @method     ChildTweetsQuery groupByTweetId() Group by the tweet_id column
  * @method     ChildTweetsQuery groupByApiTweetId() Group by the api_tweet_id column
  * @method     ChildTweetsQuery groupByTweetText() Group by the tweet_text column
  * @method     ChildTweetsQuery groupByTweetPublicationHour() Group by the tweet_publication_hour column
- * @method     ChildTweetsQuery groupByUrlTweet() Group by the url_tweet column
- * @method     ChildTweetsQuery groupByIdGeocode() Group by the id_geocode column
+ * @method     ChildTweetsQuery groupByGeocodeId() Group by the geocode_id column
  * @method     ChildTweetsQuery groupByRetweetsQuantity() Group by the retweets_quantity column
  * @method     ChildTweetsQuery groupByFavoritesQuantity() Group by the favorites_quantity column
  * @method     ChildTweetsQuery groupByTwitterAccount() Group by the twitter_account column
  * @method     ChildTweetsQuery groupByCoordinates() Group by the coordinates column
  * @method     ChildTweetsQuery groupByLocation() Group by the location column
+ * @method     ChildTweetsQuery groupByQualityTweet() Group by the quality_tweet column
  *
  * @method     ChildTweetsQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildTweetsQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -71,13 +71,13 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildTweets findOneByApiTweetId(string $api_tweet_id) Return the first ChildTweets filtered by the api_tweet_id column
  * @method     ChildTweets findOneByTweetText(string $tweet_text) Return the first ChildTweets filtered by the tweet_text column
  * @method     ChildTweets findOneByTweetPublicationHour(string $tweet_publication_hour) Return the first ChildTweets filtered by the tweet_publication_hour column
- * @method     ChildTweets findOneByUrlTweet(string $url_tweet) Return the first ChildTweets filtered by the url_tweet column
- * @method     ChildTweets findOneByIdGeocode(int $id_geocode) Return the first ChildTweets filtered by the id_geocode column
+ * @method     ChildTweets findOneByGeocodeId(int $geocode_id) Return the first ChildTweets filtered by the geocode_id column
  * @method     ChildTweets findOneByRetweetsQuantity(int $retweets_quantity) Return the first ChildTweets filtered by the retweets_quantity column
  * @method     ChildTweets findOneByFavoritesQuantity(int $favorites_quantity) Return the first ChildTweets filtered by the favorites_quantity column
  * @method     ChildTweets findOneByTwitterAccount(string $twitter_account) Return the first ChildTweets filtered by the twitter_account column
  * @method     ChildTweets findOneByCoordinates(string $coordinates) Return the first ChildTweets filtered by the coordinates column
- * @method     ChildTweets findOneByLocation(string $location) Return the first ChildTweets filtered by the location column *
+ * @method     ChildTweets findOneByLocation(string $location) Return the first ChildTweets filtered by the location column
+ * @method     ChildTweets findOneByQualityTweet(string $quality_tweet) Return the first ChildTweets filtered by the quality_tweet column *
 
  * @method     ChildTweets requirePk($key, ConnectionInterface $con = null) Return the ChildTweets by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildTweets requireOne(ConnectionInterface $con = null) Return the first ChildTweets matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -86,26 +86,26 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildTweets requireOneByApiTweetId(string $api_tweet_id) Return the first ChildTweets filtered by the api_tweet_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildTweets requireOneByTweetText(string $tweet_text) Return the first ChildTweets filtered by the tweet_text column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildTweets requireOneByTweetPublicationHour(string $tweet_publication_hour) Return the first ChildTweets filtered by the tweet_publication_hour column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildTweets requireOneByUrlTweet(string $url_tweet) Return the first ChildTweets filtered by the url_tweet column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildTweets requireOneByIdGeocode(int $id_geocode) Return the first ChildTweets filtered by the id_geocode column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildTweets requireOneByGeocodeId(int $geocode_id) Return the first ChildTweets filtered by the geocode_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildTweets requireOneByRetweetsQuantity(int $retweets_quantity) Return the first ChildTweets filtered by the retweets_quantity column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildTweets requireOneByFavoritesQuantity(int $favorites_quantity) Return the first ChildTweets filtered by the favorites_quantity column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildTweets requireOneByTwitterAccount(string $twitter_account) Return the first ChildTweets filtered by the twitter_account column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildTweets requireOneByCoordinates(string $coordinates) Return the first ChildTweets filtered by the coordinates column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildTweets requireOneByLocation(string $location) Return the first ChildTweets filtered by the location column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildTweets requireOneByQualityTweet(string $quality_tweet) Return the first ChildTweets filtered by the quality_tweet column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildTweets[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildTweets objects based on current ModelCriteria
  * @method     ChildTweets[]|ObjectCollection findByTweetId(string $tweet_id) Return ChildTweets objects filtered by the tweet_id column
  * @method     ChildTweets[]|ObjectCollection findByApiTweetId(string $api_tweet_id) Return ChildTweets objects filtered by the api_tweet_id column
  * @method     ChildTweets[]|ObjectCollection findByTweetText(string $tweet_text) Return ChildTweets objects filtered by the tweet_text column
  * @method     ChildTweets[]|ObjectCollection findByTweetPublicationHour(string $tweet_publication_hour) Return ChildTweets objects filtered by the tweet_publication_hour column
- * @method     ChildTweets[]|ObjectCollection findByUrlTweet(string $url_tweet) Return ChildTweets objects filtered by the url_tweet column
- * @method     ChildTweets[]|ObjectCollection findByIdGeocode(int $id_geocode) Return ChildTweets objects filtered by the id_geocode column
+ * @method     ChildTweets[]|ObjectCollection findByGeocodeId(int $geocode_id) Return ChildTweets objects filtered by the geocode_id column
  * @method     ChildTweets[]|ObjectCollection findByRetweetsQuantity(int $retweets_quantity) Return ChildTweets objects filtered by the retweets_quantity column
  * @method     ChildTweets[]|ObjectCollection findByFavoritesQuantity(int $favorites_quantity) Return ChildTweets objects filtered by the favorites_quantity column
  * @method     ChildTweets[]|ObjectCollection findByTwitterAccount(string $twitter_account) Return ChildTweets objects filtered by the twitter_account column
  * @method     ChildTweets[]|ObjectCollection findByCoordinates(string $coordinates) Return ChildTweets objects filtered by the coordinates column
  * @method     ChildTweets[]|ObjectCollection findByLocation(string $location) Return ChildTweets objects filtered by the location column
+ * @method     ChildTweets[]|ObjectCollection findByQualityTweet(string $quality_tweet) Return ChildTweets objects filtered by the quality_tweet column
  * @method     ChildTweets[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
@@ -204,7 +204,7 @@ abstract class TweetsQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT tweet_id, api_tweet_id, tweet_text, tweet_publication_hour, url_tweet, id_geocode, retweets_quantity, favorites_quantity, twitter_account, coordinates, location FROM tweets WHERE tweet_id = :p0';
+        $sql = 'SELECT tweet_id, api_tweet_id, tweet_text, tweet_publication_hour, geocode_id, retweets_quantity, favorites_quantity, twitter_account, coordinates, location, quality_tweet FROM tweets WHERE tweet_id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -445,43 +445,18 @@ abstract class TweetsQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the url_tweet column
+     * Filter the query on the geocode_id column
      *
      * Example usage:
      * <code>
-     * $query->filterByUrlTweet('fooValue');   // WHERE url_tweet = 'fooValue'
-     * $query->filterByUrlTweet('%fooValue%', Criteria::LIKE); // WHERE url_tweet LIKE '%fooValue%'
-     * </code>
-     *
-     * @param     string $urlTweet The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return $this|ChildTweetsQuery The current query, for fluid interface
-     */
-    public function filterByUrlTweet($urlTweet = null, $comparison = null)
-    {
-        if (null === $comparison) {
-            if (is_array($urlTweet)) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(TweetsTableMap::COL_URL_TWEET, $urlTweet, $comparison);
-    }
-
-    /**
-     * Filter the query on the id_geocode column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByIdGeocode(1234); // WHERE id_geocode = 1234
-     * $query->filterByIdGeocode(array(12, 34)); // WHERE id_geocode IN (12, 34)
-     * $query->filterByIdGeocode(array('min' => 12)); // WHERE id_geocode > 12
+     * $query->filterByGeocodeId(1234); // WHERE geocode_id = 1234
+     * $query->filterByGeocodeId(array(12, 34)); // WHERE geocode_id IN (12, 34)
+     * $query->filterByGeocodeId(array('min' => 12)); // WHERE geocode_id > 12
      * </code>
      *
      * @see       filterByGeocodes()
      *
-     * @param     mixed $idGeocode The value to use as filter.
+     * @param     mixed $geocodeId The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
@@ -489,16 +464,16 @@ abstract class TweetsQuery extends ModelCriteria
      *
      * @return $this|ChildTweetsQuery The current query, for fluid interface
      */
-    public function filterByIdGeocode($idGeocode = null, $comparison = null)
+    public function filterByGeocodeId($geocodeId = null, $comparison = null)
     {
-        if (is_array($idGeocode)) {
+        if (is_array($geocodeId)) {
             $useMinMax = false;
-            if (isset($idGeocode['min'])) {
-                $this->addUsingAlias(TweetsTableMap::COL_ID_GEOCODE, $idGeocode['min'], Criteria::GREATER_EQUAL);
+            if (isset($geocodeId['min'])) {
+                $this->addUsingAlias(TweetsTableMap::COL_GEOCODE_ID, $geocodeId['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
-            if (isset($idGeocode['max'])) {
-                $this->addUsingAlias(TweetsTableMap::COL_ID_GEOCODE, $idGeocode['max'], Criteria::LESS_EQUAL);
+            if (isset($geocodeId['max'])) {
+                $this->addUsingAlias(TweetsTableMap::COL_GEOCODE_ID, $geocodeId['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -509,7 +484,7 @@ abstract class TweetsQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(TweetsTableMap::COL_ID_GEOCODE, $idGeocode, $comparison);
+        return $this->addUsingAlias(TweetsTableMap::COL_GEOCODE_ID, $geocodeId, $comparison);
     }
 
     /**
@@ -670,6 +645,31 @@ abstract class TweetsQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the quality_tweet column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByQualityTweet('fooValue');   // WHERE quality_tweet = 'fooValue'
+     * $query->filterByQualityTweet('%fooValue%', Criteria::LIKE); // WHERE quality_tweet LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $qualityTweet The value to use as filter.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildTweetsQuery The current query, for fluid interface
+     */
+    public function filterByQualityTweet($qualityTweet = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($qualityTweet)) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(TweetsTableMap::COL_QUALITY_TWEET, $qualityTweet, $comparison);
+    }
+
+    /**
      * Filter the query by a related \Propel\Propel\Geocodes object
      *
      * @param \Propel\Propel\Geocodes|ObjectCollection $geocodes The related object(s) to use as filter
@@ -683,14 +683,14 @@ abstract class TweetsQuery extends ModelCriteria
     {
         if ($geocodes instanceof \Propel\Propel\Geocodes) {
             return $this
-                ->addUsingAlias(TweetsTableMap::COL_ID_GEOCODE, $geocodes->getGeocodeId(), $comparison);
+                ->addUsingAlias(TweetsTableMap::COL_GEOCODE_ID, $geocodes->getGeocodeId(), $comparison);
         } elseif ($geocodes instanceof ObjectCollection) {
             if (null === $comparison) {
                 $comparison = Criteria::IN;
             }
 
             return $this
-                ->addUsingAlias(TweetsTableMap::COL_ID_GEOCODE, $geocodes->toKeyValue('PrimaryKey', 'GeocodeId'), $comparison);
+                ->addUsingAlias(TweetsTableMap::COL_GEOCODE_ID, $geocodes->toKeyValue('PrimaryKey', 'GeocodeId'), $comparison);
         } else {
             throw new PropelException('filterByGeocodes() only accepts arguments of type \Propel\Propel\Geocodes or Collection');
         }

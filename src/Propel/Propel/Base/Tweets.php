@@ -92,18 +92,11 @@ abstract class Tweets implements ActiveRecordInterface
     protected $tweet_publication_hour;
 
     /**
-     * The value for the url_tweet field.
-     *
-     * @var        string
-     */
-    protected $url_tweet;
-
-    /**
-     * The value for the id_geocode field.
+     * The value for the geocode_id field.
      *
      * @var        int
      */
-    protected $id_geocode;
+    protected $geocode_id;
 
     /**
      * The value for the retweets_quantity field.
@@ -139,6 +132,13 @@ abstract class Tweets implements ActiveRecordInterface
      * @var        string
      */
     protected $location;
+
+    /**
+     * The value for the quality_tweet field.
+     *
+     * @var        string
+     */
+    protected $quality_tweet;
 
     /**
      * @var        ChildGeocodes
@@ -429,23 +429,13 @@ abstract class Tweets implements ActiveRecordInterface
     }
 
     /**
-     * Get the [url_tweet] column value.
-     *
-     * @return string
-     */
-    public function getUrlTweet()
-    {
-        return $this->url_tweet;
-    }
-
-    /**
-     * Get the [id_geocode] column value.
+     * Get the [geocode_id] column value.
      *
      * @return int
      */
-    public function getIdGeocode()
+    public function getGeocodeId()
     {
-        return $this->id_geocode;
+        return $this->geocode_id;
     }
 
     /**
@@ -496,6 +486,16 @@ abstract class Tweets implements ActiveRecordInterface
     public function getLocation()
     {
         return $this->location;
+    }
+
+    /**
+     * Get the [quality_tweet] column value.
+     *
+     * @return string
+     */
+    public function getQualityTweet()
+    {
+        return $this->quality_tweet;
     }
 
     /**
@@ -579,40 +579,20 @@ abstract class Tweets implements ActiveRecordInterface
     } // setTweetPublicationHour()
 
     /**
-     * Set the value of [url_tweet] column.
-     *
-     * @param string $v new value
-     * @return $this|\Propel\Propel\Tweets The current object (for fluent API support)
-     */
-    public function setUrlTweet($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->url_tweet !== $v) {
-            $this->url_tweet = $v;
-            $this->modifiedColumns[TweetsTableMap::COL_URL_TWEET] = true;
-        }
-
-        return $this;
-    } // setUrlTweet()
-
-    /**
-     * Set the value of [id_geocode] column.
+     * Set the value of [geocode_id] column.
      *
      * @param int $v new value
      * @return $this|\Propel\Propel\Tweets The current object (for fluent API support)
      */
-    public function setIdGeocode($v)
+    public function setGeocodeId($v)
     {
         if ($v !== null) {
             $v = (int) $v;
         }
 
-        if ($this->id_geocode !== $v) {
-            $this->id_geocode = $v;
-            $this->modifiedColumns[TweetsTableMap::COL_ID_GEOCODE] = true;
+        if ($this->geocode_id !== $v) {
+            $this->geocode_id = $v;
+            $this->modifiedColumns[TweetsTableMap::COL_GEOCODE_ID] = true;
         }
 
         if ($this->aGeocodes !== null && $this->aGeocodes->getGeocodeId() !== $v) {
@@ -620,7 +600,7 @@ abstract class Tweets implements ActiveRecordInterface
         }
 
         return $this;
-    } // setIdGeocode()
+    } // setGeocodeId()
 
     /**
      * Set the value of [retweets_quantity] column.
@@ -723,6 +703,26 @@ abstract class Tweets implements ActiveRecordInterface
     } // setLocation()
 
     /**
+     * Set the value of [quality_tweet] column.
+     *
+     * @param string $v new value
+     * @return $this|\Propel\Propel\Tweets The current object (for fluent API support)
+     */
+    public function setQualityTweet($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->quality_tweet !== $v) {
+            $this->quality_tweet = $v;
+            $this->modifiedColumns[TweetsTableMap::COL_QUALITY_TWEET] = true;
+        }
+
+        return $this;
+    } // setQualityTweet()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -773,26 +773,26 @@ abstract class Tweets implements ActiveRecordInterface
             }
             $this->tweet_publication_hour = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : TweetsTableMap::translateFieldName('UrlTweet', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->url_tweet = (null !== $col) ? (string) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : TweetsTableMap::translateFieldName('GeocodeId', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->geocode_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : TweetsTableMap::translateFieldName('IdGeocode', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->id_geocode = (null !== $col) ? (int) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : TweetsTableMap::translateFieldName('RetweetsQuantity', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : TweetsTableMap::translateFieldName('RetweetsQuantity', TableMap::TYPE_PHPNAME, $indexType)];
             $this->retweets_quantity = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : TweetsTableMap::translateFieldName('FavoritesQuantity', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : TweetsTableMap::translateFieldName('FavoritesQuantity', TableMap::TYPE_PHPNAME, $indexType)];
             $this->favorites_quantity = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : TweetsTableMap::translateFieldName('TwitterAccount', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : TweetsTableMap::translateFieldName('TwitterAccount', TableMap::TYPE_PHPNAME, $indexType)];
             $this->twitter_account = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 9 + $startcol : TweetsTableMap::translateFieldName('Coordinates', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : TweetsTableMap::translateFieldName('Coordinates', TableMap::TYPE_PHPNAME, $indexType)];
             $this->coordinates = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 10 + $startcol : TweetsTableMap::translateFieldName('Location', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 9 + $startcol : TweetsTableMap::translateFieldName('Location', TableMap::TYPE_PHPNAME, $indexType)];
             $this->location = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 10 + $startcol : TweetsTableMap::translateFieldName('QualityTweet', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->quality_tweet = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -823,7 +823,7 @@ abstract class Tweets implements ActiveRecordInterface
      */
     public function ensureConsistency()
     {
-        if ($this->aGeocodes !== null && $this->id_geocode !== $this->aGeocodes->getGeocodeId()) {
+        if ($this->aGeocodes !== null && $this->geocode_id !== $this->aGeocodes->getGeocodeId()) {
             $this->aGeocodes = null;
         }
     } // ensureConsistency
@@ -1030,11 +1030,8 @@ abstract class Tweets implements ActiveRecordInterface
         if ($this->isColumnModified(TweetsTableMap::COL_TWEET_PUBLICATION_HOUR)) {
             $modifiedColumns[':p' . $index++]  = 'tweet_publication_hour';
         }
-        if ($this->isColumnModified(TweetsTableMap::COL_URL_TWEET)) {
-            $modifiedColumns[':p' . $index++]  = 'url_tweet';
-        }
-        if ($this->isColumnModified(TweetsTableMap::COL_ID_GEOCODE)) {
-            $modifiedColumns[':p' . $index++]  = 'id_geocode';
+        if ($this->isColumnModified(TweetsTableMap::COL_GEOCODE_ID)) {
+            $modifiedColumns[':p' . $index++]  = 'geocode_id';
         }
         if ($this->isColumnModified(TweetsTableMap::COL_RETWEETS_QUANTITY)) {
             $modifiedColumns[':p' . $index++]  = 'retweets_quantity';
@@ -1050,6 +1047,9 @@ abstract class Tweets implements ActiveRecordInterface
         }
         if ($this->isColumnModified(TweetsTableMap::COL_LOCATION)) {
             $modifiedColumns[':p' . $index++]  = 'location';
+        }
+        if ($this->isColumnModified(TweetsTableMap::COL_QUALITY_TWEET)) {
+            $modifiedColumns[':p' . $index++]  = 'quality_tweet';
         }
 
         $sql = sprintf(
@@ -1074,11 +1074,8 @@ abstract class Tweets implements ActiveRecordInterface
                     case 'tweet_publication_hour':
                         $stmt->bindValue($identifier, $this->tweet_publication_hour ? $this->tweet_publication_hour->format("Y-m-d H:i:s.u") : null, PDO::PARAM_STR);
                         break;
-                    case 'url_tweet':
-                        $stmt->bindValue($identifier, $this->url_tweet, PDO::PARAM_STR);
-                        break;
-                    case 'id_geocode':
-                        $stmt->bindValue($identifier, $this->id_geocode, PDO::PARAM_INT);
+                    case 'geocode_id':
+                        $stmt->bindValue($identifier, $this->geocode_id, PDO::PARAM_INT);
                         break;
                     case 'retweets_quantity':
                         $stmt->bindValue($identifier, $this->retweets_quantity, PDO::PARAM_INT);
@@ -1094,6 +1091,9 @@ abstract class Tweets implements ActiveRecordInterface
                         break;
                     case 'location':
                         $stmt->bindValue($identifier, $this->location, PDO::PARAM_STR);
+                        break;
+                    case 'quality_tweet':
+                        $stmt->bindValue($identifier, $this->quality_tweet, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -1170,25 +1170,25 @@ abstract class Tweets implements ActiveRecordInterface
                 return $this->getTweetPublicationHour();
                 break;
             case 4:
-                return $this->getUrlTweet();
+                return $this->getGeocodeId();
                 break;
             case 5:
-                return $this->getIdGeocode();
-                break;
-            case 6:
                 return $this->getRetweetsQuantity();
                 break;
-            case 7:
+            case 6:
                 return $this->getFavoritesQuantity();
                 break;
-            case 8:
+            case 7:
                 return $this->getTwitterAccount();
                 break;
-            case 9:
+            case 8:
                 return $this->getCoordinates();
                 break;
-            case 10:
+            case 9:
                 return $this->getLocation();
+                break;
+            case 10:
+                return $this->getQualityTweet();
                 break;
             default:
                 return null;
@@ -1224,13 +1224,13 @@ abstract class Tweets implements ActiveRecordInterface
             $keys[1] => $this->getApiTweetId(),
             $keys[2] => $this->getTweetText(),
             $keys[3] => $this->getTweetPublicationHour(),
-            $keys[4] => $this->getUrlTweet(),
-            $keys[5] => $this->getIdGeocode(),
-            $keys[6] => $this->getRetweetsQuantity(),
-            $keys[7] => $this->getFavoritesQuantity(),
-            $keys[8] => $this->getTwitterAccount(),
-            $keys[9] => $this->getCoordinates(),
-            $keys[10] => $this->getLocation(),
+            $keys[4] => $this->getGeocodeId(),
+            $keys[5] => $this->getRetweetsQuantity(),
+            $keys[6] => $this->getFavoritesQuantity(),
+            $keys[7] => $this->getTwitterAccount(),
+            $keys[8] => $this->getCoordinates(),
+            $keys[9] => $this->getLocation(),
+            $keys[10] => $this->getQualityTweet(),
         );
         if ($result[$keys[3]] instanceof \DateTimeInterface) {
             $result[$keys[3]] = $result[$keys[3]]->format('c');
@@ -1304,25 +1304,25 @@ abstract class Tweets implements ActiveRecordInterface
                 $this->setTweetPublicationHour($value);
                 break;
             case 4:
-                $this->setUrlTweet($value);
+                $this->setGeocodeId($value);
                 break;
             case 5:
-                $this->setIdGeocode($value);
-                break;
-            case 6:
                 $this->setRetweetsQuantity($value);
                 break;
-            case 7:
+            case 6:
                 $this->setFavoritesQuantity($value);
                 break;
-            case 8:
+            case 7:
                 $this->setTwitterAccount($value);
                 break;
-            case 9:
+            case 8:
                 $this->setCoordinates($value);
                 break;
-            case 10:
+            case 9:
                 $this->setLocation($value);
+                break;
+            case 10:
+                $this->setQualityTweet($value);
                 break;
         } // switch()
 
@@ -1363,25 +1363,25 @@ abstract class Tweets implements ActiveRecordInterface
             $this->setTweetPublicationHour($arr[$keys[3]]);
         }
         if (array_key_exists($keys[4], $arr)) {
-            $this->setUrlTweet($arr[$keys[4]]);
+            $this->setGeocodeId($arr[$keys[4]]);
         }
         if (array_key_exists($keys[5], $arr)) {
-            $this->setIdGeocode($arr[$keys[5]]);
+            $this->setRetweetsQuantity($arr[$keys[5]]);
         }
         if (array_key_exists($keys[6], $arr)) {
-            $this->setRetweetsQuantity($arr[$keys[6]]);
+            $this->setFavoritesQuantity($arr[$keys[6]]);
         }
         if (array_key_exists($keys[7], $arr)) {
-            $this->setFavoritesQuantity($arr[$keys[7]]);
+            $this->setTwitterAccount($arr[$keys[7]]);
         }
         if (array_key_exists($keys[8], $arr)) {
-            $this->setTwitterAccount($arr[$keys[8]]);
+            $this->setCoordinates($arr[$keys[8]]);
         }
         if (array_key_exists($keys[9], $arr)) {
-            $this->setCoordinates($arr[$keys[9]]);
+            $this->setLocation($arr[$keys[9]]);
         }
         if (array_key_exists($keys[10], $arr)) {
-            $this->setLocation($arr[$keys[10]]);
+            $this->setQualityTweet($arr[$keys[10]]);
         }
     }
 
@@ -1436,11 +1436,8 @@ abstract class Tweets implements ActiveRecordInterface
         if ($this->isColumnModified(TweetsTableMap::COL_TWEET_PUBLICATION_HOUR)) {
             $criteria->add(TweetsTableMap::COL_TWEET_PUBLICATION_HOUR, $this->tweet_publication_hour);
         }
-        if ($this->isColumnModified(TweetsTableMap::COL_URL_TWEET)) {
-            $criteria->add(TweetsTableMap::COL_URL_TWEET, $this->url_tweet);
-        }
-        if ($this->isColumnModified(TweetsTableMap::COL_ID_GEOCODE)) {
-            $criteria->add(TweetsTableMap::COL_ID_GEOCODE, $this->id_geocode);
+        if ($this->isColumnModified(TweetsTableMap::COL_GEOCODE_ID)) {
+            $criteria->add(TweetsTableMap::COL_GEOCODE_ID, $this->geocode_id);
         }
         if ($this->isColumnModified(TweetsTableMap::COL_RETWEETS_QUANTITY)) {
             $criteria->add(TweetsTableMap::COL_RETWEETS_QUANTITY, $this->retweets_quantity);
@@ -1456,6 +1453,9 @@ abstract class Tweets implements ActiveRecordInterface
         }
         if ($this->isColumnModified(TweetsTableMap::COL_LOCATION)) {
             $criteria->add(TweetsTableMap::COL_LOCATION, $this->location);
+        }
+        if ($this->isColumnModified(TweetsTableMap::COL_QUALITY_TWEET)) {
+            $criteria->add(TweetsTableMap::COL_QUALITY_TWEET, $this->quality_tweet);
         }
 
         return $criteria;
@@ -1546,13 +1546,13 @@ abstract class Tweets implements ActiveRecordInterface
         $copyObj->setApiTweetId($this->getApiTweetId());
         $copyObj->setTweetText($this->getTweetText());
         $copyObj->setTweetPublicationHour($this->getTweetPublicationHour());
-        $copyObj->setUrlTweet($this->getUrlTweet());
-        $copyObj->setIdGeocode($this->getIdGeocode());
+        $copyObj->setGeocodeId($this->getGeocodeId());
         $copyObj->setRetweetsQuantity($this->getRetweetsQuantity());
         $copyObj->setFavoritesQuantity($this->getFavoritesQuantity());
         $copyObj->setTwitterAccount($this->getTwitterAccount());
         $copyObj->setCoordinates($this->getCoordinates());
         $copyObj->setLocation($this->getLocation());
+        $copyObj->setQualityTweet($this->getQualityTweet());
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setTweetId(NULL); // this is a auto-increment column, so set to default value
@@ -1591,9 +1591,9 @@ abstract class Tweets implements ActiveRecordInterface
     public function setGeocodes(ChildGeocodes $v = null)
     {
         if ($v === null) {
-            $this->setIdGeocode(NULL);
+            $this->setGeocodeId(NULL);
         } else {
-            $this->setIdGeocode($v->getGeocodeId());
+            $this->setGeocodeId($v->getGeocodeId());
         }
 
         $this->aGeocodes = $v;
@@ -1618,8 +1618,8 @@ abstract class Tweets implements ActiveRecordInterface
      */
     public function getGeocodes(ConnectionInterface $con = null)
     {
-        if ($this->aGeocodes === null && ($this->id_geocode != 0)) {
-            $this->aGeocodes = ChildGeocodesQuery::create()->findPk($this->id_geocode, $con);
+        if ($this->aGeocodes === null && ($this->geocode_id != 0)) {
+            $this->aGeocodes = ChildGeocodesQuery::create()->findPk($this->geocode_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
                 to this object.  This level of coupling may, however, be
@@ -1646,13 +1646,13 @@ abstract class Tweets implements ActiveRecordInterface
         $this->api_tweet_id = null;
         $this->tweet_text = null;
         $this->tweet_publication_hour = null;
-        $this->url_tweet = null;
-        $this->id_geocode = null;
+        $this->geocode_id = null;
         $this->retweets_quantity = null;
         $this->favorites_quantity = null;
         $this->twitter_account = null;
         $this->coordinates = null;
         $this->location = null;
+        $this->quality_tweet = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();

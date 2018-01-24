@@ -167,7 +167,7 @@ class UsersTableMap extends TableMap
         $this->addRelation('Comments', '\\Propel\\Propel\\Comments', RelationMap::ONE_TO_MANY, array (
   0 =>
   array (
-    0 => ':id_user',
+    0 => ':user_id',
     1 => ':user_id',
   ),
 ), null, null, 'Commentss', false);

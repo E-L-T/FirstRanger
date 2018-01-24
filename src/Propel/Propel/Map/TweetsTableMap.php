@@ -92,14 +92,9 @@ class TweetsTableMap extends TableMap
     const COL_TWEET_PUBLICATION_HOUR = 'tweets.tweet_publication_hour';
 
     /**
-     * the column name for the url_tweet field
+     * the column name for the geocode_id field
      */
-    const COL_URL_TWEET = 'tweets.url_tweet';
-
-    /**
-     * the column name for the id_geocode field
-     */
-    const COL_ID_GEOCODE = 'tweets.id_geocode';
+    const COL_GEOCODE_ID = 'tweets.geocode_id';
 
     /**
      * the column name for the retweets_quantity field
@@ -127,6 +122,11 @@ class TweetsTableMap extends TableMap
     const COL_LOCATION = 'tweets.location';
 
     /**
+     * the column name for the quality_tweet field
+     */
+    const COL_QUALITY_TWEET = 'tweets.quality_tweet';
+
+    /**
      * The default string format for model objects of the related table
      */
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -138,10 +138,10 @@ class TweetsTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('TweetId', 'ApiTweetId', 'TweetText', 'TweetPublicationHour', 'UrlTweet', 'IdGeocode', 'RetweetsQuantity', 'FavoritesQuantity', 'TwitterAccount', 'Coordinates', 'Location', ),
-        self::TYPE_CAMELNAME     => array('tweetId', 'apiTweetId', 'tweetText', 'tweetPublicationHour', 'urlTweet', 'idGeocode', 'retweetsQuantity', 'favoritesQuantity', 'twitterAccount', 'coordinates', 'location', ),
-        self::TYPE_COLNAME       => array(TweetsTableMap::COL_TWEET_ID, TweetsTableMap::COL_API_TWEET_ID, TweetsTableMap::COL_TWEET_TEXT, TweetsTableMap::COL_TWEET_PUBLICATION_HOUR, TweetsTableMap::COL_URL_TWEET, TweetsTableMap::COL_ID_GEOCODE, TweetsTableMap::COL_RETWEETS_QUANTITY, TweetsTableMap::COL_FAVORITES_QUANTITY, TweetsTableMap::COL_TWITTER_ACCOUNT, TweetsTableMap::COL_COORDINATES, TweetsTableMap::COL_LOCATION, ),
-        self::TYPE_FIELDNAME     => array('tweet_id', 'api_tweet_id', 'tweet_text', 'tweet_publication_hour', 'url_tweet', 'id_geocode', 'retweets_quantity', 'favorites_quantity', 'twitter_account', 'coordinates', 'location', ),
+        self::TYPE_PHPNAME       => array('TweetId', 'ApiTweetId', 'TweetText', 'TweetPublicationHour', 'GeocodeId', 'RetweetsQuantity', 'FavoritesQuantity', 'TwitterAccount', 'Coordinates', 'Location', 'QualityTweet', ),
+        self::TYPE_CAMELNAME     => array('tweetId', 'apiTweetId', 'tweetText', 'tweetPublicationHour', 'geocodeId', 'retweetsQuantity', 'favoritesQuantity', 'twitterAccount', 'coordinates', 'location', 'qualityTweet', ),
+        self::TYPE_COLNAME       => array(TweetsTableMap::COL_TWEET_ID, TweetsTableMap::COL_API_TWEET_ID, TweetsTableMap::COL_TWEET_TEXT, TweetsTableMap::COL_TWEET_PUBLICATION_HOUR, TweetsTableMap::COL_GEOCODE_ID, TweetsTableMap::COL_RETWEETS_QUANTITY, TweetsTableMap::COL_FAVORITES_QUANTITY, TweetsTableMap::COL_TWITTER_ACCOUNT, TweetsTableMap::COL_COORDINATES, TweetsTableMap::COL_LOCATION, TweetsTableMap::COL_QUALITY_TWEET, ),
+        self::TYPE_FIELDNAME     => array('tweet_id', 'api_tweet_id', 'tweet_text', 'tweet_publication_hour', 'geocode_id', 'retweets_quantity', 'favorites_quantity', 'twitter_account', 'coordinates', 'location', 'quality_tweet', ),
         self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
     );
 
@@ -152,10 +152,10 @@ class TweetsTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('TweetId' => 0, 'ApiTweetId' => 1, 'TweetText' => 2, 'TweetPublicationHour' => 3, 'UrlTweet' => 4, 'IdGeocode' => 5, 'RetweetsQuantity' => 6, 'FavoritesQuantity' => 7, 'TwitterAccount' => 8, 'Coordinates' => 9, 'Location' => 10, ),
-        self::TYPE_CAMELNAME     => array('tweetId' => 0, 'apiTweetId' => 1, 'tweetText' => 2, 'tweetPublicationHour' => 3, 'urlTweet' => 4, 'idGeocode' => 5, 'retweetsQuantity' => 6, 'favoritesQuantity' => 7, 'twitterAccount' => 8, 'coordinates' => 9, 'location' => 10, ),
-        self::TYPE_COLNAME       => array(TweetsTableMap::COL_TWEET_ID => 0, TweetsTableMap::COL_API_TWEET_ID => 1, TweetsTableMap::COL_TWEET_TEXT => 2, TweetsTableMap::COL_TWEET_PUBLICATION_HOUR => 3, TweetsTableMap::COL_URL_TWEET => 4, TweetsTableMap::COL_ID_GEOCODE => 5, TweetsTableMap::COL_RETWEETS_QUANTITY => 6, TweetsTableMap::COL_FAVORITES_QUANTITY => 7, TweetsTableMap::COL_TWITTER_ACCOUNT => 8, TweetsTableMap::COL_COORDINATES => 9, TweetsTableMap::COL_LOCATION => 10, ),
-        self::TYPE_FIELDNAME     => array('tweet_id' => 0, 'api_tweet_id' => 1, 'tweet_text' => 2, 'tweet_publication_hour' => 3, 'url_tweet' => 4, 'id_geocode' => 5, 'retweets_quantity' => 6, 'favorites_quantity' => 7, 'twitter_account' => 8, 'coordinates' => 9, 'location' => 10, ),
+        self::TYPE_PHPNAME       => array('TweetId' => 0, 'ApiTweetId' => 1, 'TweetText' => 2, 'TweetPublicationHour' => 3, 'GeocodeId' => 4, 'RetweetsQuantity' => 5, 'FavoritesQuantity' => 6, 'TwitterAccount' => 7, 'Coordinates' => 8, 'Location' => 9, 'QualityTweet' => 10, ),
+        self::TYPE_CAMELNAME     => array('tweetId' => 0, 'apiTweetId' => 1, 'tweetText' => 2, 'tweetPublicationHour' => 3, 'geocodeId' => 4, 'retweetsQuantity' => 5, 'favoritesQuantity' => 6, 'twitterAccount' => 7, 'coordinates' => 8, 'location' => 9, 'qualityTweet' => 10, ),
+        self::TYPE_COLNAME       => array(TweetsTableMap::COL_TWEET_ID => 0, TweetsTableMap::COL_API_TWEET_ID => 1, TweetsTableMap::COL_TWEET_TEXT => 2, TweetsTableMap::COL_TWEET_PUBLICATION_HOUR => 3, TweetsTableMap::COL_GEOCODE_ID => 4, TweetsTableMap::COL_RETWEETS_QUANTITY => 5, TweetsTableMap::COL_FAVORITES_QUANTITY => 6, TweetsTableMap::COL_TWITTER_ACCOUNT => 7, TweetsTableMap::COL_COORDINATES => 8, TweetsTableMap::COL_LOCATION => 9, TweetsTableMap::COL_QUALITY_TWEET => 10, ),
+        self::TYPE_FIELDNAME     => array('tweet_id' => 0, 'api_tweet_id' => 1, 'tweet_text' => 2, 'tweet_publication_hour' => 3, 'geocode_id' => 4, 'retweets_quantity' => 5, 'favorites_quantity' => 6, 'twitter_account' => 7, 'coordinates' => 8, 'location' => 9, 'quality_tweet' => 10, ),
         self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
     );
 
@@ -180,13 +180,13 @@ class TweetsTableMap extends TableMap
         $this->addColumn('api_tweet_id', 'ApiTweetId', 'BIGINT', true, 18, null);
         $this->addColumn('tweet_text', 'TweetText', 'LONGVARCHAR', true, null, null);
         $this->addColumn('tweet_publication_hour', 'TweetPublicationHour', 'TIMESTAMP', true, null, null);
-        $this->addColumn('url_tweet', 'UrlTweet', 'LONGVARCHAR', true, null, null);
-        $this->addForeignKey('id_geocode', 'IdGeocode', 'INTEGER', 'geocodes', 'geocode_id', false, null, null);
+        $this->addForeignKey('geocode_id', 'GeocodeId', 'INTEGER', 'geocodes', 'geocode_id', false, null, null);
         $this->addColumn('retweets_quantity', 'RetweetsQuantity', 'INTEGER', false, null, null);
         $this->addColumn('favorites_quantity', 'FavoritesQuantity', 'INTEGER', false, null, null);
         $this->addColumn('twitter_account', 'TwitterAccount', 'LONGVARCHAR', true, null, null);
         $this->addColumn('coordinates', 'Coordinates', 'LONGVARCHAR', false, null, null);
         $this->addColumn('location', 'Location', 'LONGVARCHAR', false, null, null);
+        $this->addColumn('quality_tweet', 'QualityTweet', 'LONGVARCHAR', false, null, null);
     } // initialize()
 
     /**
@@ -197,7 +197,7 @@ class TweetsTableMap extends TableMap
         $this->addRelation('Geocodes', '\\Propel\\Propel\\Geocodes', RelationMap::MANY_TO_ONE, array (
   0 =>
   array (
-    0 => ':id_geocode',
+    0 => ':geocode_id',
     1 => ':geocode_id',
   ),
 ), null, null, null, false);
@@ -348,25 +348,25 @@ class TweetsTableMap extends TableMap
             $criteria->addSelectColumn(TweetsTableMap::COL_API_TWEET_ID);
             $criteria->addSelectColumn(TweetsTableMap::COL_TWEET_TEXT);
             $criteria->addSelectColumn(TweetsTableMap::COL_TWEET_PUBLICATION_HOUR);
-            $criteria->addSelectColumn(TweetsTableMap::COL_URL_TWEET);
-            $criteria->addSelectColumn(TweetsTableMap::COL_ID_GEOCODE);
+            $criteria->addSelectColumn(TweetsTableMap::COL_GEOCODE_ID);
             $criteria->addSelectColumn(TweetsTableMap::COL_RETWEETS_QUANTITY);
             $criteria->addSelectColumn(TweetsTableMap::COL_FAVORITES_QUANTITY);
             $criteria->addSelectColumn(TweetsTableMap::COL_TWITTER_ACCOUNT);
             $criteria->addSelectColumn(TweetsTableMap::COL_COORDINATES);
             $criteria->addSelectColumn(TweetsTableMap::COL_LOCATION);
+            $criteria->addSelectColumn(TweetsTableMap::COL_QUALITY_TWEET);
         } else {
             $criteria->addSelectColumn($alias . '.tweet_id');
             $criteria->addSelectColumn($alias . '.api_tweet_id');
             $criteria->addSelectColumn($alias . '.tweet_text');
             $criteria->addSelectColumn($alias . '.tweet_publication_hour');
-            $criteria->addSelectColumn($alias . '.url_tweet');
-            $criteria->addSelectColumn($alias . '.id_geocode');
+            $criteria->addSelectColumn($alias . '.geocode_id');
             $criteria->addSelectColumn($alias . '.retweets_quantity');
             $criteria->addSelectColumn($alias . '.favorites_quantity');
             $criteria->addSelectColumn($alias . '.twitter_account');
             $criteria->addSelectColumn($alias . '.coordinates');
             $criteria->addSelectColumn($alias . '.location');
+            $criteria->addSelectColumn($alias . '.quality_tweet');
         }
     }
 

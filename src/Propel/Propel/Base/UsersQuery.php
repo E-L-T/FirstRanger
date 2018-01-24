@@ -447,7 +447,7 @@ abstract class UsersQuery extends ModelCriteria
     {
         if ($comments instanceof \Propel\Propel\Comments) {
             return $this
-                ->addUsingAlias(UsersTableMap::COL_USER_ID, $comments->getIdUser(), $comparison);
+                ->addUsingAlias(UsersTableMap::COL_USER_ID, $comments->getUserId(), $comparison);
         } elseif ($comments instanceof ObjectCollection) {
             return $this
                 ->useCommentsQuery()

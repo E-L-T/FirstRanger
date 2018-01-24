@@ -1,0 +1,109 @@
+{% extends "layout.html.twig" %}
+
+
+{% block content %} 
+
+    <div class="intro-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div id="map"></div>
+                    <div id='message'></div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Map Section -->
+    <div class="container">
+        <div id="tweet">
+            <div class="row">
+                <div class="col-md-4 titlehome">Mood <img src="{{asset ('img/thumbPlus.png') }}"/><br>
+                    <div  id= "popularTweetPositif"></div>
+
+
+                </div>
+                <div id="resume" class="col-md-4 pull-right ">
+
+                    <div id="statsJour" class="titlehome">Statistiques du <span id="jourCarte"></span> à <span id="heureCarte"></span></div><br>
+                    <div id="blocHumeur"><img src ="{{asset ('img/humeur25.png') }}"/> L'humeur régionale est de {{ map.districtMood }} / 20<br>
+                        <img src ="{{asset ('img/humeurPlus25.png') }}"/> Meilleure humeur : {{ map.bestMoodDepartment }}<br>
+                        <img src ="{{asset ('img/humeurNeg25.png') }}"/> Pire humeur : {{map.worstMoodDepartment}}<br><br>
+                        <p><strong>Cliquez sur un département pour lire le détail</strong></p>
+                    </div>
+                </div>
+                <div class="col-md-4 titlehome">Mood <img src="{{asset ('img/thumbMinus.png') }}"/> <br>
+                    <div  id="popularTweetNegatif"></div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        {#{{ dump(map.iframeParisPositif) }}#}
+
+            var iframeParisPositif = '{{ map.iframeParisPositif | raw | replace({'<script':'<gertrude', '/script>': '/gertrude>','\n':''}) | raw}}';
+            var iframeParisNegatif = '{{ map.iframeParisNegatif| raw | replace({'<script':'<gertrude', '/script>': '/gertrude>','\n':''}) | raw}}';
+            var iframeHDSPositif = '{{ map.iframeHDSPositif | raw | replace({'<script':'<gertrude', '/script>': '/gertrude>','\n':''}) | raw}}';
+            var iframeHDSNegatif = '{{ map.iframeHDSNegatif | raw | replace({'<script':'<gertrude', '/script>': '/gertrude>','\n':''}) | raw}}';
+            var iframeSSDPositif = '{{ map.iframeSSDPositif | raw | replace({'<script':'<gertrude', '/script>': '/gertrude>','\n':''}) | raw}}';
+            var iframeSSDNegatif = '{{ map.iframeSSDNegatif | raw | replace({'<script':'<gertrude', '/script>': '/gertrude>','\n':''}) | raw}}';
+            var iframeVDMPositif = '{{ map.iframeVDMPositif | raw | replace({'<script':'<gertrude', '/script>': '/gertrude>','\n':''}) | raw}}';
+            var iframeVDMNegatif = '{{ map.iframeVDMNegatif | raw | replace({'<script':'<gertrude', '/script>': '/gertrude>','\n':''}) | raw}}';
+                    var parisMood = {{ map.parisMood }};
+                    var HDSMood = {{ map.HDSMood }};
+                    var SSDMood = {{ map.SSDMood }};
+                    var VDMMood = {{ map.VDMMood }};
+
+            var parisPositiveQuantity = {{ map.parisPositiveQuantity }};
+                    var parisNegativeQuantity = {{ map.parisNegativeQuantity }};
+                    var parisNeutralQuantity = {{ map.parisNeutralQuantity }};
+                    var parisTotalQuantity = {{ map.parisTotalQuantity }};
+
+            var HDSPositiveQuantity = {{ map.HDSPositiveQuantity }};
+                    var HDSNegativeQuantity = {{ map.HDSNegativeQuantity }};
+                    var HDSNeutralQuantity = {{ map.HDSNeutralQuantity }};
+                    var HDSTotalQuantity = {{ map.HDSTotalQuantity }};
+
+            var SSDPositiveQuantity = {{ map.SSDPositiveQuantity }};
+                    var SSDNegativeQuantity = {{ map.SSDNegativeQuantity }};
+                    var SSDNeutralQuantity = {{ map.SSDNeutralQuantity }};
+                    var SSDTotalQuantity = {{ map.SSDTotalQuantity }};
+
+            var VDMPositiveQuantity = {{ map.VDMPositiveQuantity }};
+                    var VDMNegativeQuantity = {{ map.VDMNegativeQuantity }};
+                    var VDMNeutralQuantity = {{ map.VDMNeutralQuantity }};
+                    var VDMTotalQuantity = {{ map.VDMTotalQuantity }};
+
+            var districtMood = {{ map.districtMood }};
+                    var parisPositivePercentage = {{ map.ParisPositivePercentage }};
+                    var parisNegativePercentage = {{ map.ParisNegativePercentage }};
+                    var parisNeutralPercentage = {{ map.ParisNeutralPercentage }};
+
+            var HDSPositivePercentage = {{ map.HDSPositivePercentage }};
+                    var HDSNegativePercentage = {{ map.HDSNegativePercentage }};
+                    var HDSNeutralPercentage = {{ map.HDSNeutralPercentage }};
+
+            var SSDPositivePercentage = {{ map.SSDPositivePercentage }};
+                    var SSDNegativePercentage = {{ map.SSDNegativePercentage }};
+                    var SSDNeutralPercentage = {{ map.SSDNeutralPercentage }};
+
+            var VDMPositivePercentage = {{ map.VDMPositivePercentage }};
+                    var VDMNegativePercentage = {{ map.VDMNegativePercentage }};
+                    var VDMNeutralPercentage = {{ map.VDMNeutralPercentage }};
+
+            var bestMood = {{ map.bestMood }};
+                    var worstMood = {{ map.worstMood }};
+                    var bestMoodDepartment = "{{ map.bestMoodDepartment }}";
+                    var worstMoodDepartment = "{{ map.worstMoodDepartment }}";
+
+
+    </script>
+
+
+
+
+{% endblock %}

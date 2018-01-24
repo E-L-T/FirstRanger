@@ -1,4 +1,10 @@
-/vendor/
-/nbproject/
-/config/db.php
-/propel.php
+vendor/
+nbproject/
+propel.php
+*.log
+config.php
+/src/App/RecentDistrictClass.php
+departmentSummaryImplementing.php
+emojisTwitterApiRequests.php
+recentDistrictMap.php
+connexion.php

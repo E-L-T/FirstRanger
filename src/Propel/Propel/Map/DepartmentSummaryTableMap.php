@@ -59,7 +59,7 @@ class DepartmentSummaryTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 10;
+    const NUM_COLUMNS = 12;
 
     /**
      * The number of lazy-loaded columns
@@ -69,7 +69,7 @@ class DepartmentSummaryTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 10;
+    const NUM_HYDRATE_COLUMNS = 12;
 
     /**
      * the column name for the department_summary_id field
@@ -122,6 +122,16 @@ class DepartmentSummaryTableMap extends TableMap
     const COL_DEPARTMENT_FACEBOOK_SHARES_QUANTITY = 'department_summary.department_facebook_shares_quantity';
 
     /**
+     * the column name for the positive_twitter_account field
+     */
+    const COL_POSITIVE_TWITTER_ACCOUNT = 'department_summary.positive_twitter_account';
+
+    /**
+     * the column name for the negative_twitter_account field
+     */
+    const COL_NEGATIVE_TWITTER_ACCOUNT = 'department_summary.negative_twitter_account';
+
+    /**
      * The default string format for model objects of the related table
      */
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -133,11 +143,11 @@ class DepartmentSummaryTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('DepartmentSummaryId', 'MapPublicationHour', 'DepartmentCode', 'DepartmentPositiveTweetsQuantity', 'DepartmentNegativeTweetsQuantity', 'DepartmentNeutralTweetsQuantity', 'PositivePopularTweetId', 'NegativePopularTweetId', 'DepartmentTwitterSharesQuantity', 'DepartmentFacebookSharesQuantity', ),
-        self::TYPE_CAMELNAME     => array('departmentSummaryId', 'mapPublicationHour', 'departmentCode', 'departmentPositiveTweetsQuantity', 'departmentNegativeTweetsQuantity', 'departmentNeutralTweetsQuantity', 'positivePopularTweetId', 'negativePopularTweetId', 'departmentTwitterSharesQuantity', 'departmentFacebookSharesQuantity', ),
-        self::TYPE_COLNAME       => array(DepartmentSummaryTableMap::COL_DEPARTMENT_SUMMARY_ID, DepartmentSummaryTableMap::COL_MAP_PUBLICATION_HOUR, DepartmentSummaryTableMap::COL_DEPARTMENT_CODE, DepartmentSummaryTableMap::COL_DEPARTMENT_POSITIVE_TWEETS_QUANTITY, DepartmentSummaryTableMap::COL_DEPARTMENT_NEGATIVE_TWEETS_QUANTITY, DepartmentSummaryTableMap::COL_DEPARTMENT_NEUTRAL_TWEETS_QUANTITY, DepartmentSummaryTableMap::COL_POSITIVE_POPULAR_TWEET_ID, DepartmentSummaryTableMap::COL_NEGATIVE_POPULAR_TWEET_ID, DepartmentSummaryTableMap::COL_DEPARTMENT_TWITTER_SHARES_QUANTITY, DepartmentSummaryTableMap::COL_DEPARTMENT_FACEBOOK_SHARES_QUANTITY, ),
-        self::TYPE_FIELDNAME     => array('department_summary_id', 'map_publication_hour', 'department_code', 'department_positive_tweets_quantity', 'department_negative_tweets_quantity', 'department_neutral_tweets_quantity', 'positive_popular_tweet_id', 'negative_popular_tweet_id', 'department_twitter_shares_quantity', 'department_facebook_shares_quantity', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
+        self::TYPE_PHPNAME       => array('DepartmentSummaryId', 'MapPublicationHour', 'DepartmentCode', 'DepartmentPositiveTweetsQuantity', 'DepartmentNegativeTweetsQuantity', 'DepartmentNeutralTweetsQuantity', 'PositivePopularTweetId', 'NegativePopularTweetId', 'DepartmentTwitterSharesQuantity', 'DepartmentFacebookSharesQuantity', 'PositiveTwitterAccount', 'NegativeTwitterAccount', ),
+        self::TYPE_CAMELNAME     => array('departmentSummaryId', 'mapPublicationHour', 'departmentCode', 'departmentPositiveTweetsQuantity', 'departmentNegativeTweetsQuantity', 'departmentNeutralTweetsQuantity', 'positivePopularTweetId', 'negativePopularTweetId', 'departmentTwitterSharesQuantity', 'departmentFacebookSharesQuantity', 'positiveTwitterAccount', 'negativeTwitterAccount', ),
+        self::TYPE_COLNAME       => array(DepartmentSummaryTableMap::COL_DEPARTMENT_SUMMARY_ID, DepartmentSummaryTableMap::COL_MAP_PUBLICATION_HOUR, DepartmentSummaryTableMap::COL_DEPARTMENT_CODE, DepartmentSummaryTableMap::COL_DEPARTMENT_POSITIVE_TWEETS_QUANTITY, DepartmentSummaryTableMap::COL_DEPARTMENT_NEGATIVE_TWEETS_QUANTITY, DepartmentSummaryTableMap::COL_DEPARTMENT_NEUTRAL_TWEETS_QUANTITY, DepartmentSummaryTableMap::COL_POSITIVE_POPULAR_TWEET_ID, DepartmentSummaryTableMap::COL_NEGATIVE_POPULAR_TWEET_ID, DepartmentSummaryTableMap::COL_DEPARTMENT_TWITTER_SHARES_QUANTITY, DepartmentSummaryTableMap::COL_DEPARTMENT_FACEBOOK_SHARES_QUANTITY, DepartmentSummaryTableMap::COL_POSITIVE_TWITTER_ACCOUNT, DepartmentSummaryTableMap::COL_NEGATIVE_TWITTER_ACCOUNT, ),
+        self::TYPE_FIELDNAME     => array('department_summary_id', 'map_publication_hour', 'department_code', 'department_positive_tweets_quantity', 'department_negative_tweets_quantity', 'department_neutral_tweets_quantity', 'positive_popular_tweet_id', 'negative_popular_tweet_id', 'department_twitter_shares_quantity', 'department_facebook_shares_quantity', 'positive_twitter_account', 'negative_twitter_account', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, )
     );
 
     /**
@@ -147,11 +157,11 @@ class DepartmentSummaryTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('DepartmentSummaryId' => 0, 'MapPublicationHour' => 1, 'DepartmentCode' => 2, 'DepartmentPositiveTweetsQuantity' => 3, 'DepartmentNegativeTweetsQuantity' => 4, 'DepartmentNeutralTweetsQuantity' => 5, 'PositivePopularTweetId' => 6, 'NegativePopularTweetId' => 7, 'DepartmentTwitterSharesQuantity' => 8, 'DepartmentFacebookSharesQuantity' => 9, ),
-        self::TYPE_CAMELNAME     => array('departmentSummaryId' => 0, 'mapPublicationHour' => 1, 'departmentCode' => 2, 'departmentPositiveTweetsQuantity' => 3, 'departmentNegativeTweetsQuantity' => 4, 'departmentNeutralTweetsQuantity' => 5, 'positivePopularTweetId' => 6, 'negativePopularTweetId' => 7, 'departmentTwitterSharesQuantity' => 8, 'departmentFacebookSharesQuantity' => 9, ),
-        self::TYPE_COLNAME       => array(DepartmentSummaryTableMap::COL_DEPARTMENT_SUMMARY_ID => 0, DepartmentSummaryTableMap::COL_MAP_PUBLICATION_HOUR => 1, DepartmentSummaryTableMap::COL_DEPARTMENT_CODE => 2, DepartmentSummaryTableMap::COL_DEPARTMENT_POSITIVE_TWEETS_QUANTITY => 3, DepartmentSummaryTableMap::COL_DEPARTMENT_NEGATIVE_TWEETS_QUANTITY => 4, DepartmentSummaryTableMap::COL_DEPARTMENT_NEUTRAL_TWEETS_QUANTITY => 5, DepartmentSummaryTableMap::COL_POSITIVE_POPULAR_TWEET_ID => 6, DepartmentSummaryTableMap::COL_NEGATIVE_POPULAR_TWEET_ID => 7, DepartmentSummaryTableMap::COL_DEPARTMENT_TWITTER_SHARES_QUANTITY => 8, DepartmentSummaryTableMap::COL_DEPARTMENT_FACEBOOK_SHARES_QUANTITY => 9, ),
-        self::TYPE_FIELDNAME     => array('department_summary_id' => 0, 'map_publication_hour' => 1, 'department_code' => 2, 'department_positive_tweets_quantity' => 3, 'department_negative_tweets_quantity' => 4, 'department_neutral_tweets_quantity' => 5, 'positive_popular_tweet_id' => 6, 'negative_popular_tweet_id' => 7, 'department_twitter_shares_quantity' => 8, 'department_facebook_shares_quantity' => 9, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
+        self::TYPE_PHPNAME       => array('DepartmentSummaryId' => 0, 'MapPublicationHour' => 1, 'DepartmentCode' => 2, 'DepartmentPositiveTweetsQuantity' => 3, 'DepartmentNegativeTweetsQuantity' => 4, 'DepartmentNeutralTweetsQuantity' => 5, 'PositivePopularTweetId' => 6, 'NegativePopularTweetId' => 7, 'DepartmentTwitterSharesQuantity' => 8, 'DepartmentFacebookSharesQuantity' => 9, 'PositiveTwitterAccount' => 10, 'NegativeTwitterAccount' => 11, ),
+        self::TYPE_CAMELNAME     => array('departmentSummaryId' => 0, 'mapPublicationHour' => 1, 'departmentCode' => 2, 'departmentPositiveTweetsQuantity' => 3, 'departmentNegativeTweetsQuantity' => 4, 'departmentNeutralTweetsQuantity' => 5, 'positivePopularTweetId' => 6, 'negativePopularTweetId' => 7, 'departmentTwitterSharesQuantity' => 8, 'departmentFacebookSharesQuantity' => 9, 'positiveTwitterAccount' => 10, 'negativeTwitterAccount' => 11, ),
+        self::TYPE_COLNAME       => array(DepartmentSummaryTableMap::COL_DEPARTMENT_SUMMARY_ID => 0, DepartmentSummaryTableMap::COL_MAP_PUBLICATION_HOUR => 1, DepartmentSummaryTableMap::COL_DEPARTMENT_CODE => 2, DepartmentSummaryTableMap::COL_DEPARTMENT_POSITIVE_TWEETS_QUANTITY => 3, DepartmentSummaryTableMap::COL_DEPARTMENT_NEGATIVE_TWEETS_QUANTITY => 4, DepartmentSummaryTableMap::COL_DEPARTMENT_NEUTRAL_TWEETS_QUANTITY => 5, DepartmentSummaryTableMap::COL_POSITIVE_POPULAR_TWEET_ID => 6, DepartmentSummaryTableMap::COL_NEGATIVE_POPULAR_TWEET_ID => 7, DepartmentSummaryTableMap::COL_DEPARTMENT_TWITTER_SHARES_QUANTITY => 8, DepartmentSummaryTableMap::COL_DEPARTMENT_FACEBOOK_SHARES_QUANTITY => 9, DepartmentSummaryTableMap::COL_POSITIVE_TWITTER_ACCOUNT => 10, DepartmentSummaryTableMap::COL_NEGATIVE_TWITTER_ACCOUNT => 11, ),
+        self::TYPE_FIELDNAME     => array('department_summary_id' => 0, 'map_publication_hour' => 1, 'department_code' => 2, 'department_positive_tweets_quantity' => 3, 'department_negative_tweets_quantity' => 4, 'department_neutral_tweets_quantity' => 5, 'positive_popular_tweet_id' => 6, 'negative_popular_tweet_id' => 7, 'department_twitter_shares_quantity' => 8, 'department_facebook_shares_quantity' => 9, 'positive_twitter_account' => 10, 'negative_twitter_account' => 11, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, )
     );
 
     /**
@@ -177,10 +187,12 @@ class DepartmentSummaryTableMap extends TableMap
         $this->addColumn('department_positive_tweets_quantity', 'DepartmentPositiveTweetsQuantity', 'INTEGER', true, null, null);
         $this->addColumn('department_negative_tweets_quantity', 'DepartmentNegativeTweetsQuantity', 'INTEGER', true, null, null);
         $this->addColumn('department_neutral_tweets_quantity', 'DepartmentNeutralTweetsQuantity', 'INTEGER', true, null, null);
-        $this->addColumn('positive_popular_tweet_id', 'PositivePopularTweetId', 'INTEGER', true, null, null);
-        $this->addColumn('negative_popular_tweet_id', 'NegativePopularTweetId', 'INTEGER', true, null, null);
+        $this->addColumn('positive_popular_tweet_id', 'PositivePopularTweetId', 'BIGINT', true, 18, null);
+        $this->addColumn('negative_popular_tweet_id', 'NegativePopularTweetId', 'BIGINT', true, 18, null);
         $this->addColumn('department_twitter_shares_quantity', 'DepartmentTwitterSharesQuantity', 'INTEGER', false, null, null);
         $this->addColumn('department_facebook_shares_quantity', 'DepartmentFacebookSharesQuantity', 'INTEGER', false, null, null);
+        $this->addColumn('positive_twitter_account', 'PositiveTwitterAccount', 'LONGVARCHAR', true, null, null);
+        $this->addColumn('negative_twitter_account', 'NegativeTwitterAccount', 'LONGVARCHAR', true, null, null);
     } // initialize()
 
     /**
@@ -188,13 +200,6 @@ class DepartmentSummaryTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Departments', '\\Propel\\Propel\\Departments', RelationMap::ONE_TO_MANY, array (
-  0 =>
-  array (
-    0 => ':department_code',
-    1 => ':department_code',
-  ),
-), null, null, 'Departmentss', false);
     } // buildRelations()
 
     /**
@@ -348,6 +353,8 @@ class DepartmentSummaryTableMap extends TableMap
             $criteria->addSelectColumn(DepartmentSummaryTableMap::COL_NEGATIVE_POPULAR_TWEET_ID);
             $criteria->addSelectColumn(DepartmentSummaryTableMap::COL_DEPARTMENT_TWITTER_SHARES_QUANTITY);
             $criteria->addSelectColumn(DepartmentSummaryTableMap::COL_DEPARTMENT_FACEBOOK_SHARES_QUANTITY);
+            $criteria->addSelectColumn(DepartmentSummaryTableMap::COL_POSITIVE_TWITTER_ACCOUNT);
+            $criteria->addSelectColumn(DepartmentSummaryTableMap::COL_NEGATIVE_TWITTER_ACCOUNT);
         } else {
             $criteria->addSelectColumn($alias . '.department_summary_id');
             $criteria->addSelectColumn($alias . '.map_publication_hour');
@@ -359,6 +366,8 @@ class DepartmentSummaryTableMap extends TableMap
             $criteria->addSelectColumn($alias . '.negative_popular_tweet_id');
             $criteria->addSelectColumn($alias . '.department_twitter_shares_quantity');
             $criteria->addSelectColumn($alias . '.department_facebook_shares_quantity');
+            $criteria->addSelectColumn($alias . '.positive_twitter_account');
+            $criteria->addSelectColumn($alias . '.negative_twitter_account');
         }
     }
 
