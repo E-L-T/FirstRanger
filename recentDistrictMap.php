@@ -9,7 +9,7 @@ use Propel\Runtime\Connection\ConnectionManagerSingle;
 use Propel\Runtime\Propel;
 
 //// Connexion BDD
-$pdo = new PDO('mysql:host=31.207.33.82;port=3306;dbname=firstranger', 'firstranger', 'SBuy1s9O3CQsE86a', array(
+$pdo = new PDO('mysql:host=31.207.33.82;port=3306;dbname=firstranger', 'firstranger', 'ytjtxkBmIV2A698r', array(
     PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING,
     PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_BOTH
